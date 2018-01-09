@@ -12,7 +12,7 @@ Package contains following functions:<br />
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
 **recalculateRules()** <-> *recaluclates rules after undersampling and retrieves the support sets for rules*<br />
 **saveLineByLine()** <-> *saves rules to Line By Line format, compatibile with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
-**getDecision()** <-> *reclassifies model using rules*<br />
+**getDecision()** <-> *reclassifies model using created rules*<br />
 
 **Installation guide:**<br />
 install.packages("devtools")<br /><br />
