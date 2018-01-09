@@ -1,6 +1,5 @@
 \name{recalculateRules}
 \alias{recalculateRules}
-recalculateRules
 \title{
 Recalculating rules.
 }
