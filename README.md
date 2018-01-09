@@ -2,7 +2,6 @@
   Title: RROSETTA
   Description: ROSETTA rough set classifier as a R package.
   Author: Mateusz Garbulowski
-
   -->
 <meta name='keywords' content='rosetta, rough sets, classification'>
 
