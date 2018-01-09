@@ -14,14 +14,12 @@ Package contains following functions:<br />
 **saveLineByLine()** <-> *saves rules to Line By Line format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
 **getDecision()** <-> *reclassifies model using created rules*<br />
 
-**Installation guide:**
-
+**Installation guide:**<br />
 install.packages("devtools")<br /><br />
 library(devtools)<br />
 install_github("mategarb/RROSETTA")<br />
 library(RROSETTA)
 
 
-**example data**
-
+**example data**<br />
 RROSETTA includes an example dataset obtained from GEO repository with the reference number GSE25507.
