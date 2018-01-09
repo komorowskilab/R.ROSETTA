@@ -4,6 +4,6 @@ ROSETTA rough set classifier as a R package. In addition to all the existing ROS
 
 installation guide in R:
 
-install.packages("devtools")
-library(devtools)
+install.packages("devtools")<br />
+library(devtools)<br />
 install_github("mategarb/RROSETTA")
