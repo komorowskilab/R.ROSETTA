@@ -14,7 +14,7 @@ Package contains following functions:<br />
 **saveLineByLine()** <-> *saves rules to Line By Line format, compatibile with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
 **getDecision()** <-> *reclassifies model using rules*<br />
 
-**Installation guide:**
+**Installation guide:**<br />
 install.packages("devtools")<br /><br />
 library(devtools)<br />
 install_github("mategarb/RROSETTA")
