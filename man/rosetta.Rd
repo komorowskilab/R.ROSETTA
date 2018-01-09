@@ -48,7 +48,7 @@ Logical. If TRUE, the algorithm will use under-sampling. Use if your data is not
 The number of sub-samples. If 0 minimum number of subsets that cover all the objects is taken. Default is 0.
 }
   \item{underSampleSize}{
-The size of one subsample. If 0 minimum number from all groups is taken. Default is 0.
+The size of each subsample. If 0 minimum number from all groups is taken. Default is 0.
 }
   \item{fallBack}{
 Logical. If TRUE, fallback is on. Default is TRUE.
@@ -60,28 +60,29 @@ A character containing fallback option: Full or Object. Default is Full.
 Logical. If TRUE, rule filtration is on. Default is TRUE.
 }
   \item{ruleFiltrSupport}{
-Interval of support values to filter out. Integer. Default is c(1,3).
+A vector of two numbers containing interval of support values to filter out. Default is c(1,3).
 }
   \item{ruleFiltrAccuracy}{
-Interval of accuracy values to filter out. Float 0-1. Default is c(0.5,1).
+A vector of two numbers containing interval of accuracy values to filter out. Default is c(0,0.5).
 }
   \item{ruleFiltrCoverage}{
-Interval of coverage values to filter out. Float 0-1. Default is c(0,0).
+A vector of two numbers containing interval of coverage values to filter out. Default is c(0,0).
 }
   \item{ruleFiltrStability}{
-Interval of support values to filter out. Integer. Default is c(0,0).
+A vector of two numbers containing interval of support values to filter out. Integer. Default is c(0,0).
 }
   \item{reducerDiscernibility}{
-Reducer discernibility. Object or Full. Default is object.
+A character containing reducer discernibility option: Full or Object. Default is Object.
+
 }
   \item{JohnsonParam}{
-Vector of Johnson reducer parameters.
+A vector containing Johnson reducer parameters.
 }
   \item{GeneticParam}{
-Vector of Genetic reducer parameters.
+A vector containing of Genetic reducer parameters.
 }
   \item{ManualNames}{
-Manual names for reducer.
+A vector containing manual names for manual reducer.
 }
 }
 \details{
@@ -89,9 +90,9 @@ Manual names for reducer.
 }
 \value{
 output from rosetta:
-out$main - data frame of rules with accuracy, support, coverage, stability and pvalue
+out$main - a data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and pvalue
 out$statistic - accuracy, ROC, AUC values
-out$rules - not sorted, raw rules
+out$rules - raw rules that are not sorted
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -111,120 +112,115 @@ Mateusz Garbulowski, Karolina Smolinska
 \examples{
 library(RROSETTA)
 
+#example data loading
 df=autism
 
-###### DEFAULT ######
-#Standard Voter, Johnson Reducer, 10 CV, Equal Frequency 
+###### dedault parameters ######
 resultsRos=rosetta(df) 
 resultsRos$statistic$Accuracy
 
-###### UNDERSAMPLING ######
-##undersampling 20 undersamples, 50 size of class 
-resultsRosU1=rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=10)
-resultsRosU1$statistic$Accuracy
+###### under-sampling ######
+resultsRosU=rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=10)
+resultsRosU$statistic$Accuracy
 
-##undersampling 20 undersamples, size of the class set to 0 (as deafault)
-resultsRosU2=rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=0)
-resultsRosU2$statistic$Accuracy
+###### under-sampling with default parameters ######
+resultsRosUD=rosetta(df, underSample=TRUE)
+resultsRosUD$statistic$Accuracy
 
-###### CLASSIFIERS ######
-#StandardVoter
+###### classifiers ######
+# StandardVoter
 resultsRosSV=rosetta(df, classifier="StandardVoter")
 resultsRosSV$statistic$Accuracy
 
-#ObjectTrackingVoter
+# ObjectTrackingVoter
 resultsRosOTV=rosetta(df, classifier="ObjectTrackingVoter")
 resultsRosOTV$statistic$Accuracy
 
-#NaiveBayesClassifier
+# NaiveBayesClassifier
 resultsRosNB=rosetta(df, classifier="NaiveBayesClassifier")
 resultsRosNB$statistic$Accuracy
 
-###### DISCERNIBILITY ######
-##Full
-resultsRosF=rosetta(df, reducerDiscernibility="Full")
-resultsRosF$statistic$Accuracy
-
-##Object
-resultsRosO=rosetta(df, reducerDiscernibilit="Object")
-resultsRosO$statistic$Accuracy
-
-###### REDUCERS ######
-##Johnson
+###### reducers ######
+# Johnson
 resultsRosJR=rosetta(df, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE,BRTprec=0.1,Precompute=FALSE,Approximate=TRUE,Fraction=0.9))
 resultsRosJR$statistic$Accuracy
 
-##Genetic
+# Genetic
 resultsRosGR=rosetta(df, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
 resultsRosGR$statistic$Accuracy
 
-
-##Holte1R
+# Holte1R
 resultsRosHR=rosetta(df, reducer="Holte1R")
 resultsRosHR$statistic$Accuracy
 
-##Manual
+# Manual
 resultsRosMR=rosetta(df, reducer="Manual", ManualNames = c("DDX60L", "SENCR", "ZSCAN18"))
 resultsRosMR$statistic$Accuracy
 
-######## DISCRETIZATION ########
-## EqualFrequencyScaler
+###### discretization ######
+# EqualFrequencyScaler
 resultsRosEF=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3)
 resultsRosEF$Accuracy
 
-## MDL
+# MDL
 resultsRosMDL=rosetta(df, discrete=TRUE, discreteMethod="MDL")
 resultsRosMDL$statistic$Accuracy
 
-## NAIVE
+# Naive
 resultsRosNaive=rosetta(df, discrete=TRUE, discreteMethod="Naive")
 resultsRosNaive$statistic$Accuracy
 
-##SemiNaive
+# SemiNaive
 resultsRosSN=rosetta(df, discrete=TRUE, discreteMethod="SemiNaive")
 resultsRosSN$statistic$Accuracy
 
-## BRO
+# BRO
 resultsRosBR=rosetta(df, discrete=TRUE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
 resultsRosBR$statistic$Accuracy
 
-## without discretization mask
-resultsRosMask=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3, discreteMask=F)
+# without discretization mask
+resultsRosMask=rosetta(df, discrete=TRUE, discreteMask=F)
 resultsRosMask$statistic$Accuracy
 
-## no discretization
+###### no discretization ######
+# for discrete data
 resultsRosNoD=rosetta(df, discrete=FALSE)
 resultsRosNoD$statistic$Accuracy
 
-#### RULES FILTRATION ####
-
-#accuracy
-resultsRosFA=rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0.2,0.6))
+###### rules filtration ######
+# accuracy
+resultsRosFA=rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
 resultsRosFA$statistic$Accuracy
 
-#support
-resultsRosFS=rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,5))
+# support
+resultsRosFS=rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
 resultsRosF2$statistic$Accuracy
 
-#coverage
+# coverage
 resultsRosFC=rosetta(df, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
 resultsRosFC$statistic$Accuracy
 
-#stability
+# stability
 resultsRosFST=rosetta(df, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
 resultsRosFST$statistic$Accuracy
 
-
-#### MASK FEATURES ####
-resultsRosMF=rosetta(df)
-resultsRosMF$statistic$Accuracy
-
+###### mask features ######
 resultsRosMF1=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
 resultsRosMF1$statistic$Accuracy
 
 resultsRosMF3=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("DDX60L", "SENCR", "ZSCAN18"))
 resultsRosMF3$statistic$Accuracy
-  }
+
+###### discernibility ######
+# Full
+resultsRosF=rosetta(df, reducerDiscernibility="Full")
+resultsRosF$statistic$Accuracy
+
+# Object
+resultsRosO=rosetta(df, reducerDiscernibilit="Object")
+resultsRosO$statistic$Accuracy
+
+}
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
