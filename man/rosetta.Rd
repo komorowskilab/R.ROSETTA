@@ -89,10 +89,12 @@ A vector containing manual names for manual reducer.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-output from rosetta:
-out$main - a data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and pvalue
-out$statistic - accuracy, ROC, AUC values
-out$rules - raw rules that are not sorted
+  \item{out$main}{A data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and pvalue
+}
+    \item{out$statistic}{A table of accuracy, ROC and AUC values.
+}
+    \item{out$rules}{A character vector of raw rules that are not sorted.
+}
 }
 \references{
 %% ~put references to the literature/web site here ~
