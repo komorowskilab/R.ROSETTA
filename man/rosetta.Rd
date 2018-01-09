@@ -1,6 +1,5 @@
 \name{rosetta}
 \alias{rosetta}
-rosetta
 \title{
 ROSETTA classifier
 }
