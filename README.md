@@ -2,8 +2,10 @@
   Title: RROSETTA
   Description: ROSETTA rough set classifier as a R package.
   Author: Mateusz Garbulowski
+
   -->
-  
+<meta name='keywords' content='rosetta, rough sets, classification'>
+
 # RROSETTA
 
 **ROSETTA** rough set classifier as a R package. In addition to all the existing ROSETTA (created by Öhrn and Komorowski in 1997) algorithms we have added new functions especially useful in bioinformatics applications. 
