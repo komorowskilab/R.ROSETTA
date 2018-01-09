@@ -15,10 +15,10 @@ Package contains following functions:<br />
 **getDecision()** <-> *reclassifies model using created rules*<br />
 
 **Installation guide:**<br />
-install.packages("devtools")<br /><br />
+*install.packages("devtools")<br />
 library(devtools)<br />
 install_github("mategarb/RROSETTA")<br />
-library(RROSETTA)
+library(RROSETTA)*
 
 
 **example data**<br />
