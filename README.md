@@ -22,9 +22,15 @@ These include:
 **getDecision()** <-> *reclassifies created model by applying rules*<br />
 
 ## Installation
+
+Install and load devtools package
 ```R
 install.packages("devtools")
 library(devtools)
+```
+
+Install and load RROSETTA package from github
+```R
 install_github("mategarb/RROSETTA")
 library(RROSETTA)
 ```
