@@ -1,0 +1,13 @@
+Package: rROSETTA
+Version: 0.0-5
+Date: 2017-28-08
+Title: rROSETTA - A Rough Set Toolkit for Analysis of Data in R
+Author: Mateusz Garbulowski [aut, cre],
+  Karolina Smolinska [aut, cre],
+  Jan Komorowski [aut]
+Maintainer: Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
+Description: rROSETTA is a toolkit for analyzing tabular data within the framework of rough set theory. rROSETTA is designed to support the overall data mining and knowledge discovery process: From initial browsing and preprocessing of the data, via computation of minimal attribute sets and generation of if-then rules or descriptive patterns, to validation and analysis of the induced rules or patterns.
+License: GPL (>= 2)
+LazyData: true
+URL: https://www.r-project.org, http://www.another.url
+BugReports: https://pkgname.bugtracker.url
