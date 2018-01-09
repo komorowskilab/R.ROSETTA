@@ -36,4 +36,4 @@ library(RROSETTA)
 ```
 
 ## Example data
-RROSETTA includes an example dataset obtained from GEO repository with the reference number GSE25507.
+RROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
