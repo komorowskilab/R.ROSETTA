@@ -8,13 +8,13 @@ These include:
 * retrieving the support sets for rules
 * reclassification
 
-Package contains following functions:<br />
+## Function
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
 **recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
 **saveLineByLine()** <-> *saves rules to Line By Line format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
 **getDecision()** <-> *reclassifies created model by applying rules*<br />
 
-**Installation guide:**<br />
+## Installation
 ```R
 install.packages("devtools")
 library(devtools)
@@ -22,5 +22,5 @@ install_github("mategarb/RROSETTA")
 library(RROSETTA)
 ```
 
-**example data**<br />
+## Example data
 RROSETTA includes an example dataset obtained from GEO repository with the reference number GSE25507.
