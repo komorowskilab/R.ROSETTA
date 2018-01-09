@@ -1,7 +1,7 @@
 \name{rosetta}
 \alias{rosetta}
 \title{
-ROSETTA classifier
+ROSETTA rough set classifier
 }
 \description{
 Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications.  These include: under-sampling, p-value estimation of the rules, clustering decision classes and retrieving the true support sets for rules.
@@ -12,52 +12,52 @@ rosetta(df, classifier = "StandardVoter", cvNum = 10, discrete = TRUE, discreteM
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-Decision table in a form of data frame. The last column has to contain decisions.
+A data frame containing decision table. The last column should contain decisions.
 }
   \item{classifier}{
-The type of classifier: StandardVoter, ObjectTrackingVoter or NaiveBayesClassifier. 
+A character containing the type of classifier: StandardVoter, ObjectTrackingVoter or NaiveBayesClassifier. Default is StandardVoter.
 }
   \item{cvNum}{
-The number of cross validation. Default is set to 10.
+The number of cross validation. Default is 10.
 }
   \item{discrete}{
-Set to TRUE if your data is not discretized. Default TRUE.
+Logical. If TRUE, your data will be discretized in ROSETTA. Set FALSE when your data is already discretized. Default is TRUE.
 }
   \item{discreteMethod}{
-Discretization methods: EqualFrequency, MDL, Naive, SemiNaive or BROrthogonal.
+A character containing discretization method: EqualFrequency, MDL, Naive, SemiNaive or BROrthogonal.  Default is EqualFrequency.
 }
   \item{discreteParam}{
-Discretization parameters. Vector of parameters.
+A vector containing discretization parameters. May be of different length. See examples in rosetta.
 }
   \item{discreteMask}{
-Set the discretization mask. Default TRUE.
+Logical. If TRUE, set the discretization mask option. Default is TRUE.
 }
   \item{reducer}{
-Reducer methods: Johnson, Genetic, Holte1R or Manual.
+A character containing reducer method: Johnson, Genetic, Holte1R or Manual. Default is Johnson.
 }
   \item{maskFeatures}{
-Set to TRUE if you want mask some features. Default is FALSE.
+Logical. If TRUE, function mask features chosen by user. Default is FALSE.
 }
   \item{maskFeaturesNames}{
-Vector of names of the features to mask.
+A vector of feature names to mask. Names should be the same as ones in column names.
 }
   \item{underSample}{
-Set to TRUE if your data is not balanced. 
+Logical. If TRUE, the algorithm will use under-sampling. Use if your data is not balanced. Default is FALSE. 
 }
   \item{underSampleNum}{
-The number of subsamples. Set to 0 if you want to caluclate minimum number of subsets that cover all the objects. Default is 0.
+The number of sub-samples. If 0 minimum number of subsets that cover all the objects is taken. Default is 0.
 }
   \item{underSampleSize}{
-The size of one subsample. Set to 0 if you want to take the minimum of all subsets. Default is 0.
+The size of one subsample. If 0 minimum number from all groups is taken. Default is 0.
 }
   \item{fallBack}{
-Fallback. Default is TRUE.
+Logical. If TRUE, fallback is on. Default is TRUE.
 }
   \item{fallBackClass}{
-Full or Object. Default is 0.
+A character containing fallback option: Full or Object. Default is Full.
 }
   \item{ruleFiltration}{
-Rule filtration. True or False.
+Logical. If TRUE, rule filtration is on. Default is TRUE.
 }
   \item{ruleFiltrSupport}{
 Interval of support values to filter out. Integer. Default is c(1,3).
@@ -109,7 +109,7 @@ Mateusz Garbulowski, Karolina Smolinska
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-library(rROSETTA)
+library(RROSETTA)
 
 df=autism
 
