@@ -1,6 +1,5 @@
 \name{saveLineByLine}
 \alias{saveLineByLine}
-saveLineByLine
 \title{
 Saving rules to line by line format.
 }
