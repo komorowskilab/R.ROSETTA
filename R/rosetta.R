@@ -29,7 +29,7 @@ rosetta <- function(df,
   firstPath=tempdir()
   fname="data"
   #setwd(firstPath)
-  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"rROSETTA"),sep="/")
+  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROSETTA"),sep="/")
   dir.create(tempDirNam)
   #setwd(tempDirNam)
   dir.create(paste0(tempDirNam,"/data"))
@@ -132,7 +132,7 @@ rosetta <- function(df,
     maskAttribute(maskFeaturesNames, dirList2)
 
     #copy file to execute it in folder
-    pathExe <- paste(system.file(package="rROSETTA"), "exec/clrosetta.exe", sep="/")
+    pathExe <- paste(system.file(package="RROSETTA"), "exec/clrosetta.exe", sep="/")
     file.copy(pathExe, dirList2)
     file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2)
     
