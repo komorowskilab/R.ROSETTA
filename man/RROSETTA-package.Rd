@@ -23,8 +23,7 @@ Maintainer: \packageMaintainer{RROSETTA}
 \references{
 A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data, Proc. Third International Joint Conference on Information Sciences, Fifth International Workshop on Rough Sets and Soft Computing (RSSC'97), Durham, NC, USA, March 1-5, Vol. 3, pp. 403-407.
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation directory ~~
-\keyword{ package }
+\keyword{package}
 \seealso{
 \link[RROSETTA]{bioinf.icm.uu.se/rosetta}
 }
