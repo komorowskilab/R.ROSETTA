@@ -1,10 +1,11 @@
 \name{recalculateRules}
 \alias{recalculateRules}
+recalculateRules
 \title{
-Recalculating rules.
+Recalcule rules
 }
 \description{
-Recalculating rule set according to input decision table. Retrieving the true support sets for rules.
+Recalcules rules according to the input decision table. Retrieves the true support sets for rules and calculates new p-values.
 }
 \usage{
 recalculateRules(df, rls, discretized=F)
@@ -12,23 +13,21 @@ recalculateRules(df, rls, discretized=F)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-Input decision table.
+A data frame containing decision table. The last column should contain decisions.
 }
   \item{rls}{
-Output rules set from rosetta.
+A data frame of rules in a form like an output from rosetta.
 }
   \item{discretized}{
-Set TRUE if your data are discretized. Default FALSE.}
+Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
+}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+  \item{output}{A data frame containing recaluclated rules with: support, accuracy and lists of objects that support each rule.
+}
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -46,16 +45,13 @@ Mateusz Garbulowski
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-library(rROSETTA)
-
+library(RROSETTA)
 
 df=autism
 out=rosetta(df)
 rls=out$main
 
 newRls=recalculateRules(df, rls)
-saveLineByLine(newRls,"newRules.txt")
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
