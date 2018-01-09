@@ -1,6 +1,5 @@
 \name{getDecision}
 \alias{getDecision}
-getDecision
 \title{
 Retrieving decision
 }
