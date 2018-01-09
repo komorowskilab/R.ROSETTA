@@ -17,4 +17,5 @@ Package contains following functions:<br />
 **Installation guide:**<br />
 install.packages("devtools")<br /><br />
 library(devtools)<br />
-install_github("mategarb/RROSETTA")
+install_github("mategarb/RROSETTA")<br />
+library(RROSETTA)
