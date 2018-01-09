@@ -1,10 +1,10 @@
 \name{getDecision}
 \alias{getDecision}
 \title{
-Retrieving decision
+Reclassification.
 }
 \description{
-Retrieving decisions from data frame without decision column.
+Use rules to reclassify with old or new data.
 }
 \usage{
 getDecision(df, rls, discretized=F)
@@ -12,13 +12,14 @@ getDecision(df, rls, discretized=F)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-Input decision table. Without decision column.
+A data frame of feature values. Should contain the same feature names as the rules were made of.
 }
   \item{rls}{
-Output rules set from rosetta.
+A data frame of rules in a form like an output from rosetta.
 }
   \item{discretized}{
-Set TRUE if your data are discretized. Default FALSE.}
+Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
+}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -46,7 +47,7 @@ Mateusz Garbulowski
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-library(rROSETTA)
+library(RROSETTA)
 
 df=autism
 out=rosetta(df)
