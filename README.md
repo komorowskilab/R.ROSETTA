@@ -5,12 +5,12 @@ These include:
 * under-sampling
 * p-value estimation of the rules
 * clustering decision classes
-* retrieving the true support sets for rules
+* retrieving the support sets for rules
 * reclassification
 
 Package contains following functions:<br />
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
-**recalculateRules()** <-> *recaluclates rules after using undersampling*<br />
+**recalculateRules()** <-> *recaluclates rules after undersampling and retrieves the support sets for rules*<br />
 **saveLineByLine()** <-> *saves rules to Line By Line format, compatibile with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
 **getDecision()** <-> *reclassifies model using rules*<br />
 
