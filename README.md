@@ -37,3 +37,9 @@ library(RROSETTA)
 
 ## Example data
 RROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
+
+
+## Built With
+
+* [ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework
+* [R Core](https://www.R-project.org/) - R Core Team
