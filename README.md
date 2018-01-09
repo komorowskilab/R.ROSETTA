@@ -15,11 +15,12 @@ Package contains following functions:<br />
 **getDecision()** <-> *reclassifies created model by applying rules*<br />
 
 **Installation guide:**<br />
-```install.packages("devtools")<br />
+```R
+install.packages("devtools")<br />
 library(devtools)<br />
 install_github("mategarb/RROSETTA")<br />
-library(RROSETTA)```
-
+library(RROSETTA)
+```
 
 **example data**<br />
 RROSETTA includes an example dataset obtained from GEO repository with the reference number GSE25507.
