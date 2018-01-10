@@ -114,7 +114,9 @@ for(i in 1:length(newSupportRHS)){
   PVAL[i]=phyper(k-1, R2, R1, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
 }
 
-newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUT_COND,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,newAccuracy,PVAL)
+rulesFinal= unlist(lapply(rls$DECISION, FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
+
+newDF=data.frame(rls$FEATURES,rulesFinal,rls$CUT_COND,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,newAccuracy,PVAL)
 newDF2=newDF[order(newDF$PVAL),]
 colnames(newDF2)<-c("FEATURES","DECISION","CUT_COND","SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","ACC_RHS","PVAL")
 return(newDF2)
