@@ -123,8 +123,8 @@ for(i in 1:length(table(df[,length(df)]))){
 numClass[which(decsFinal==names(table(df[,length(df)]))[i])]<-unname(table(df[,length(df)]))[i]
 }
 
-percSuppLHS=round(newRls$SUPP_LHS/numClass, digits=3)*100                          
-percSuppRHS=round(newRls$SUPP_RHS/numClass, digits=3)*100                          
+percSuppLHS=round(newSupportLHS/numClass, digits=3)*100                          
+percSuppRHS=round(newSupportRHS/numClass, digits=3)*100                          
                            
 newDF=data.frame(rls$FEATURES,decsFinal,rls$CUT_COND,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
 newDF2=newDF[order(newDF$PVAL),]
