@@ -353,7 +353,7 @@ rosetta <- function(df,
   for(i in 1:length(df_out2$SUPP_RHS)){
     k=round(df_out2$SUPP_LHS[i]*df_out2$ACC_RHS[i])
     
-    R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))== as.character(rls$DECISION[i])])
+    R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))== as.character(df_out2$DECISION[i])])
     N=dim(df)[1] 
     R2=N-R1
                 # the number of decisions/objects/patients
