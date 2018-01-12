@@ -21,6 +21,7 @@ These include:
 RROSETTA works with Windows and MacOS platforms.<br />
 MacOS systems require wine.<br />
 Wine installation tutorial by David Baumgold for MacOS platforms <a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">here</a>.
+
 ### Installing
 
 Install and load devtools package
@@ -48,5 +49,5 @@ RROSETTA includes an example dataset obtained from GEO repository with the refer
 
 
 ## Built With
-* [ROSETTA](http://bioinf.icm.uu.se/rosetta/){:target="_blank"} - The ROSETTA framework
-* [R Core](https://www.R-project.org/){:target="_blank"} - R Core Team
+* [ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework
+* [R Core](https://www.R-project.org/) - R Core Team
