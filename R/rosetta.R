@@ -351,13 +351,17 @@ rosetta <- function(df,
   
   PVAL=c()
   for(i in 1:length(df_out2$SUPP_RHS)){
-    k=round(df_out2$SUPP_RHS[i]*df_out2$ACC_RHS[i])
-    N=dim(df)[1]             # the number of decisions/objects/patients
-    C1=df_out2$SUPP_RHS[i]   # LHS Support
-    C2=N-C1                  # total drawn
-    R1=dim(df)[2]            # total hits, number of features
-    R2=N-R1                  # number of features - number of decisions
-    PVAL[i]=phyper(k-1, R2, R1, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
+    k=round(df_out2$SUPP_LHS[i]*df_out2$ACC_RHS[i])
+    
+    R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))== as.character(rls$DECISION[i])])
+    N=dim(df)[1] 
+    R2=N-R1
+                # the number of decisions/objects/patients
+    C1=df_out2$SUPP_LHS[i]   # LHS Support
+    #C2=N-C1                  # total drawn
+    #R1=dim(df)[2]            # total hits, number of features
+    #R2=N-R1                  # number of features - number of decisions
+    PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
   }
   
   df_out3=data.frame(df_out2,PVAL)
