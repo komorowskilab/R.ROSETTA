@@ -1,7 +1,7 @@
 Package: RROSETTA
 Version: 0.1.0
 Date: 2018-09-01
-Title: rROSETTA - A Rough Set Toolkit for Analysis of Data in R
+Title: RROSETTA - A Rough Set Toolkit for Analysis of Data in R
 Author: Mateusz Garbulowski [aut, cre],
   Karolina Smolinska [aut, cre],
   Jan Komorowski [aut]
