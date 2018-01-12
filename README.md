@@ -17,11 +17,11 @@ These include:
 
 ## Functions
 ```
-**rosetta()** <-> *runs ROSETTA rough set classifier*<br />
-**recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
-**saveLineByLine()** <-> *saves rules to Line By Line format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
-**getDecision()** <-> *reclassifies created model by applying rules*<br />
-**getFeatures()** <-> *retrieves the most important features from the rules*<br />
+rosetta() <-> runs ROSETTA rough set classifier
+recalculateRules() <-> recalculates rules after undersampling and retrieves the support sets for rules
+saveLineByLine() <-> saves rules to Line By Line format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/
+getDecision() <-> reclassifies created model by applying rules
+getFeatures() <-> retrieves the most important features from the rules
 ```
 
 ## Installation
