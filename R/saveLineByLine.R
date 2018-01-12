@@ -1,9 +1,8 @@
-saveLineByLine <- function(mainTab, path, discretized=FALSE, geneExprData=TRUE, filterByPval=TRUE, pval=0.05)
+saveLineByLine <- function(rls, path, discretized=FALSE, geneExprData=TRUE, filterByPval=TRUE, pval=0.05)
   
 {
   if(discretized)
   {
-      rls=mainTab
       vec=as.character(as.matrix(rls["FEATURES"]))
       lst1=sapply(vec, function(x) strsplit(x, ","))
       vec2=as.character(as.matrix(rls["CUT_COND"]))
@@ -21,7 +20,6 @@ saveLineByLine <- function(mainTab, path, discretized=FALSE, geneExprData=TRUE, 
   else{
     if(geneExprData)
       {
-      rls=mainTab
       lst11=lapply(rls["CUT_COND"], function(x) gsub("num>cut", "3", x, fixed = T))
       lst22=lapply(lst11, function(x) gsub("cut1<num<cut2", "2", x, fixed = T))
       lst33=lapply(lst22, function(x) gsub("num<cut", "1", x, fixed = T))
@@ -40,7 +38,6 @@ saveLineByLine <- function(mainTab, path, discretized=FALSE, geneExprData=TRUE, 
       }
     }
     else{
-      rls=mainTab
       
       if(filterByPval){
         dflbl=cbind(rls["FEATURES"],rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)[which(rls["PVAL"]<pval),]
