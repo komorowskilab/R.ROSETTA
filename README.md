@@ -42,7 +42,12 @@ library(RROSETTA)
 **getDecision()** <-> *reclassifies created model by applying rules*<br />
 **getFeatures()** <-> *retrieves the most significant features from rules*<br />
 
+## Examples
 
+All the examples you can find by typing ? and name of the function in R environment e.g.
+```
+?rosetta
+```
 
 ## Acknowledgments
 RROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
