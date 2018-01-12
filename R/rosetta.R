@@ -312,7 +312,9 @@ rosetta <- function(df,
   lst_cuts3=lapply(lst_cuts2, 'length<-', max(table(df222$group)))
   df3=t(as.data.frame(lst_cuts3))
   
-  df_out=data.frame(features2,as.character(choose_nfl), supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
+  decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
+                          
+  df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
   colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUT_COND",paste0("CUTS_",seq(1:max(table(df222$group)))))
   df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, median, data = df_out, na.action = na.pass)
   
@@ -331,7 +333,9 @@ rosetta <- function(df,
     lst_cuts3=lapply(lst_cuts2, 'length<-', max(table(df222$group)))
     df3=t(as.data.frame(lst_cuts3))
     
-    df_out=data.frame(features2,as.character(choose_nfl), supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, df3, lst_cuts22)
+    decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
+                                 
+    df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, df3, lst_cuts22)
     colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS",paste0("CUTS_",seq(1:max(table(df222$group)))),"CUT_COND")
     df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, median, data = df_out, na.action = na.pass)
     
