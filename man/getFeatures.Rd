@@ -20,6 +20,7 @@ A data frame of rules in a form like an output from rosetta.
   \item{pval}{
 A numeric value containing p-value cut. Default is set to 0.05 what means that we considering only significant rules.
 }
+}
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
