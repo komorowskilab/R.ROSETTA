@@ -15,15 +15,14 @@ These include:
 * retrieving the support sets for rules
 * reclassification
 
-## Functions
-**rosetta()** <-> *runs ROSETTA rough set classifier*<br />
-**recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
-**saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
-**getDecision()** <-> *reclassifies created model by applying rules*<br />
-**getFeatures()** <-> *retrieves the most significant features from rules*<br />
+## Getting Started
 
+### Prerequisites
+RROSETTA works with Windows and MacOS platforms.<br />
+MacOS systems require wine.<br />
+Wine installation tutorial by David Baumgold for MacOS platforms [here](https://www.davidbaumgold.com/tutorials/wine-mac/).  
 
-## Installation
+### Installing
 
 Install and load devtools package
 ```R
@@ -36,12 +35,19 @@ Install and load RROSETTA package from github
 install_github("mategarb/RROSETTA")
 library(RROSETTA)
 ```
+### Functions
+**rosetta()** <-> *runs ROSETTA rough set classifier*<br />
+**recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
+**saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
+**getDecision()** <-> *reclassifies created model by applying rules*<br />
+**getFeatures()** <-> *retrieves the most significant features from rules*<br />
 
-## Example data
+
+
+## Acknowledgments
 RROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
 
 
 ## Built With
-
 * [ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework
 * [R Core](https://www.R-project.org/) - R Core Team
