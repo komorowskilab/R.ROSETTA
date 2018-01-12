@@ -7,11 +7,11 @@ Converts rules to LineByLine format.
 Saves rules in LineByLine format that is compatible with VisuNet software. Allows to filter out not-significant rules by setting the threshold of p-value.
 }
 \usage{
-saveLineByLine(mainTab, path, discretized=FALSE, geneExprData=TRUE, filterByPval=TRUE, pval=0.05)
+saveLineByLine(rls, path, discretized=FALSE, geneExprData=TRUE, filterByPval=TRUE, pval=0.05)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{rulesTab}{
+  \item{rls}{
 A data frame containing output from rosetta function.
 }
   \item{path}{
