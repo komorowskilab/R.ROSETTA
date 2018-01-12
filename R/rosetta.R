@@ -364,7 +364,7 @@ rosetta <- function(df,
     PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
   }
   
-  #PVAL=p.adjust(PVAL, method="BH")
+  PVAL=p.adjust(PVAL, method="BH")
   df_out3=data.frame(df_out2,PVAL)
   df_out4=df_out3[order(df_out3$PVAL,decreasing = F),]
   
