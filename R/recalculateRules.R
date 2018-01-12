@@ -114,7 +114,7 @@ for(i in 1:length(newSupportRHS)){
   PVAL[i]=phyper(k-1, R2, R1, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
 }
 
-decsFinal= unlist(lapply(rls$DECISION, FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
+#decsFinal= unlist(lapply(rls$DECISION, FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
 
 decsCounts=table(df[,length(df)])
 
@@ -126,7 +126,7 @@ numClass[which(decsFinal==names(table(df[,length(df)]))[i])]<-unname(table(df[,l
 percSuppLHS=round(newSupportLHS/numClass, digits=3)*100                          
 percSuppRHS=round(newSupportRHS/numClass, digits=3)*100                          
                            
-newDF=data.frame(rls$FEATURES,decsFinal,rls$CUT_COND,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
+newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUT_COND,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
 newDF2=newDF[order(newDF$PVAL),]
 colnames(newDF2)<-c("FEATURES","DECISION","CUT_COND","SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL")
 return(newDF2)
