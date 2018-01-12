@@ -48,5 +48,5 @@ RROSETTA includes an example dataset obtained from GEO repository with the refer
 
 
 ## Built With
-* [ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework
-* [R Core](https://www.R-project.org/) - R Core Team
+* [ROSETTA](http://bioinf.icm.uu.se/rosetta/){:target="_blank"} - The ROSETTA framework
+* [R Core](https://www.R-project.org/){:target="_blank"} - R Core Team
