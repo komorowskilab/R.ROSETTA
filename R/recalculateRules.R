@@ -124,9 +124,9 @@ newAccuracy=newSupportRHS/newSupportLHS
 
 decsCounts=table(df[,length(df)])
 
-numClass=rep(0,length(decsFinal))
+numClass=rep(0,length(rls$DECISION))
 for(i in 1:length(table(df[,length(df)]))){
-numClass[which(decsFinal==names(table(df[,length(df)]))[i])]<-unname(table(df[,length(df)]))[i]
+numClass[which(rls$DECISION==names(table(df[,length(df)]))[i])]<-unname(table(df[,length(df)]))[i]
 }
 
 percSuppLHS=round(newSupportLHS/numClass, digits=3)*100                          
