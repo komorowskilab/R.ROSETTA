@@ -103,16 +103,22 @@ newSupportLHS=unlist(lapply(outLst, function(x) length(x)))
 newSupportRHS=unlist(lapply(outLst2, function(x) length(x)))
 newAccuracy=newSupportRHS/newSupportLHS
 
-PVAL=c()
-for(i in 1:length(newSupportRHS)){
-  k=round(newSupportRHS[i]*newAccuracy[i])
-  N=dim(df)[1]             # the number of decisions/objects/patients
-  C1=newSupportRHS[i]   # LHS Support
-  C2=N-C1                  # total drawn
-  R1=dim(df)[2]            # total hits, number of features
-  R2=N-R1                  # number of features - number of decisions
-  PVAL[i]=phyper(k-1, R2, R1, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
-}
+  PVAL=c()
+  for(i in 1:length(df_out2$SUPP_RHS)){
+    k=round(df_out2$SUPP_LHS[i]*df_out2$ACC_RHS[i])
+    
+    R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))== as.character(df_out2$DECISION[i])])
+    N=dim(df)[1] 
+    R2=N-R1
+                # the number of decisions/objects/patients
+    C1=df_out2$SUPP_LHS[i]   # LHS Support
+    #C2=N-C1                  # total drawn
+    #R1=dim(df)[2]            # total hits, number of features
+    #R2=N-R1                  # number of features - number of decisions
+    PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
+  }
+  
+  PVAL=p.adjust(PVAL, method="BH")
 
 #decsFinal= unlist(lapply(rls$DECISION, FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
 
