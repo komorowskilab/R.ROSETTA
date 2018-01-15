@@ -20,7 +20,7 @@ These include:
 ### Prerequisites
 RROSETTA works with windows and macOS platforms.<br />
 For macOS systems wine is required.<br />
-<a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">Here</a> is a tutorial by David Baumgold how to install wine in MacOS platforms.
+<a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">Here</a> is a tutorial by David Baumgold how to install wine in macOS platforms.
 
 ### Installing
 
