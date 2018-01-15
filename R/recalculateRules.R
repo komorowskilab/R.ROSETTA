@@ -105,7 +105,7 @@ newAccuracy=newSupportRHS/newSupportLHS
 
   PVAL=c()
   for(i in 1:length(newSupportLHS)){
-    k=round(newSupportLHS[i]*newSupportRHS[i])
+    k=round(newSupportLHS[i]*newAccuracy[i])
     
     R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))== as.character(rls$DECISION[i])])
     N=dim(df)[1] 
