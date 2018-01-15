@@ -104,7 +104,7 @@ newSupportRHS=unlist(lapply(outLst2, function(x) length(x)))
 newAccuracy=newSupportRHS/newSupportLHS
 
   PVAL=c()
-  for(i in 1:length(df_out2$SUPP_RHS)){
+  for(i in 1:length(newSupportLHS)){
     k=round(newSupportLHS[i]*newSupportRHS[i])
     
     R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))== as.character(rls$DECISION[i])])
