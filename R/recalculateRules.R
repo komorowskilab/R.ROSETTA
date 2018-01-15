@@ -37,7 +37,7 @@ if(discretized)
     }
     
     outLst[[j]]=rownames(df)[which(vec4)] ##LHS
-    df2=df[which(grepl(gsub("[\\(\\)]", "", regmatches(dec2[j], gregexpr("\\(.*?\\)", dec2[j]))[[1]]), df[,length(df)])),]
+    df2=df[which(grepl(dec2[j], df[,length(df)])),]
     outLst2[[j]]=intersect(rownames(df2),outLst[[j]])
     } 
 }else{
@@ -93,7 +93,7 @@ for(i in 1:cndsLen){
 }
 
 outLst[[j]]=rownames(df)[which(vec4)] ##LHS
-df2=df[which(grepl(gsub("[\\(\\)]", "", regmatches(dec2[j], gregexpr("\\(.*?\\)", dec2[j]))[[1]]), df[,length(df)])),]
+df2=df[which(grepl(dec2[j], df[,length(df)])),]
 outLst2[[j]]=intersect(rownames(df2),outLst[[j]])
 }
 }
