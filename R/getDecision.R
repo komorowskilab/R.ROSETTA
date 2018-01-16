@@ -12,7 +12,7 @@ more2Vec<-function(x,y){ (x-y)>=0}
 eqal2Vec<-function(x,y){ (x-y)==0}
 
 pb <- txtProgressBar(0, dim(df)[1]*dim(rls)[1], style=3)
-
+count=0
   
 
 if(discretized)
@@ -55,7 +55,8 @@ if(discretized)
             vec4=vec3 & vec4
           }
 
-          setTxtProgressBar(pb, k+j)
+          count=count+1
+          setTxtProgressBar(pb, count)
         }
 
         
@@ -135,7 +136,8 @@ if(discretized)
         }
       }
 
-     setTxtProgressBar(pb, k+j)
+      count=count+1
+      setTxtProgressBar(pb, count)
     }
 
     
