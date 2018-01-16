@@ -10,8 +10,10 @@ cuts=rls[,grep('CUTS_', colnames(rls), value=TRUE)]
 less2Vec<-function(x,y){ (x-y)<=0}
 more2Vec<-function(x,y){ (x-y)>=0}
 eqal2Vec<-function(x,y){ (x-y)==0}
-pb <- txtProgressBar(1, 100, style=3)
 
+pb <- txtProgressBar(0, dim(df)[1]*dim(rls)[1], style=3)
+
+  
 
 if(discretized)
 {
@@ -38,6 +40,9 @@ if(discretized)
         cndsLen=length(cnds)
         
         vec4=c()
+        
+        setTxtProgressBar(pb, k*j)
+        
         for(i in 1:cndsLen){
           
           
@@ -52,7 +57,7 @@ if(discretized)
 
         }
 
-        setTxtProgressBar(pb, k*j*i)
+        
         outLst[[j]]=length(which(vec4))
 
       }
@@ -88,6 +93,9 @@ if(discretized)
     cndsLen=length(cnds)
     cndsCS=cumsum(cnds)
     vec4=c()
+    
+    setTxtProgressBar(pb, k*j)
+    
     for(i in 1:cndsLen){
       #i=2
       if(cnd2[[j]][i]=="num>cut")
@@ -128,7 +136,7 @@ if(discretized)
 
     }
 
-    setTxtProgressBar(pb, k*j*i)
+    
     outLst[[j]]=length(which(vec4))
 
  }
