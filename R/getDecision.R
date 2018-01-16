@@ -53,7 +53,7 @@ if(discretized)
           }else{
             vec4=vec3 & vec4
           }
-        stepi=stepi+1
+        stepi=(stepi+1)/i
         setTxtProgressBar(pb,stepi)
 
         }
@@ -135,7 +135,7 @@ if(discretized)
         }
       }
 
-    stepi=stepi+1
+    stepi=(stepi+1)/i
     setTxtProgressBar(pb,stepi)
     }
 
