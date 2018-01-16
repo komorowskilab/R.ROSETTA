@@ -156,7 +156,7 @@ outListVotes=data.frame(rownames(df))
 for(i in 1:length(decs2)){
   rls3=rls[which(as.character(rls$DECISION)==decs2[i]),]
   
-
+  print(decs2[i])
   outListVotes2=data.frame(calcClass(rls3))
   
   if(normalize){
