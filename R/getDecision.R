@@ -179,7 +179,7 @@ for(i in 1:length(decs2)){
 if(validate){ ### with validation
 
   newDecs=decs2[apply(outListVotes[,-1], 1, which.max)]
-  newDecs=gsub("[\\(\\)]", "", regmatches(newDecs, gregexpr("\\(.*?\\)", newDecs)))
+  #newDecs=gsub("[\\(\\)]", "", regmatches(newDecs, gregexpr("\\(.*?\\)", newDecs)))
   outListVotes=data.frame(outListVotes,newDecs,as.character(valiDec))
   colnames(outListVotes)<-c("OBJECT",decs2,"NEW_DEC","OLD_DEC")
   
