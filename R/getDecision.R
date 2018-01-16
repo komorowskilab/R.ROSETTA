@@ -53,14 +53,14 @@ if(discretized)
           }else{
             vec4=vec3 & vec4
           }
-
+        stepi=stepi+1
+        setTxtProgressBar(pb,stepi)
 
         }
           
 
         outLst[[j]]=length(which(vec4))
-        stepi=stepi+1
-        setTxtProgressBar(pb,stepi)
+
       }
       outVotes[k]=sum(unlist(outLst))
     }
@@ -135,13 +135,13 @@ if(discretized)
         }
       }
 
-
+    stepi=stepi+1
+    setTxtProgressBar(pb,stepi)
     }
 
     
     outLst[[j]]=length(which(vec4))
-    stepi=stepi+1
-    setTxtProgressBar(pb,stepi)
+
  }
   outVotes[k]=sum(unlist(outLst))
   }
