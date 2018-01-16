@@ -11,9 +11,8 @@ less2Vec<-function(x,y){ (x-y)<=0}
 more2Vec<-function(x,y){ (x-y)>=0}
 eqal2Vec<-function(x,y){ (x-y)==0}
 
-pb <- txtProgressBar(0, dim(df)[1]*dim(rls)[1], style=3)
-count=0
-  
+pb = txtProgressBar(min = 0, max = (dim(df)[1])*(dim(rls)[1]), initial = 0, style=3)
+stepi=0
 
 if(discretized)
 {
@@ -58,11 +57,10 @@ if(discretized)
 
         }
           
-        count=count+1
-        setTxtProgressBar(pb, count)
-        
-        outLst[[j]]=length(which(vec4))
 
+        outLst[[j]]=length(which(vec4))
+        stepi=stepi+1
+        setTxtProgressBar(pb,stepi)
       }
       outVotes[k]=sum(unlist(outLst))
     }
@@ -139,11 +137,11 @@ if(discretized)
 
 
     }
-      count=count+1
-      setTxtProgressBar(pb, count)
+
     
     outLst[[j]]=length(which(vec4))
-
+    stepi=stepi+1
+    setTxtProgressBar(pb,stepi)
  }
   outVotes[k]=sum(unlist(outLst))
   }
