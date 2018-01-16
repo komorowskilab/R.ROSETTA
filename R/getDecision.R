@@ -41,7 +41,7 @@ if(discretized)
         
         vec4=c()
         
-        setTxtProgressBar(pb, k+j)
+        
         
         for(i in 1:cndsLen){
           
@@ -55,6 +55,7 @@ if(discretized)
             vec4=vec3 & vec4
           }
 
+          setTxtProgressBar(pb, k+j)
         }
 
         
@@ -94,7 +95,7 @@ if(discretized)
     cndsCS=cumsum(cnds)
     vec4=c()
     
-    setTxtProgressBar(pb, k+j)
+
     
     for(i in 1:cndsLen){
       #i=2
@@ -134,6 +135,7 @@ if(discretized)
         }
       }
 
+     setTxtProgressBar(pb, k+j)
     }
 
     
