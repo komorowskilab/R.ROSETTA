@@ -131,9 +131,10 @@ numClass[which(rls$DECISION==names(table(df[,length(df)]))[i])]<-unname(table(df
 
 percSuppLHS=round(newSupportLHS/numClass, digits=3)*100                          
 percSuppRHS=round(newSupportRHS/numClass, digits=3)*100                          
-                           
-newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUT_COND,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
+
+cutsDF=rls[,which(grepl("CUTS", colnames(rls)))]                           
+newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUT_COND,cutsDF,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
 newDF2=newDF[order(newDF$PVAL),]
-colnames(newDF2)<-c("FEATURES","DECISION","CUT_COND","SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL")
+colnames(newDF2)<-c("FEATURES","DECISION","CUT_COND",colnames(cutsDF),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL")
 return(newDF2)
 }
