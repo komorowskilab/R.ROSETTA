@@ -55,10 +55,11 @@ if(discretized)
             vec4=vec3 & vec4
           }
 
-          count=count+1
-          setTxtProgressBar(pb, count)
-        }
 
+        }
+          
+        count=count+1
+        setTxtProgressBar(pb, count)
         
         outLst[[j]]=length(which(vec4))
 
@@ -136,10 +137,10 @@ if(discretized)
         }
       }
 
+
+    }
       count=count+1
       setTxtProgressBar(pb, count)
-    }
-
     
     outLst[[j]]=length(which(vec4))
 
