@@ -28,7 +28,7 @@ else{
   comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
   }
 
- capture.output(system(command=comm))
+ try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
 
 
 }
