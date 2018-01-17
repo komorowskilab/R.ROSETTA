@@ -190,7 +190,7 @@ rosetta <- function(df,
                    paste0(dirList2,"/",rosFileName)
       )
     }
-    system2(command=comm, stdout=FALSE, stderr=FALSE)
+    system2(command=comm)
   }
   
   # prepare all results
