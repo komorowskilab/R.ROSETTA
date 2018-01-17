@@ -190,7 +190,7 @@ rosetta <- function(df,
                    paste0(dirList2,"/",rosFileName)
       )
     }
-    cmdSys<-try(system(command=comm, show.output.on.console = FALSE, invisible=FALSE, ignore.stderr = TRUE))
+    capture.output(system(command=comm, show.output.on.console = FALSE))
   }
   
   # prepare all results
