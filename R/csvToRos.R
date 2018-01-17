@@ -27,7 +27,8 @@ comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/l
 else{
   comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
   }
- try(system(command=comm, wait = FALSE))
+  sink(type = "message")
+ try(system(command=comm))
 
 
 }
