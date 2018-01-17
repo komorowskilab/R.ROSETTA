@@ -190,7 +190,7 @@ rosetta <- function(df,
                    paste0(dirList2,"/",rosFileName)
       )
     }
-    tryCatch(system(command=comm))
+    suppressMessages(system(command=comm))
   }
   
   # prepare all results
