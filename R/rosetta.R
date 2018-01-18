@@ -280,11 +280,21 @@ rosetta <- function(df,
   
   # choosing element according to accuracy
   
+    choose_nfl=rep(NA,length(acc_rhs3n))
 
-  choose_nfl=rep(NA,length(acc_rhs3n))
-  for(i in 1:max(as.numeric(acc_rhs3n))){
+  
+  tryCatch({
+    for(i in 1:max(as.numeric(acc_rhs3n))){
     choose_nfl[which(acc_rhs3n==i)]=unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
-  }
+    }
+           }, 
+           error = function(e) {
+ message("Error: The rules were created only for one class") }, 
+           warning = function(w) { 
+ message("Error: The rules were created only for one class")})
+  
+  
+
   #rules2=as.character(rl[,1])
 
   rl2=strsplit(rules2," AND ")
