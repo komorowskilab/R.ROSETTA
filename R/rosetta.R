@@ -283,7 +283,7 @@ rosetta <- function(df,
     choose_nfl=rep(NA,length(acc_rhs3n))
 
   
-  tryCatch({
+
     
     for(i in 1:max(as.numeric(acc_rhs3n))){
     choose_nfl[which(acc_rhs3n==i)]=unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
@@ -383,10 +383,7 @@ rosetta <- function(df,
   return(list(main=df_out4,statistic=outRos,rules=rules2,usn=underSampleNum)) 
       
     }
-           }, 
-           error = function(e) {
- message("Error: The rules were created only for one class") }
-                            )
+
   
   
 
