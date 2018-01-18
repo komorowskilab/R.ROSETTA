@@ -280,11 +280,11 @@ rosetta <- function(df,
   
   # choosing element according to accuracy
   
-  tryCatch(
+
   choose_nfl=rep(NA,length(acc_rhs3n))
   for(i in 1:max(as.numeric(acc_rhs3n))){
     choose_nfl[which(acc_rhs3n==i)]=unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
-  })
+  }
   #rules2=as.character(rl[,1])
 
   rl2=strsplit(rules2," AND ")
