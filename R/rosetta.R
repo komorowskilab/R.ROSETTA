@@ -268,7 +268,7 @@ rosetta <- function(df,
   acc_rhs3n=unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric),which.max))
   
   if(is.null(acc_rhs3n)){
-      stop("Rules produced only for one class. No right-hand values found."))
+      stop("Rules produced only for one class. No right-hand values found.")
   }else{
   
   # COVERAGE RHS
