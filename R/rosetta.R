@@ -385,9 +385,8 @@ rosetta <- function(df,
     }
            }, 
            error = function(e) {
- message("Error: The rules were created only for one class") }, 
-           warning = function(w) { 
- message("Error: The rules were created only for one class")})
+ message("Error: The rules were created only for one class") }
+                            )
   
   
 
