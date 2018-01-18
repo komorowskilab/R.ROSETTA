@@ -269,7 +269,7 @@ rosetta <- function(df,
   
   if(is.null(acc_rhs3n)){
       stop("Rules produced only for one class. No right-hand values found."))
-  }
+  }else{
   
   # COVERAGE RHS
   cov_rhs3=unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
@@ -385,7 +385,7 @@ rosetta <- function(df,
 
   return(list(main=df_out4,statistic=outRos,rules=rules2,usn=underSampleNum)) 
 
-  
+  }
   
 
  
