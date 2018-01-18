@@ -151,14 +151,6 @@ resultsRosJR$statistic$Accuracy
 resultsRosGR=rosetta(df, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
 resultsRosGR$statistic$Accuracy
 
-# Holte1R
-resultsRosHR=rosetta(df, reducer="Holte1R")
-resultsRosHR$statistic$Accuracy
-
-# Manual
-resultsRosMR=rosetta(df, reducer="Manual", ManualNames = c("DDX60L", "SENCR", "ZSCAN18"))
-resultsRosMR$statistic$Accuracy
-
 ###### discretization ######
 # EqualFrequencyScaler
 resultsRosEF=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3)
