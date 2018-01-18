@@ -266,8 +266,8 @@ rosetta <- function(df,
   # ACCURACY RHS
   acc_rhs3=unlist(lapply(lapply(strsplit(as.character(acc_rhs2), ","),as.double),max))
   acc_rhs3n=unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric),which.max))
-  return(acc_rhs3n)
-  # try(if(iter > 10) stop("too many iterations"))
+  
+  try(if(is.null(out_holte)) stop("Rules produced only for one class. No right-hand values found."))
   # COVERAGE RHS
   cov_rhs3=unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
   # COVERAGE LHS
