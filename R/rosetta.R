@@ -266,6 +266,8 @@ rosetta <- function(df,
   # ACCURACY RHS
   acc_rhs3=unlist(lapply(lapply(strsplit(as.character(acc_rhs2), ","),as.double),max))
   acc_rhs3n=unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric),which.max))
+  return(acc_rhs3n)
+  # try(if(iter > 10) stop("too many iterations"))
   # COVERAGE RHS
   cov_rhs3=unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
   # COVERAGE LHS
@@ -281,7 +283,7 @@ rosetta <- function(df,
   # choosing element according to accuracy
   
    choose_nfl=rep(NA,length(acc_rhs3n))
-
+   
    for(i in 1:max(as.numeric(acc_rhs3n))){
    choose_nfl[which(acc_rhs3n==i)]=unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
      }
