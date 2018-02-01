@@ -18,7 +18,7 @@ if(discretized)
 
   for(j in 1:dim(rls)[1]){
     cnds=cnd2[[j]]
-    cnds<-as.numeric(cnds)
+    #cnds<-as.numeric(cnds)
     cndsLen=length(cnds)
     
     vec4=c()
@@ -57,7 +57,7 @@ for(i in 1:cndsLen){
 
   if(cnd2[[j]][i]=="num>cut")
   {
-    vec3=more2Vec(df[,which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
+    vec3=more2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
     
     if(length(vec4)==0)
     {
@@ -68,7 +68,7 @@ for(i in 1:cndsLen){
   }
   if(cnd2[[j]][i]=="num<cut")
   {
-    vec3=less2Vec(df[,which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
+    vec3=less2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
     
     if(length(vec4)==0)
     {
@@ -79,8 +79,8 @@ for(i in 1:cndsLen){
   }
   if(cnd2[[j]][i]=="cut1<num<cut2")
   {
-    vec1=less2Vec(df[,which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
-    vec2=more2Vec(df[,which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]-1]))
+    vec1=less2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
+    vec2=more2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]-1]))
     vec3=vec1==vec2
     
     if(length(vec4)==0)
