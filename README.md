@@ -41,6 +41,7 @@ library(RROSETTA)
 **saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
 **getDecision()** <-> *reclassifies created model by applying rules*<br />
 **getFeatures()** <-> *retrieves the most significant features from rules*<br />
+**ruleHeatmap()** <-> *creates a heatmap per one rule*<br />
 
 ## Examples
 
