@@ -1,6 +1,7 @@
 ruleHeatmap <- function(df, rls, ind=1, nbins=3){
 
 rls2=rls
+r=ind
   
 ftrs=unlist(strsplit(as.character(rls2$FEATURES)[r], ","))
 perc=unlist(strsplit(as.character(rls2$PERC_SUPP_RHS)[r], ","))
