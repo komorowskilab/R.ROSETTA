@@ -52,8 +52,9 @@ heatmap.2(df2,
           rowsep=c(length(objs_tp), length(objs_tp)+length(objs_fp)),
           RowSideColors = c(rep("gold", length(objs_tp)), rep("firebrick1", length(objs_fp)),rep("dodgerblue", length(objs_tn))))
 
-par(xpd=TRUE)
-legend(list('x'=-0.1,'y'=1.2),      # location of the legend on the heatmap plot
+#par(xpd=TRUE)
+#list('x'=-0.1,'y'=1.2)
+legend("topleft",      # location of the legend on the heatmap plot
        legend = c(paste0("Objects supporting ",decs), paste0("Objects not supporting ",decs), "Rest of the objects"), # category labels
        col = c("gold", "firebrick1", "dodgerblue"),  # color key
        lty= 1,             # line style
