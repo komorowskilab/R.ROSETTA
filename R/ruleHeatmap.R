@@ -30,7 +30,7 @@ for(i in 1:length(ftrs)){
 df2[,i]=discretize(df2[,i], method="frequency", categories = nbins, labels=1:nbins)
 }
 
-dev.off()
+
 heatmap.2(df2,
           Rowv=FALSE,
           Colv=FALSE,
@@ -63,7 +63,7 @@ legend("topleft",      # location of the legend on the heatmap plot
        bty = "n"
        )
 
-  
+  dev.off()
   
 
 }
