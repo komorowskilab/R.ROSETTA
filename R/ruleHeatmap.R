@@ -60,7 +60,8 @@ legend("topleft",      # location of the legend on the heatmap plot
        lty= 1,             # line style
        lwd = 10,
        cex=.7,
-       bty = "n"
+       bty = "n",
+       xpd=TRUE
        )
 
   
