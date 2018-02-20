@@ -63,7 +63,6 @@ legend("topleft",      # location of the legend on the heatmap plot
        bty = "n"
        )
 
-  dev.off()
   
 
 }
