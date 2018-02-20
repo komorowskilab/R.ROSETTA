@@ -61,7 +61,8 @@ legend("topleft",      # location of the legend on the heatmap plot
        lwd = 10,
        cex=.7,
        bty = "n",
-       xpd=TRUE
+       xpd=TRUE,
+       inset=c(-0.1,-0.15)
        )
 
   
