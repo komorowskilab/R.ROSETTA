@@ -44,7 +44,7 @@ Mateusz Garbulowski
 }
 \examples{
 library(RROSETTA)
-df=autism
+df=autcon
 out=rosetta(df)
 rls=out$main
 rls2=recalculateRules(df, rls)
