@@ -115,7 +115,7 @@ Mateusz Garbulowski, Karolina Smolinska
 library(RROSETTA)
 
 #example data loading
-df=autism
+df=autcon
 
 ###### dedault parameters ######
 resultsRos=rosetta(df) 
