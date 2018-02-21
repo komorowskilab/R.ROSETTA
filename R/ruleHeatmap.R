@@ -20,7 +20,7 @@ objs_tn = which(rownames(df) %in% objs_restclasses)# the rest of objects
 df2=as.matrix(df[c(objs_tp, objs_fp, objs_tn), which(colnames(df) %in% ftrs)])
 
 if (nbins >= 3){
-cols=colorRampPalette(c("limegreen", "gray96", "tomato2"))(n = nbins)
+cols=colorRampPalette(c("limegreen", "gray90", "tomato2"))(n = nbins)
 }else
 {
 cols=colorRampPalette(c("limegreen", "tomato2"))(n = 2)
