@@ -1,4 +1,4 @@
-ruleHeatmap <- function(df, rls, ind=1, nbins=3){
+ruleHeatmap <- function(df, rls, ind=1, nbins=3, showClust=FALSE){
 
 rls2=rls
 r=ind
@@ -28,6 +28,23 @@ cols=colorRampPalette(c("limegreen", "tomato2"))(n = 2)
 
 for(i in 1:length(ftrs)){
 df2[,i]=discretize(df2[,i], method="frequency", categories = nbins, labels=1:nbins)
+}
+
+if(showClust){
+  
+  
+  rf1=(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
+  fit_fp <- kmeans(df2[rf1,], factorial(length(table(as.matrix(df2[rf1,])))))
+  df2_2=df2[rf1,][order(fit_fp$cluster),]
+  
+  rf2=(length(objs_tp)+length(objs_fp)+1):(length(objs_tp)+length(objs_fp)+length(objs_tn))
+  fit_tn <- kmeans(df2[rf2,], factorial(length(table(as.matrix(df2[rf2,])))))
+  df2_3=df2[rf2,][order(fit_tn$cluster),]
+  
+  rf3=1:length(objs_tp)
+  df2_1=df2[rf3,]
+  
+  df2=rbind(df2_1,df2_2,df2_3)
 }
 
 
