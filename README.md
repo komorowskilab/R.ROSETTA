@@ -7,13 +7,13 @@
 
 # RROSETTA
 
-**ROSETTA** rough set classifier as a R package. In addition to all the existing ROSETTA (created by Öhrn and Komorowski in 1997) algorithms we have added new functions especially useful in bioinformatics applications. 
+**ROSETTA** rough set classifier as a R package. In addition to all the existing ROSETTA (created by Öhrn and Komorowski, 1997) algorithms we have added new functions especially useful in bioinformatics applications. 
 These include: 
 * under-sampling
 * p-value estimation of the rules
-* clustering decision classes
 * retrieving the support sets for rules
 * reclassification
+* rule heatmap
 
 ## Getting Started
 
@@ -24,22 +24,23 @@ For macOS systems wine is required.<br />
 
 ### Installing
 
-Install and load devtools package
+Installation from github requires devtools package:
 ```R
 install.packages("devtools")
-library(devtools)
 ```
 
-Install and load RROSETTA package from github
+Install and load RROSETTA package from github:
 ```R
+library(devtools)
 install_github("mategarb/RROSETTA")
+
 library(RROSETTA)
 ```
 ### Functions
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
 **recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
 **saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
-**getDecision()** <-> *reclassifies created model by applying rules*<br />
+**predictDecision()** <-> *predicts decision according to created model*<br />
 **getFeatures()** <-> *retrieves the most significant features from rules*<br />
 **ruleHeatmap()** <-> *creates a heatmap per one rule*<br />
 
