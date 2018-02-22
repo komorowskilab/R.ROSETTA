@@ -1,10 +1,10 @@
-\name{getDecision}
-\alias{getDecision}
+\name{predictClass}
+\alias{predictClass}
 \title{
-Reclassification.
+Class prediction.
 }
 \description{
-Use rules to reclassify and validate with current or external data.
+Use model to predict classes.
 }
 \usage{
 getDecision(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
@@ -69,15 +69,15 @@ out=rosetta(df)
 rls=out$main
 
 #default
-decisions=getDecision(df, rls)
+decisions=predictClass(df, rls)
 
 #change normalization method
 method="median"
-decisions=getDecision(df, rls, normalize = T, normalizeMethod = method)
+decisions=predictClass(df, rls, normalize = T, normalizeMethod = method)
 
 #with validation
 oldDecisions=as.character(autism[,length(autism)])
-decisions=getDecision(df, rls, validate = T, valiDec=oldDecisions)
+decisions=predictClass(df, rls, validate = T, valiDec=oldDecisions)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
