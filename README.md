@@ -12,7 +12,7 @@ These include:
 * under-sampling
 * p-value estimation of the rules
 * retrieving the support sets for rules
-* reclassification
+* class prediction
 * rule heatmap
 
 ## Getting Started
@@ -40,7 +40,7 @@ library(RROSETTA)
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
 **recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
 **saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
-**predictDecision()** <-> *predicts decision according to created model*<br />
+**predictClass()** <-> *predicts decision according to created model*<br />
 **getFeatures()** <-> *retrieves the most significant features from rules*<br />
 **ruleHeatmap()** <-> *creates a heatmap per one rule*<br />
 
