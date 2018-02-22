@@ -1,4 +1,4 @@
-getDecision<-function(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
+predictClass<-function(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
   {
 
 
