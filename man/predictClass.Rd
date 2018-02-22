@@ -7,7 +7,7 @@ Class prediction.
 Use model to predict classes.
 }
 \usage{
-getDecision(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
+predictClass(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
