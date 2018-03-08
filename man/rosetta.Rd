@@ -4,7 +4,7 @@
 ROSETTA rough set classifier
 }
 \description{
-Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications.  These include: under-sampling, p-value estimation of the rules, clustering decision classes and retrieving the true support sets for rules.
+Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications.  These include: under-sampling, p-value estimation of the rules, rule-visualization methods and retrieving support sets from rules.
 }
 \usage{
 rosetta(df, classifier = "StandardVoter", cvNum = 10, discrete = TRUE, discreteMethod = "EqualFrequencyScaler", discreteParam = 3, discreteMask = TRUE, reducer = "JohnsonReducer", maskFeatures = FALSE, maskFeaturesNames = c(), underSample = FALSE, underSampleNum = 0, underSampleSize = 0, underSampleLevel = 2, fallBack = TRUE, fallBackClass = 0, ruleFiltration = TRUE, ruleFiltrSupport = c(1, 3), ruleFiltrAccuracy = c(0, 0.5), ruleFiltrCoverage = c(0, 0), ruleFiltrStability = c(0, 0), reducerDiscernibility = "Object", JohnsonParam = c(Modulo = TRUE, BRT = FALSE, BRTprec = 0.9, Precompute = FALSE, Approximate = TRUE, Fraction = 0.9), GeneticParam = c(Modulo = TRUE, BRT = FALSE, BRTprec = 0.9, Precompute = FALSE, Approximate = TRUE, Fraction = 0.9, Algorithm = "Simple"), ManualNames = c())
