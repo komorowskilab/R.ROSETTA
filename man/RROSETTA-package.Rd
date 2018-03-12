@@ -1,24 +1,24 @@
-\name{RROSETTA-package}
-\alias{RROSETTA-package}
-\alias{RROSETTA}
+\name{R.ROSETTA-package}
+\alias{R.ROSETTA-package}
+\alias{R.ROSETTA}
 \docType{package}
 \title{
-\packageTitle{RROSETTA}
+\packageTitle{R.ROSETTA}
 }
 \description{
-\packageDescription{RROSETTA}
+\packageDescription{R.ROSETTA}
 }
 \details{
 
 The DESCRIPTION file:
-\packageDESCRIPTION{RROSETTA}
-\packageIndices{RROSETTA}
+\packageDESCRIPTION{R.ROSETTA}
+\packageIndices{R.ROSETTA}
 ~~ An overview of how to use the package, including the most important functions ~~
 }
 \author{
-\packageAuthor{RROSETTA}
+\packageAuthor{R.ROSETTA}
 
-Maintainer: \packageMaintainer{RROSETTA}
+Maintainer: \packageMaintainer{R.ROSETTA}
 }
 \references{
 A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data, Proc. Third International Joint Conference on Information Sciences, Fifth International Workshop on Rough Sets and Soft Computing (RSSC'97), Durham, NC, USA, March 1-5, Vol. 3, pp. 403-407.
