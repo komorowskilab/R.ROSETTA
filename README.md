@@ -29,10 +29,10 @@ Installation from github requires devtools package:
 install.packages("devtools")
 ```
 
-Install and load RROSETTA package from github:
+Install and load R.ROSETTA package from github:
 ```R
 library(devtools)
-install_github("mategarb/RROSETTA")
+install_github("mategarb/R.ROSETTA")
 
 library(R.ROSETTA)
 ```
