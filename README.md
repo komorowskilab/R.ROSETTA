@@ -5,7 +5,7 @@
   -->
 <meta name='keywords' content='rosetta, rough sets, classification'>
 
-# RROSETTA
+# R.ROSETTA
 
 **ROSETTA** rough set classifier as a R package. In addition to all the existing ROSETTA (created by Öhrn and Komorowski, 1997) algorithms we have added new functions especially useful in bioinformatics applications. 
 These include: 
@@ -18,7 +18,7 @@ These include:
 ## Getting Started
 
 ### Prerequisites
-RROSETTA works with windows and macOS platforms.<br />
+R.ROSETTA works with windows and macOS platforms.<br />
 For macOS systems wine is required.<br />
 <a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">Here</a> is a tutorial by David Baumgold how to install wine in macOS platforms.
 
@@ -34,7 +34,7 @@ Install and load RROSETTA package from github:
 library(devtools)
 install_github("mategarb/RROSETTA")
 
-library(RROSETTA)
+library(R.ROSETTA)
 ```
 ### Functions
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
@@ -52,7 +52,7 @@ All the examples you can find by typing ? and name of the function in R environm
 ```
 
 ## Acknowledgments
-RROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
+R.ROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
 
 
 ### Built With
