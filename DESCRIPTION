@@ -1,4 +1,4 @@
-Package: RROSETTA
+Package: R.ROSETTA
 Version: 0.1.1
 Imports: arules, gplots
 Date: 2018-09-01
