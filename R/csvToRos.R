@@ -17,7 +17,7 @@ f_out_dir=paste(file_name,"_toRosCmd.txt", sep="")
 f_out_l=f_out
 
 #setwd(system.file(package="rROSETTA"))
-pathExe <- paste(system.file(package="RROSETTA"), "exec/clrosetta.exe", sep="/")
+pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
 file.copy(pathExe, dirList)
 
 if(.Platform$OS.type=="unix")
