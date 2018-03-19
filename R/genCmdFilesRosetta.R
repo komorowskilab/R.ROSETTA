@@ -21,7 +21,9 @@ genCmdFilesRosetta <- function (dir_file3,
                                 reducerDiscernibility,
                                 JohnsonParam,
                                 GeneticParam,
-                                ManualNames
+                                ManualNames,
+                                roc,
+                                clroc
                                 )
   
   {
@@ -158,14 +160,14 @@ genCmdFilesRosetta <- function (dir_file3,
     listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",dir_file3,"/",IDGfn,";"
                       ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                       dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                      substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=T}", sep="")
+                      substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"}", sep="")
     }
     if(classifier=="StandardVoter")
     {
       listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",dir_file3,"/",IDGfn,";"
                         ," SPECIFIC=F; VOTING=Support; NORMALIZATION=Firing; FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                         dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                        substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=T}", sep="")
+                        substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"}", sep="")
       
     }
     if(classifier=="NaiveBayesClassifier")
@@ -173,7 +175,7 @@ genCmdFilesRosetta <- function (dir_file3,
       listOut[14]=paste("{CLASSIFIER=",classifier,";"
                         ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                         dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                        substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=T}", sep="")
+                        substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"}", sep="")
       
     }
      write.table(listOut,file=paste(dir_file3,"/","OUT_cmdCV",".txt", sep=""),
@@ -238,7 +240,7 @@ genCmdFilesRosetta <- function (dir_file3,
             listOut[10]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),";IDG.FILENAME=",dir_file3,"/",IDGfn,";"
                               ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                               dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                              substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=T}", sep="")
+                              substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"}", sep="")
             
           }else
           {
@@ -246,7 +248,7 @@ genCmdFilesRosetta <- function (dir_file3,
                             ," SPECIFIC=F; VOTING=Support; NORMALIZATION=Firing; FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,
                             "; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                             dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                            substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=T}", sep="")
+                            substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"}", sep="")
           }
             write.table(listOut,file=paste(dir_file3,"/","OUT_cmdCV",".txt", sep=""),
                 quote=F,col.names = F,row.names = F)
