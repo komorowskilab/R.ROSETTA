@@ -22,7 +22,9 @@ rosetta <- function(df,
                     reducerDiscernibility="Object", #or Full
                     JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
                     GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-                    ManualNames=c()
+                    ManualNames=c(),
+                    roc=TRUE,
+                    clroc="autism"
                     )
   {
   # setting paths, creating temp directory where the analysis will go
@@ -163,7 +165,9 @@ rosetta <- function(df,
                        reducerDiscernibility=reducerDiscernibility,
                        JohnsonParam=JohnsonParam,
                        GeneticParam=GeneticParam,
-                       ManualNames=ManualNames
+                       ManualNames=ManualNames,
+                       roc=roc,
+                       clroc=clroc,
     )
     
     seed=0
