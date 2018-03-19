@@ -29,7 +29,7 @@ rosetta <- function(df,
   firstPath=tempdir()
   fname="data"
   #setwd(firstPath)
-  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"R.ROSETTA"),sep="/")
+  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="/")
   dir.create(tempDirNam)
   #setwd(tempDirNam)
   dir.create(paste0(tempDirNam,"/data"))
