@@ -132,7 +132,7 @@ rosetta <- function(df,
     maskAttribute(maskFeaturesNames, dirList2)
 
     #copy file to execute it in folder
-    pathExe <- paste(system.file(package="RROSETTA"), "exec/clrosetta.exe", sep="/")
+    pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
     file.copy(pathExe, dirList2)
     file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2)
     
