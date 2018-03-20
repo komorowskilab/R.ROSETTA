@@ -135,7 +135,7 @@ rosetta <- function(df,
 
     #copy file to execute it in folder
     pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
-    file.copy(pathExe, dirList2)
+    #file.copy(pathExe, dirList2)
     file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2)
     
     IDGfnam="maIDG.txt"
@@ -175,7 +175,8 @@ rosetta <- function(df,
     if(.Platform$OS.type=="unix")
     {
       comm=sprintf('wine %s CVSerialExecutor "INVERT = F; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
-                   paste0(dirList2,"/clrosetta.exe"),
+                   pathExe,
+                   #paste0(dirList2,"/clrosetta.exe"),
                    cvNum,
                    seed,
                    pipeLen,
@@ -185,7 +186,8 @@ rosetta <- function(df,
       )
     }else{
       comm=sprintf('%s CVSerialExecutor "INVERT = F; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
-                   paste0(dirList2,"/clrosetta.exe"),
+                   pathExe,
+                   #paste0(dirList2,"/clrosetta.exe"),
                    cvNum,
                    seed,
                    pipeLen,
@@ -232,6 +234,7 @@ rosetta <- function(df,
   
   outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accStdDev),mean(dfRes_rocAuc),mean(dfRes_rocAucSE),mean(dfRes_accMin),mean(dfRes_accMax))
   colnames(outRos)<-c("Accuracy","Accuracy.Std","ROC.AUC","ROC.AUC.SE","Accuracy.Min","Accuracy.Max")
+  rownames(outRos)<-""
   colnames(dataset_merged)<-"rules"
   rules2=dataset_merged
   

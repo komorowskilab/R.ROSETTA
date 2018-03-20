@@ -18,7 +18,7 @@ f_out_l=f_out
 
 #setwd(system.file(package="rROSETTA"))
 pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
-file.copy(pathExe, dirList)
+#file.copy(pathExe, dirList)
 
 if(.Platform$OS.type=="unix")
 {
