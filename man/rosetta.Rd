@@ -14,7 +14,7 @@ underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=TRUE, rul
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
 JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
 GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames=c())
+ManualNames=c()), pAdjust=TRUE, pAdjustMethod="BH"
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -95,6 +95,12 @@ A vector containing Genetic reducer parameters.
 }
   \item{ManualNames}{
 A vector containing manual names for manual reducer.
+}
+  \item{pAdjust}{
+Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
+}
+  \item{pAdjustMethod}{
+A character containing the method: holm, hochberg, hommel, bonferroni, BH, BY,fdr or none
 }
 }
 \details{
