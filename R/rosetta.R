@@ -24,7 +24,9 @@ rosetta <- function(df,
                     ruleFiltrStability=c(0,0),
                     JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
                     GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-                    ManualNames=c()
+                    ManualNames=c(),
+                    pAdjust=TRUE,
+                    pAdjustMethod="BH"
                     )
   {
   # setting paths, creating temp directory where the analysis will go
@@ -377,7 +379,9 @@ rosetta <- function(df,
     PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
   }
   
-  PVAL=p.adjust(PVAL, method="BH")
+  if(pAdjust){
+  PVAL=p.adjust(PVAL, method=pAdjustMethod)
+  }
   df_out3=data.frame(df_out2,PVAL)
   df_out4=df_out3[order(df_out3$PVAL,decreasing = F),]
   
