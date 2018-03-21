@@ -25,7 +25,7 @@ A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data
 }
 \keyword{package}
 \seealso{
-\link[RROSETTA]{bioinf.icm.uu.se/rosetta}
+\link[ROSETTA]{bioinf.icm.uu.se/rosetta}
 }
 \examples{
 df=autism
