@@ -7,7 +7,14 @@ ROSETTA rough set classifier
 Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications.  These include: under-sampling, p-value estimation of the rules, rule-visualization methods and retrieving support sets from rules.
 }
 \usage{
-rosetta(df, classifier = "StandardVoter", cvNum = 10, discrete = TRUE, discreteMethod = "EqualFrequencyScaler", discreteParam = 3, discreteMask = TRUE, reducer = "JohnsonReducer", maskFeatures = FALSE, maskFeaturesNames = c(), underSample = FALSE, underSampleNum = 0, underSampleSize = 0, underSampleLevel = 2, fallBack = TRUE, fallBackClass = 0, ruleFiltration = TRUE, ruleFiltrSupport = c(1, 3), ruleFiltrAccuracy = c(0, 0.5), ruleFiltrCoverage = c(0, 0), ruleFiltrStability = c(0, 0), reducerDiscernibility = "Object", JohnsonParam = c(Modulo = TRUE, BRT = FALSE, BRTprec = 0.9, Precompute = FALSE, Approximate = TRUE, Fraction = 0.9), GeneticParam = c(Modulo = TRUE, BRT = FALSE, BRTprec = 0.9, Precompute = FALSE, Approximate = TRUE, Fraction = 0.9, Algorithm = "Simple"), ManualNames = c())
+rosetta(df, classifier="StandardVoter", cvNum=10, discrete=TRUE, discreteMethod="EqualFrequencyScaler",
+discreteParam=3, discreteMask=TRUE, reducer="JohnsonReducer", reducerDiscernibility="Object",
+roc=TRUE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
+underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=TRUE, ruleFiltrSupport=c(1,3),
+ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
+JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
+GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
+ManualNames=c())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,6 +42,21 @@ Logical. If TRUE, set the discretization mask option. Default is TRUE.
   \item{reducer}{
 A character containing reducer method: Johnson, Genetic, Holte1R or Manual. Default is Johnson.
 }
+  \item{reducerDiscernibility}{
+A character containing reducer discernibility option: Full or Object. Default is Object.
+}
+  \item{roc}{
+Logical. If TRUE, calculate AUC values. Default is TRUE.
+}
+  \item{clroc}{
+A character containing the name of the class. Default is "autism".
+}
+  \item{fallBack}{
+Logical. If TRUE, fallback class is supported. Default is TRUE.
+}
+  \item{fallBackClass}{
+A character containing the name of the class. Default is "autism".
+}
   \item{maskFeatures}{
 Logical. If TRUE, function mask features chosen by user. Default is FALSE.
 }
@@ -49,12 +71,6 @@ The number of sub-samples. If 0 minimum number of subsets that cover all the obj
 }
   \item{underSampleSize}{
 The size of each subsample. If 0 minimum number from all groups is taken. Default is 0.
-}
-  \item{fallBack}{
-Logical. If TRUE, fallback is on. Default is TRUE.
-}
-  \item{fallBackClass}{
-A character containing fallback option: Full or Object. Default is Full.
 }
   \item{ruleFiltration}{
 Logical. If TRUE, rule filtration is on. Default is TRUE.
@@ -71,15 +87,11 @@ A vector of two numbers containing interval of coverage values to filter out. De
   \item{ruleFiltrStability}{
 A vector of two numbers containing interval of support values to filter out. Integer. Default is c(0,0).
 }
-  \item{reducerDiscernibility}{
-A character containing reducer discernibility option: Full or Object. Default is Object.
-
-}
   \item{JohnsonParam}{
 A vector containing Johnson reducer parameters.
 }
   \item{GeneticParam}{
-A vector containing of Genetic reducer parameters.
+A vector containing Genetic reducer parameters.
 }
   \item{ManualNames}{
 A vector containing manual names for manual reducer.
@@ -89,9 +101,9 @@ A vector containing manual names for manual reducer.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and pvalue
+  \item{out$main}{A data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and pvalue.
 }
-    \item{out$statistic}{A table of accuracy, ROC and AUC values.
+    \item{out$quality}{A table of quality of the model: accuracy, ROC and AUC measures.
 }
     \item{out$rules}{A character vector of raw rules that are not sorted.
 }
@@ -114,105 +126,122 @@ Mateusz Garbulowski, Karolina Smolinska
 \examples{
 library(RROSETTA)
 
-#example data loading
+#sample data
 df=autcon
 
-###### dedault parameters ######
+###### default parameters ######
 resultsRos=rosetta(df) 
-resultsRos$statistic$Accuracy
+resultsRos$quality$Accuracy
 
 ###### under-sampling ######
 resultsRosU=rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=10)
-resultsRosU$statistic$Accuracy
+resultsRosU$quality$Accuracy
 
 ###### under-sampling with default parameters ######
 resultsRosUD=rosetta(df, underSample=TRUE)
-resultsRosUD$statistic$Accuracy
+resultsRosUD$quality$Accuracy
 
 ###### classifiers ######
 # StandardVoter
 resultsRosSV=rosetta(df, classifier="StandardVoter")
-resultsRosSV$statistic$Accuracy
+resultsRosSV$quality$Accuracy
 
 # ObjectTrackingVoter
 resultsRosOTV=rosetta(df, classifier="ObjectTrackingVoter")
-resultsRosOTV$statistic$Accuracy
+resultsRosOTV$quality$Accuracy
 
 # NaiveBayesClassifier
 resultsRosNB=rosetta(df, classifier="NaiveBayesClassifier")
-resultsRosNB$statistic$Accuracy
+resultsRosNB$quality$Accuracy
 
 ###### reducers ######
 # Johnson
 resultsRosJR=rosetta(df, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE,BRTprec=0.1,Precompute=FALSE,Approximate=TRUE,Fraction=0.9))
-resultsRosJR$statistic$Accuracy
+resultsRosJR$quality$Accuracy
 
 # Genetic
 resultsRosGR=rosetta(df, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
-resultsRosGR$statistic$Accuracy
-
-###### discretization ######
-# EqualFrequencyScaler
-resultsRosEF=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3)
-resultsRosEF$Accuracy
-
-# MDL
-resultsRosMDL=rosetta(df, discrete=TRUE, discreteMethod="MDL")
-resultsRosMDL$statistic$Accuracy
-
-# Naive
-resultsRosNaive=rosetta(df, discrete=TRUE, discreteMethod="Naive")
-resultsRosNaive$statistic$Accuracy
-
-# SemiNaive
-resultsRosSN=rosetta(df, discrete=TRUE, discreteMethod="SemiNaive")
-resultsRosSN$statistic$Accuracy
-
-# BRO
-resultsRosBR=rosetta(df, discrete=TRUE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
-resultsRosBR$statistic$Accuracy
-
-# without discretization mask
-resultsRosMask=rosetta(df, discrete=TRUE, discreteMask=F)
-resultsRosMask$statistic$Accuracy
-
-###### no discretization ######
-# for discrete data
-resultsRosNoD=rosetta(df, discrete=FALSE)
-resultsRosNoD$statistic$Accuracy
-
-###### rules filtration ######
-# accuracy
-resultsRosFA=rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
-resultsRosFA$statistic$Accuracy
-
-# support
-resultsRosFS=rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
-resultsRosF2$statistic$Accuracy
-
-# coverage
-resultsRosFC=rosetta(df, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
-resultsRosFC$statistic$Accuracy
-
-# stability
-resultsRosFST=rosetta(df, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
-resultsRosFST$statistic$Accuracy
-
-###### mask features ######
-resultsRosMF1=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
-resultsRosMF1$statistic$Accuracy
-
-resultsRosMF3=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("DDX60L", "SENCR", "ZSCAN18"))
-resultsRosMF3$statistic$Accuracy
+resultsRosGR$quality$Accuracy
 
 ###### discernibility ######
 # Full
 resultsRosF=rosetta(df, reducerDiscernibility="Full")
-resultsRosF$statistic$Accuracy
+resultsRosF$quality$Accuracy
 
 # Object
 resultsRosO=rosetta(df, reducerDiscernibilit="Object")
-resultsRosO$statistic$Accuracy
+resultsRosO$quality$Accuracy
+
+###### discretization ######
+# EqualFrequencyScaler
+resultsRosEF=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3)
+resultsRosEF$quality$Accuracy
+
+# MDL
+resultsRosMDL=rosetta(df, discrete=TRUE, discreteMethod="MDL")
+resultsRosMDL$quality$Accuracy
+
+# Naive
+resultsRosNaive=rosetta(df, discrete=TRUE, discreteMethod="Naive")
+resultsRosNaive$quality$Accuracy
+
+# SemiNaive
+resultsRosSN=rosetta(df, discrete=TRUE, discreteMethod="SemiNaive")
+resultsRosSN$quality$Accuracy
+
+# BRO
+resultsRosBR=rosetta(df, discrete=TRUE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
+resultsRosBR$quality$Accuracy
+
+# without discretization mask
+resultsRosMask=rosetta(df, discrete=TRUE, discreteMask=F)
+resultsRosMask$quality$Accuracy
+
+###### no discretization ######
+# for discrete data
+resultsRosNoD=rosetta(df, discrete=FALSE)
+resultsRosNoD$quality$Accuracy
+
+###### calculate AUC #########
+#for class: autism
+resultsRosAUCa=rosetta(autcon, roc= TRUE, clroc = "autism")
+resultsRosAUCa$quality
+#for class: control
+resultsRosAUCc=rosetta(autcon, roc= TRUE, clroc = "control")
+resultsRosAUCc$quality
+
+###### set fallback class ######
+#for class: autism
+resultsRosFBa=rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
+resultsRosFBa$quality
+#for class: control
+resultsRosFBc=rosetta(autcon, fallBack=TRUE, fallBackClass="control")
+resultsRosFBc$quality
+
+###### rules filtration ######
+# accuracy
+resultsRosFA=rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
+resultsRosFA$quality$Accuracy
+
+# support
+resultsRosFS=rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
+resultsRosF2$quality$Accuracy
+
+# coverage
+resultsRosFC=rosetta(df, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
+resultsRosFC$quality$Accuracy
+
+# stability
+resultsRosFST=rosetta(df, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
+resultsRosFST$quality$Accuracy
+
+###### mask features ######
+resultsRosMF1=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
+resultsRosMF1$quality$Accuracy
+
+resultsRosMF3=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("DDX60L", "SENCR", "ZSCAN18"))
+resultsRosMF3$quality$Accuracy
+
 
 }
 
