@@ -203,23 +203,83 @@ rosetta <- function(df,
   
   # prepare all results
   LFout=list.files(paste0(tempDirNam,"/results"))
-  dfRes_accMean=c()
+
   dfRes_rocAucSE=c()
   dfRes_rocAuc=c()
+  dfRes_accMean=c()
+  dfRes_accMedian=c()
   dfRes_accStdDev=c()
   dfRes_accMin=c()
   dfRes_accMax=c()
+  dfRes_rocMean=c()
+  dfRes_rocMedian=c()
+  dfRes_rocStdDev=c()
+  dfRes_rocMin=c()
+  dfRes_rocMax=c()
+  dfRes_rocseMean=c()
+  dfRes_rocseMedian=c()
+  dfRes_rocseStdDev=c()
+  dfRes_rocseMin=c()
+  dfRes_rocseMax=c()
   
   # statistic
+  if(roc){
   for(i in 1:length(LFout)){
     path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")
-    dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosResults(path)$Value[1])))
-    dfRes_rocAucSE[i]=as.numeric(as.matrix(unname(rosResults(path)$Value[2])))
-    dfRes_accMean[i]=as.numeric(as.matrix(unname(rosResults(path)$Value[3])))
-    dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosResults(path)$Value[5])))
-    dfRes_accMin[i]=as.numeric(as.matrix(unname(rosResults(path)$Value[6])))
-    dfRes_accMax[i]=as.numeric(as.matrix(unname(rosResults(path)$Value[7])))
-  }
+
+      dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
+      dfRes_rocAucSE[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
+      ##ACC
+      dfRes_accMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
+      dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
+      dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
+      dfRes_accMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[6])))
+      dfRes_accMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[7])))
+      ##ROC
+      dfRes_rocMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[8])))
+      dfRes_rocMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[9])))
+      dfRes_rocStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[10])))
+      dfRes_rocMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[11])))
+      dfRes_rocMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[12])))
+      ##ROC SE
+      dfRes_rocseMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[13])))
+      dfRes_rocseMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[14])))
+      dfRes_rocseStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[15])))
+      dfRes_rocseMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[16])))
+      dfRes_rocseMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[17])))
+     }
+    outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),
+                      mean(dfRes_accMax),mean(dfRes_rocAuc),mean(dfRes_rocAucSE),mean(dfRes_rocMean), 
+                      mean(dfRes_rocMedian),mean(dfRes_rocStdDev), mean(dfRes_rocMin), mean(dfRes_rocMax),
+                      mean(dfRes_rocseMean), mean(dfRes_rocseMedian),mean(dfRes_rocseStdDev), mean(dfRes_rocseMin),
+                      mean(dfRes_rocseMax))
+    colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max",
+                        "ROC.AUC","ROC.AUC.SE","ROC.AUC.MEAN","ROC.AUC.MEDIAN","ROC.AUC.STDEV","ROC.AUC.MIN","ROC.AUC.MAX",
+                        "ROC.AUC.SE.MEAN","ROC.AUC.SE.MEDIAN","ROC.AUC.SE.STDEV","ROC.AUC.SE.MIN","ROC.AUC.SE.MAX")
+    rownames(outRos)<-""
+    
+    }else{
+    for(i in 1:length(LFout)){
+    path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")
+  
+    dfRes_accMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
+    dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
+    dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
+    dfRes_accMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
+    dfRes_accMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
+    }
+      
+    outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMean),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax))
+    colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max")
+    rownames(outRos)<-""
+    
+    }
+
+  
+  #rownames(dfRes)<-as.character(unname(dfRes[,1]))
+  #dfRes2=t(dfRes)
+  #dfRes3 <-t(as.numeric(as.matrix(unname(dfRes2[2,]))))
+  #colnames(dfRes3)<-colnames(dfRes2)
   
   # make mean accuracy for CV and also undersampling files
   dataset_merged=data.frame()
@@ -234,9 +294,8 @@ rosetta <- function(df,
     }
   }
   
-  outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accStdDev),mean(dfRes_rocAuc),mean(dfRes_rocAucSE),mean(dfRes_accMin),mean(dfRes_accMax))
-  colnames(outRos)<-c("Accuracy","Accuracy.Std","ROC.AUC","ROC.AUC.SE","Accuracy.Min","Accuracy.Max")
-  rownames(outRos)<-""
+
+  
   colnames(dataset_merged)<-"rules"
   rules2=dataset_merged
   
