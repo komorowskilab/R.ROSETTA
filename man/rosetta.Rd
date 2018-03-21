@@ -137,116 +137,120 @@ df=autcon
 
 ###### default parameters ######
 resultsRos=rosetta(df) 
-resultsRos$quality$Accuracy
+resultsRos$quality$Accuracy.Mean
 
 ###### under-sampling ######
 resultsRosU=rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=10)
-resultsRosU$quality$Accuracy
+resultsRosU$quality$Accuracy.Mean
 
 ###### under-sampling with default parameters ######
 resultsRosUD=rosetta(df, underSample=TRUE)
-resultsRosUD$quality$Accuracy
+resultsRosUD$quality$Accuracy.Mean
 
 ###### classifiers ######
 # StandardVoter
 resultsRosSV=rosetta(df, classifier="StandardVoter")
-resultsRosSV$quality$Accuracy
+resultsRosSV$quality$Accuracy.Mean
 
 # ObjectTrackingVoter
 resultsRosOTV=rosetta(df, classifier="ObjectTrackingVoter")
-resultsRosOTV$quality$Accuracy
+resultsRosOTV$quality$Accuracy.Mean
 
 # NaiveBayesClassifier
 resultsRosNB=rosetta(df, classifier="NaiveBayesClassifier")
-resultsRosNB$quality$Accuracy
+resultsRosNB$quality$Accuracy.Mean
 
 ###### reducers ######
 # Johnson
 resultsRosJR=rosetta(df, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE,BRTprec=0.1,Precompute=FALSE,Approximate=TRUE,Fraction=0.9))
-resultsRosJR$quality$Accuracy
+resultsRosJR$quality$Accuracy.Mean
 
 # Genetic
 resultsRosGR=rosetta(df, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
-resultsRosGR$quality$Accuracy
+resultsRosGR$quality$Accuracy.Mean
 
 ###### discernibility ######
 # Full
 resultsRosF=rosetta(df, reducerDiscernibility="Full")
-resultsRosF$quality$Accuracy
+resultsRosF$quality$Accuracy.Mean
 
 # Object
 resultsRosO=rosetta(df, reducerDiscernibilit="Object")
-resultsRosO$quality$Accuracy
+resultsRosO$quality$Accuracy.Mean
 
 ###### discretization ######
 # EqualFrequencyScaler
 resultsRosEF=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3)
-resultsRosEF$quality$Accuracy
+resultsRosEF$quality$Accuracy.Mean
 
 # MDL
 resultsRosMDL=rosetta(df, discrete=TRUE, discreteMethod="MDL")
-resultsRosMDL$quality$Accuracy
+resultsRosMDL$quality$Accuracy.Mean
 
 # Naive
 resultsRosNaive=rosetta(df, discrete=TRUE, discreteMethod="Naive")
-resultsRosNaive$quality$Accuracy
+resultsRosNaive$quality$Accuracy.Mean
 
 # SemiNaive
 resultsRosSN=rosetta(df, discrete=TRUE, discreteMethod="SemiNaive")
-resultsRosSN$quality$Accuracy
+resultsRosSN$quality$Accuracy.Mean
 
 # BRO
 resultsRosBR=rosetta(df, discrete=TRUE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
-resultsRosBR$quality$Accuracy
+resultsRosBR$quality$Accuracy.Mean
 
 # without discretization mask
 resultsRosMask=rosetta(df, discrete=TRUE, discreteMask=F)
-resultsRosMask$quality$Accuracy
+resultsRosMask$quality$Accuracy.Mean
 
 ###### no discretization ######
 # for discrete data
 resultsRosNoD=rosetta(df, discrete=FALSE)
-resultsRosNoD$quality$Accuracy
+resultsRosNoD$quality$Accuracy.Mean
 
-###### calculate AUC #########
+###### calculate AUC #########  
 #for class: autism
 resultsRosAUCa=rosetta(autcon, roc= TRUE, clroc = "autism")
 resultsRosAUCa$quality
 #for class: control
 resultsRosAUCc=rosetta(autcon, roc= TRUE, clroc = "control")
 resultsRosAUCc$quality
+  
+#without ROC.AUC
+resultsRosAUCa=rosetta(autcon, roc= FALSE)
+resultsRosAUCa$quality
 
 ###### set fallback class ######
 #for class: autism
 resultsRosFBa=rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
-resultsRosFBa$quality
+resultsRosFBa$quality$Accuracy.Mean
 #for class: control
 resultsRosFBc=rosetta(autcon, fallBack=TRUE, fallBackClass="control")
-resultsRosFBc$quality
+resultsRosFBc$quality$Accuracy.Mean
 
 ###### rules filtration ######
 # accuracy
 resultsRosFA=rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
-resultsRosFA$quality$Accuracy
+resultsRosFA$quality$Accuracy.Mean
 
 # support
 resultsRosFS=rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
-resultsRosF2$quality$Accuracy
+resultsRosF2$quality$Accuracy.Mean
 
 # coverage
 resultsRosFC=rosetta(df, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
-resultsRosFC$quality$Accuracy
+resultsRosFC$quality$Accuracy.Mean
 
 # stability
 resultsRosFST=rosetta(df, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
-resultsRosFST$quality$Accuracy
+resultsRosFST$quality$Accuracy.Mean
 
 ###### mask features ######
 resultsRosMF1=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
-resultsRosMF1$quality$Accuracy
+resultsRosMF1$quality$Accuracy.Mean
 
 resultsRosMF3=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("DDX60L", "SENCR", "ZSCAN18"))
-resultsRosMF3$quality$Accuracy
+resultsRosMF3$quality$Accuracy.Mean
 
 
 }
