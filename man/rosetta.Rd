@@ -130,7 +130,7 @@ Mateusz Garbulowski, Karolina Smolinska
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-library(RROSETTA)
+library(R.ROSETTA)
 
 #sample data
 df=autcon
