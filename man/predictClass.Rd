@@ -62,7 +62,7 @@ Mateusz Garbulowski
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-library(RROSETTA)
+library(R.ROSETTA)
 
 df=autcon
 out=rosetta(df)
