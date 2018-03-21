@@ -7,24 +7,24 @@ rosetta <- function(df,
                     discreteParam=3,
                     discreteMask=TRUE,
                     reducer="JohnsonReducer",
+                    reducerDiscernibility="Object", #or Full
+                    roc=TRUE,
+                    clroc="autism",
+                    fallBack=TRUE,
+                    fallBackClass="autism",
                     maskFeatures=FALSE,
                     maskFeaturesNames=c(),
                     underSample=FALSE,
                     underSampleNum=0,
                     underSampleSize=0,
-                    fallBack=TRUE,
-                    fallBackClass="autism",
                     ruleFiltration=TRUE,
                     ruleFiltrSupport=c(1,3),
                     ruleFiltrAccuracy=c(0,0.5),
                     ruleFiltrCoverage=c(0,0),
                     ruleFiltrStability=c(0,0),
-                    reducerDiscernibility="Object", #or Full
                     JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
                     GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-                    ManualNames=c(),
-                    roc=TRUE,
-                    clroc="autism"
+                    ManualNames=c()
                     )
   {
   # setting paths, creating temp directory where the analysis will go
@@ -390,7 +390,7 @@ rosetta <- function(df,
   # @rules
   #setClass(Class="RosettaResults",representation(statistic="data.frame",rules="data.frame"))
 
-  return(list(main=df_out4,statistic=outRos,rules=rules2,usn=underSampleNum)) 
+  return(list(main=df_out4,quality=outRos,rules=rules2,usn=underSampleNum)) 
 
   }
   
