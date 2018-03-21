@@ -238,7 +238,7 @@ rosetta <- function(df,
   colnames(dataset_merged)<-"rules"
   rules2=dataset_merged
   
-  # pvalue caluclation S. Bornelov
+  # filter out comments
   rl=rules2
   rl2=as.matrix(rl[!grepl("%", rl, fixed = T)]) #deleting comments
   rl_r=which(grepl("=>", rl2, fixed = T)) #choosing rules
@@ -358,9 +358,9 @@ rosetta <- function(df,
   df_out2$SUPP_RHS<-round(df_out2$SUPP_RHS)
   #df_out2[paste0("CUTS_",seq(1:max(table(df222$group))))]<-round(df_out2[paste0("CUTS_",seq(1:max(table(df222$group))))])
   
-  for(i in 1:length(levels(df_out$DECISION))){
-    df_out2$DECISION[which(df_out2$DECISION==i)]<-levels(df_out$DECISION)[i]
-  }
+  #for(i in 1:length(levels(df_out$DECISION))){
+  #  df_out2$DECISION[which(df_out2$DECISION==i)]<-levels(df_out$DECISION)[i]
+  #}
   
   PVAL=c()
   for(i in 1:length(df_out2$SUPP_RHS)){
