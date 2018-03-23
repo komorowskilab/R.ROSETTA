@@ -1,4 +1,4 @@
-saveLineByLine <- function(rls, path, discretized=FALSE, geneExprData=TRUE, filterByPval=TRUE, pval=0.05)
+saveLineByLine <- function(rls, path, discretized=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
   
 {
   if(discretized)
