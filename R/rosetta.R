@@ -419,7 +419,7 @@ rosetta <- function(df,
   aggregate2 <- function(x){ 
     df_out3=df_out[which(match(allMat, x) == 1),]
     
-    meanOrMostFreq <- function(x){
+    meanOrCharacter <- function(x){
       if(class(x) == "factor"){
         # check if in factor columns are characters or the numbers
         if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1])
@@ -438,7 +438,7 @@ rosetta <- function(df,
     indx <- sapply(df_out3, is.factor)
     df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
     
-    df_out4=aggregate(.~FEATURES+DECISION+CUT_COND, FUN=meanOrMostFreq, data = df_out3, na.action = na.pass)
+    df_out4=aggregate(.~FEATURES+DECISION+CUT_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
     return(df_out4)
   }
   
