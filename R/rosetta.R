@@ -371,26 +371,83 @@ rosetta <- function(df,
   if(discrete==T){
   lst_cuts=lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
   
-  lst_cuts2=lapply(lapply(lst_cuts, function(x) as.numeric(unlist(regmatches(x,gregexpr("[[:digit:]]+\\.*[[:digit:]]*",x))))), unlist)
+  lstc=lapply(lst_cuts,function(x) gsub("[[() *]", "", x))
+  lstc2=lapply(lstc,function(x) (gsub(',$','', x)))
+  lstc3=lapply(lstc2,function(x) (gsub('^,','', x)))
+  lstc4=lapply(lstc3, function(x) unlist(strsplit(x, ",")))
+
+  catchNumeric <- function(mylist) {
+    newlist <- suppressWarnings(as.numeric(mylist))
+    mylist <- list(mylist)
+    mylist[!is.na(newlist)] <- newlist[!is.na(newlist)]
+    unlist(mylist)
+  }
+  lst_cuts2=lapply(lstc4, catchNumeric)
+  #lst_cuts2=lapply(lapply(lst_cuts, function(x) as.numeric(unlist(regmatches(x,gregexpr("[[:digit:]]+\\.*[[:digit:]]*",x))))), unlist)
+  #lst_cuts2[which(lapply(lst_cuts2,length)==0)]<-lapply(lst_cuts[which(lapply(lst_cuts2,length)==0)], function(x) gsub(")", "",x,fixed = T))
+  
   lst_cuts22=unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
   
   lst1=lapply(lst_cuts, function(x) gsub(".*\\*\\).*", "num>cut", x))
   lst2=lapply(lst1, function(x) gsub(".*\\[\\*.*", "num<cut", x))
   lst3=lapply(lst2, function(x) gsub(".*\\[.*\\).*", "cut1<num<cut2", x))
-  cuts2=unlist(lapply(lapply(lst3, function(x) paste(x, collapse = ",")), unlist))
+  lst4=lapply(lst3, function(x) gsub(".*).*","discrete",x))
   
+
+  
+  cuts2=unlist(lapply(lapply(lst4, function(x) paste(x, collapse = ",")), unlist))
+  
+  # calculate the sizes
   df222=data.frame(word = do.call(c, lst_cuts2),
                    group = rep(1:length(lst_cuts2), 
                                sapply(lst_cuts2, length)))
   
+  # create constant size data frame
   lst_cuts3=lapply(lst_cuts2, 'length<-', max(table(df222$group)))
-  df3=t(as.data.frame(lst_cuts3))
+  df3=t(as.data.frame(lst_cuts3, stringsAsFactors=FALSE))
   
   decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
                           
   df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
   colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUT_COND",paste0("CUTS_",seq(1:max(table(df222$group)))))
-  df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, median, data = df_out, na.action = na.pass)
+  
+  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUT_COND")])
+  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUT_COND")])
+  subMat=as.matrix(do.call(paste0, df_outU))
+  #x=df_outU[1,]
+  
+  aggregate2 <- function(x){ 
+    df_out3=df_out[which(match(allMat, x) == 1),]
+    
+    meanOrMostFreq <- function(x){
+      if(class(x) == "factor"){
+        # check if in factor columns are characters or the numbers
+        if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1])
+        {
+          return(as.character(x)[1]) 
+        }else{
+          return(round(mean(as.numeric(as.character(x))),  digits = 4))
+        }
+      }
+      if(class(x) == "numeric"){
+        out <- round(mean(as.numeric(x), na.rm = TRUE), digits = 4)
+        return(out)
+      }
+    }
+    
+    indx <- sapply(df_out3, is.factor)
+    df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+    
+    df_out4=aggregate(.~FEATURES+DECISION+CUT_COND, FUN=meanOrMostFreq, data = df_out3, na.action = na.pass)
+    return(df_out4)
+  }
+  
+  df_out5=apply(subMat, 1, aggregate2)
+  df_out2=do.call("rbind", df_out5)
+  df_out2$SUPP_LHS<-round(df_out2$SUPP_LHS)
+  df_out2$SUPP_RHS<-round(df_out2$SUPP_RHS)
+  
+  #df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, mean, data = df_out, na.action = na.pass)
   
   }
   else 
@@ -411,7 +468,7 @@ rosetta <- function(df,
                                  
     df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, df3, lst_cuts22)
     colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS",paste0("CUTS_",seq(1:max(table(df222$group)))),"CUT_COND")
-    df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, median, data = df_out, na.action = na.pass)
+    df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, mean, data = df_out, na.action = na.pass)
     
     }
   

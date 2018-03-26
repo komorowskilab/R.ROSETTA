@@ -2,11 +2,26 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
 {
   
   if(disc){
-  fRow=c(rep("Float(6)",dim(df)[2]-1),"String")
+  
+  vecHead=unname(sapply(df, class))
+  vecHead[vecHead=="numeric"]<-"Float(6)"
+  vecHead[vecHead=="integer"]<-"Integer"
+  vecHead[vecHead=="logical"]<-"String"
+  vecHead[vecHead=="factor"]<-"String"
+  vecHead[vecHead=="character"]<-"String"
+  fRow=vecHead
+  
   }else
   {
-  fRow=c(rep("Integer",dim(df)[2]-1),"String")
+  vecHead=unname(sapply(df, class))
+  vecHead[vecHead=="numeric"]<-"Integer"
+  vecHead[vecHead=="integer"]<-"Integer"
+  vecHead[vecHead=="logical"]<-"String"
+  vecHead[vecHead=="factor"]<-"String"
+  vecHead[vecHead=="character"]<-"String"
+  fRow=vecHead
   }
+  
   fRow=data.frame(t(fRow))
   colnames(fRow)<-colnames(df)
   OUTPUT_DT_TRAIN=rbind(df,fRow)
