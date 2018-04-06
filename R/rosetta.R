@@ -33,7 +33,15 @@ rosetta <- function(df,
   firstPath=tempdir()
   fname="data"
   #setwd(firstPath)
-  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="/")
+
+      if(.Platform$OS.type=="unix")
+    {
+    tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="/")
+    }else
+    {
+    tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="\")
+    }
+
   dir.create(tempDirNam)
   #setwd(tempDirNam)
   dir.create(paste0(tempDirNam,"/data"))
@@ -128,15 +136,24 @@ rosetta <- function(df,
     
     # checking filename of ROS file
     rosFileName <- list.files(path=dirList, pattern = "\\.ros$")
-    dirList2=paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta")
     
+    if(.Platform$OS.type=="unix")
+    {
+    dirList2=paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta")
+    pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
+    }else
+    {
+    dirList2=paste0(tempDirNam,"\results\",csvFileName[i],"\outRosetta")  
+    pathExe <- paste(system.file(package="R.ROSETTA"), "exec\clrosetta.exe", sep="\")
+    }
+
     dir.create(dirList2)
     
     ## masking the attributes
     maskAttribute(maskFeaturesNames, dirList2)
 
     #copy file to execute it in folder
-    pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
+
     #file.copy(pathExe, dirList2)
     file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2)
     
