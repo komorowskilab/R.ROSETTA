@@ -39,7 +39,7 @@ rosetta <- function(df,
     tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="/")
     }else
     {
-    tempDirNam=cat(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="\\")
+    tempDirNam=cat(firstPath,format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS",sep="\\")
     }
 
   dir.create(tempDirNam)
