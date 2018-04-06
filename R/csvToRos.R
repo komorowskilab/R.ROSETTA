@@ -23,18 +23,17 @@ f_out_l=f_out
 if(.Platform$OS.type=="unix")
 {
 pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
-#comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
+comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
 
 }
 else{
   pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
-  #comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
-comm=paste0(pathExe," SerialExecutor")
-argms=paste0("FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
+  comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
+#comm=paste0(pathExe," SerialExecutor")
+#argms=paste0("FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
 }
 
- #try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
- try(system2(command=comm, args=argms), silent=TRUE)
+ try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
 
 
 }
