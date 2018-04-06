@@ -33,8 +33,8 @@ else{
 #argms=paste0("FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
 }
 
- try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
-
+ #try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
+system(command=comm)
 
 }
 
