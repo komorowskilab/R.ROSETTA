@@ -143,7 +143,7 @@ rosetta <- function(df,
     pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
     }else{
     dirList2=paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  
-    pathExe <- paste(system.file(package="R.ROSETTA"), "exec","clrosetta.exe", sep="\\")
+    pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
     }
 
     dir.create(dirList2)
