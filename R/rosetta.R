@@ -39,7 +39,7 @@ rosetta <- function(df,
     tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="/")
     }else
     {
-    tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="\")
+    tempDirNam=cat(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="\\")
     }
 
   dir.create(tempDirNam)
@@ -141,10 +141,9 @@ rosetta <- function(df,
     {
     dirList2=paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta")
     pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
-    }else
-    {
-    dirList2=paste0(tempDirNam,"\results\",csvFileName[i],"\outRosetta")  
-    pathExe <- paste(system.file(package="R.ROSETTA"), "exec\clrosetta.exe", sep="\")
+    }else{
+    dirList2=cat(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  
+    pathExe <- cat(system.file(package="R.ROSETTA"), "exec\\clrosetta.exe", sep="\\")
     }
 
     dir.create(dirList2)
@@ -210,9 +209,9 @@ rosetta <- function(df,
                    cvNum,
                    seed,
                    pipeLen,
-                   paste0(dirList2,"/","OUT_cmdCV.txt"),
-                   paste0(dirList2,"/","logMain.txt"),
-                   paste0(dirList2,"/",rosFileName)
+                   cat(dirList2,"OUT_cmdCV.txt",sep="\\"),
+                   cat(dirList2,"logMain.txt",sep="\\"),
+                   cat(dirList2,rosFileName,sep="\\")
       )
     }
     try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
