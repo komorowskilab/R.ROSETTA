@@ -26,7 +26,7 @@ pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/"
 comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
 }
 else{
-  pathExe <- paste(system.file(package="R.ROSETTA"), "exec","clrosetta.exe", sep="\\")
+  pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
   comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
   }
 
