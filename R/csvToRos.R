@@ -29,11 +29,12 @@ pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/"
 else{
   pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
   #comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
-comm=paste0(pathExe," SerialExecutor ","FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
+comm=paste0(pathExe," SerialExecutor")
+argms=paste0("FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
 }
 
- try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
- #try(system2(command=comm), silent=TRUE)
+ #try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
+ try(system2(command=comm, args=argms), silent=TRUE)
 
 
 }
