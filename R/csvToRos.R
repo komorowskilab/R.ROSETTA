@@ -32,8 +32,8 @@ else{
 comm=paste0(pathExe," SerialExecutor ","FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
 }
 
- #try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
- try(system2(command=comm), silent=TRUE)
+ try(system(command=comm, ignore.stdout = TRUE, show.output.on.console=FALSE), silent=TRUE)
+ #try(system2(command=comm), silent=TRUE)
 
 
 }
