@@ -36,10 +36,10 @@ rosetta <- function(df,
 
       if(.Platform$OS.type=="unix")
     {
-    tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS"),sep="/")
+    tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="/")
     }else
     {
-    tempDirNam=paste(firstPath,format(Sys.time(), "%b_%d_%Y_%H%M%S"),"RROS",sep="\\")
+    tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="\\")
     }
 
   dir.create(tempDirNam)
