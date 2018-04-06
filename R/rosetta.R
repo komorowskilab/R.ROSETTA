@@ -142,8 +142,8 @@ rosetta <- function(df,
     dirList2=paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta")
     pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
     }else{
-    dirList2=cat(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  
-    pathExe <- cat(system.file(package="R.ROSETTA"), "exec\\clrosetta.exe", sep="\\")
+    dirList2=paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  
+    pathExe <- paste(system.file(package="R.ROSETTA"), "exec","clrosetta.exe", sep="\\")
     }
 
     dir.create(dirList2)
@@ -209,9 +209,9 @@ rosetta <- function(df,
                    cvNum,
                    seed,
                    pipeLen,
-                   cat(dirList2,"OUT_cmdCV.txt",sep="\\"),
-                   cat(dirList2,"logMain.txt",sep="\\"),
-                   cat(dirList2,rosFileName,sep="\\")
+                   paste(dirList2,"OUT_cmdCV.txt",sep="\\"),
+                   paste(dirList2,"logMain.txt",sep="\\"),
+                   paste(dirList2,rosFileName,sep="\\")
       )
     }
     try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
