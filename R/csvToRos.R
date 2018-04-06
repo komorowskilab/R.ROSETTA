@@ -30,7 +30,7 @@ else{
   comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
   }
 
- try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
+ try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE)
 
 
 }
