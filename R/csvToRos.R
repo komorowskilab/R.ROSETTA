@@ -17,15 +17,17 @@ f_out_dir=paste(file_name,"_toRosCmd.txt", sep="")
 f_out_l=f_out
 
 #setwd(system.file(package="rROSETTA"))
-pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
+
 #file.copy(pathExe, dirList)
 
 if(.Platform$OS.type=="unix")
 {
+pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
 comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
 }
 else{
-  comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
+  pathExe <- paste(system.file(package="R.ROSETTA"), "exec","clrosetta.exe", sep="\\")
+  comm=sprintf('%s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
   }
 
  try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
