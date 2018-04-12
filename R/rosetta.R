@@ -214,8 +214,8 @@ rosetta <- function(df,
                    paste(dirList2,rosFileName,sep="\\")
       )
     }
-    #try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
-    system(command=comm)
+    try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
+    #system(command=comm)
   }
   
   # prepare all results
