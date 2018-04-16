@@ -7,7 +7,7 @@ Class prediction.
 Use model to predict classes.
 }
 \usage{
-predictClass(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
+predictClass(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,7 +17,7 @@ A data frame of feature values. Should contain the same feature names as the rul
   \item{rls}{
 A data frame of rules in a form like an output from rosetta.
 }
-  \item{discretized}{
+  \item{discrete}{
 Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
 }
 
