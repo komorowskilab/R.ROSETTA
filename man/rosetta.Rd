@@ -7,7 +7,7 @@ ROSETTA rough set classifier
 Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications.  These include: under-sampling, p-value estimation of the rules, rule-visualization methods and retrieving support sets from rules.
 }
 \usage{
-rosetta(df, classifier="StandardVoter", cvNum=10, discrete=TRUE, discreteMethod="EqualFrequencyScaler",
+rosetta(df, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequencyScaler",
 discreteParam=3, discreteMask=TRUE, reducer="JohnsonReducer", reducerDiscernibility="Object",
 roc=TRUE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
 underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=TRUE, ruleFiltrSupport=c(1,3),
@@ -28,7 +28,7 @@ A character containing the type of classifier: StandardVoter, ObjectTrackingVote
 The number of cross validation. Default is 10.
 }
   \item{discrete}{
-Logical. If TRUE, your data will be discretized in ROSETTA. Set FALSE when your data is already discretized. Default is TRUE.
+Logical. If FALSE, your data will be discretized in ROSETTA. Set TRUE when your data is already discretized. Default is FALSE.
 }
   \item{discreteMethod}{
 A character containing discretization method: EqualFrequency, MDL, Naive, SemiNaive or BROrthogonal.  Default is EqualFrequency.
