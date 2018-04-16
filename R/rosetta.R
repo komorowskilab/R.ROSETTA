@@ -2,7 +2,7 @@
 rosetta <- function(df,
                     classifier="StandardVoter",
                     cvNum=10,
-                    discrete=TRUE,
+                    discrete=FALSE,
                     discreteMethod="EqualFrequencyScaler",
                     discreteParam=3,
                     discreteMask=TRUE,
@@ -32,6 +32,12 @@ rosetta <- function(df,
   # setting paths, creating temp directory where the analysis will go
   firstPath=tempdir()
   fname="data"
+  
+  if(discrete){
+  discrete=FALSE}else
+    {
+  discrete=TRUE
+  }
   #setwd(firstPath)
 
       if(.Platform$OS.type=="unix")
