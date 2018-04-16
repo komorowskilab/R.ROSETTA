@@ -1,6 +1,7 @@
-saveLineByLine <- function(rls, path, discretized=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
+saveLineByLine <- function(rls, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
   
 {
+  discretized=discrete
   if(discretized)
   {
       vec=as.character(as.matrix(rls["FEATURES"]))
