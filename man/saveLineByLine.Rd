@@ -7,7 +7,7 @@ Converts rules to LineByLine format.
 Saves rules in LineByLine format that is compatible with VisuNet software. Allows to filter out not-significant rules by setting the threshold of p-value.
 }
 \usage{
-saveLineByLine(rls, path, discrete=FALSE, geneExprData=TRUE, filterByPval=TRUE, pval=0.05)
+saveLineByLine(rls, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,7 +24,7 @@ Logical. If TRUE data are discrete. If FALSE data are not discrete values. Defau
 Logical. If TRUE data are gene expression with 2 or 3 classes. Default is FALSE.
 }
   \item{filterByPval}{
-Logical. If TRUE the filtration will be done. Default is TRUE.
+Logical. If TRUE the filtration will be done. Default is FALSE.
 }
   \item{pval}{
 A numeric value containing p-value threshold allows filtering. Default is 0.05.
