@@ -154,18 +154,26 @@ genCmdFilesRosetta <- function (dir_file3,
                        "_#ITERATION#.txt}")
     listOut[13]="BatchClassifier"
     
+    ### IF for IDG masking ###
+    if(IDGlog)
+    {
+      IDGpath=paste0("; IDG.FILENAME=",dir_file3,"/",IDGfn)
+    }else{
+      IDGpath=""
+    }
+    
     #######ifs for classifiers######
     
     if(classifier=="ObjectTrackingVoter")
     {
-    listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",dir_file3,"/",IDGfn,";"
+    listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
                       ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                       dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
                       substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep="")
     }
     if(classifier=="StandardVoter")
     {
-      listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",dir_file3,"/",IDGfn,";"
+      listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
                         ," SPECIFIC=F; VOTING=Support; NORMALIZATION=Firing; FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                         dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
                         substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep="")
@@ -194,6 +202,13 @@ genCmdFilesRosetta <- function (dir_file3,
     
     listOut=NULL
     
+    ### IF for IDG masking ###
+    if(IDGlog)
+    {
+      IDGpath=paste0("; IDG.FILENAME=",dir_file3,"/",IDGfn)
+    }else{
+      IDGpath=""
+    }
      
      #if for reducers
      listOut[1]=ruleMeth
@@ -240,14 +255,14 @@ genCmdFilesRosetta <- function (dir_file3,
           
           if(classifier=="ObjectTrackingVoter")
           {
-            listOut[10]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),";IDG.FILENAME=",dir_file3,"/",IDGfn,";"
+            listOut[10]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
                               ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                               dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
                               substr(as.character(LogVerb),1,1),"; CALIBRATION=F; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep="")
             
           }else
           {
-          listOut[10]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),";IDG.FILENAME=",dir_file3,"/",IDGfn,";"
+          listOut[10]=paste("{CLASSIFIER=",classifier,"; FRACTION=0.0; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
                             ," SPECIFIC=F; VOTING=Support; NORMALIZATION=Firing; FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,
                             "; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                             dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
