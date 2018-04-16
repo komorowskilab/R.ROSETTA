@@ -1,5 +1,5 @@
-recalculateRules<-function(df,rls,discretized=F){
-
+recalculateRules<-function(df,rls,discrete=F){
+discretized=discrete
 rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
 cnd2=strsplit(as.character(rls$CUT_COND),",",fixed = T)
 dec2=as.character(rls$DECISION)
