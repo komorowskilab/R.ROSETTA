@@ -1,7 +1,7 @@
-predictClass<-function(df, rls, discretized=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
+predictClass<-function(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
   {
 
-
+discretized=discrete
 dec2=as.character(rls$DECISION)
 decs2=unique(dec2)
 objs=rownames(df)
