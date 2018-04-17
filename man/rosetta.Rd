@@ -252,9 +252,9 @@ resultsRosFST$quality$Accuracy.Mean
 resultsRosMF1=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
 resultsRosMF1$quality$Accuracy.Mean
 
-resultsRosMF3=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("DDX60L", "SENCR", "ZSCAN18"))
-resultsRosMF3$quality$Accuracy.Mean
-
+# remove first 20 features
+resultsRosMF2=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=colnames(df)[1:20])
+resultsRosMF2$quality$Accuracy.Mean
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
