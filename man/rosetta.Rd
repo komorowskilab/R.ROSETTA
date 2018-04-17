@@ -13,7 +13,8 @@ roc=FALSE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=F
 underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ruleFiltrSupport=c(1,3),
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
 JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
-GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"), ManualNames=c(), pAdjust=TRUE, pAdjustMethod="BH")
+GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
+ManualNames=c(), pAdjust=TRUE, pAdjustMethod="BH", seed=0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -100,6 +101,9 @@ Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
 }
   \item{pAdjustMethod}{
 A character containing the method: holm, hochberg, hommel, bonferroni, BH, BY,fdr or none.
+}
+    \item{seed}{
+An integer. Seed to the random number generator.
 }
 }
 \details{
