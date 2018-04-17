@@ -30,7 +30,8 @@ rosetta <- function(df,
                     ManualNames=c(),
                     pAdjust=TRUE,
                     pAdjustMethod="BH",
-                    seed=0
+                    seed=0,
+                    invert=FALSE
                     )
 {
   # setting paths, creating temp directory where the analysis will go
@@ -181,7 +182,8 @@ rosetta <- function(df,
   # check the platform. For unix you have to have wine installed!
   if(.Platform$OS.type=="unix")
   {
-  comm=sprintf('wine %s CVSerialExecutor "INVERT = F; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+  comm=sprintf('wine %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+                substr(as.character(invert),1,1),
                 pathExe,
                 cvNum,
                 seed,
@@ -191,7 +193,8 @@ rosetta <- function(df,
                 paste0(dirList2,"/",rosFileName)
                )
   }else{
-  comm=sprintf('%s CVSerialExecutor "INVERT = F; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+  comm=sprintf('%s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+                substr(as.character(invert),1,1),
                 pathExe,
                 cvNum,
                 seed,
