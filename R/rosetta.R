@@ -29,7 +29,8 @@ rosetta <- function(df,
                     GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
                     ManualNames=c(),
                     pAdjust=TRUE,
-                    pAdjustMethod="BH"
+                    pAdjustMethod="BH",
+                    seed=0
                     )
 {
   # setting paths, creating temp directory where the analysis will go
@@ -176,7 +177,7 @@ rosetta <- function(df,
                       roc=roc,
                       clroc=clroc,)
     
-  seed=0
+  #seed=0
   # check the platform. For unix you have to have wine installed!
   if(.Platform$OS.type=="unix")
   {
