@@ -183,8 +183,8 @@ rosetta <- function(df,
   if(.Platform$OS.type=="unix")
   {
   comm=sprintf('wine %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
-                substr(as.character(invert),1,1),
                 pathExe,
+                substr(as.character(invert),1,1),
                 cvNum,
                 seed,
                 pipeLen,
@@ -194,8 +194,8 @@ rosetta <- function(df,
                )
   }else{
   comm=sprintf('%s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
-                substr(as.character(invert),1,1),
                 pathExe,
+                substr(as.character(invert),1,1),
                 cvNum,
                 seed,
                 pipeLen,
