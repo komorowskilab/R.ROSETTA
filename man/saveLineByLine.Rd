@@ -58,7 +58,7 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-df=autism
+df=autcon
 out=rosetta(df)
 rls=out$main
 
@@ -66,10 +66,10 @@ rls=out$main
 saveLineByLine(rls, "outFile.txt")
 
 # filter by p-value
-saveLineByLine(rls, "outFile.txt", pval=0.01)
+saveLineByLine(rls, "outFile.txt", filterByPval=TRUE, pval=0.01)
 
-# for discrete gene expression data 
-saveLineByLine(resultsRosGR$main, "outFile.txt", geneExprData=TRUE, discrete=TRUE)
+# for non discrete gene expression data 
+saveLineByLine(resultsRosGR$main, "outFile.txt", geneExprData=TRUE, discrete=FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
