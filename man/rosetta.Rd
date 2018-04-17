@@ -4,28 +4,27 @@
 ROSETTA rough set classifier
 }
 \description{
-Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications.  These include: under-sampling, p-value estimation of the rules, rule-visualization methods and retrieving support sets from rules.
+Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications. These include: under-sampling, p-value estimation of the rules, rule-visualization methods and retrieving support sets from rules.
 }
 \usage{
 rosetta(df, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequencyScaler",
 discreteParam=3, discreteMask=TRUE, reducer="JohnsonReducer", reducerDiscernibility="Object",
-roc=TRUE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
-underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=TRUE, ruleFiltrSupport=c(1,3),
+roc=FALSE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
+underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ruleFiltrSupport=c(1,3),
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
 JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
-GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames=c(), pAdjust=TRUE, pAdjustMethod="BH")
+GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"), ManualNames=c(), pAdjust=TRUE, pAdjustMethod="BH")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-A data frame containing decision table. The last column should contain decisions.
+A data frame containing decision table. The last column should contain decisions. 
 }
   \item{classifier}{
 A character containing the type of classifier: StandardVoter, ObjectTrackingVoter or NaiveBayesClassifier. Default is StandardVoter.
 }
   \item{cvNum}{
-The number of cross validation. Default is 10.
+The number of cross validations. Default is 10.
 }
   \item{discrete}{
 Logical. If FALSE, your data will be discretized in ROSETTA. Set TRUE when your data is already discretized. Default is FALSE.
@@ -46,7 +45,7 @@ A character containing reducer method: Johnson, Genetic, Holte1R or Manual. Defa
 A character containing reducer discernibility option: Full or Object. Default is Object.
 }
   \item{roc}{
-Logical. If TRUE, calculate AUC values. Default is TRUE.
+Logical. If TRUE, calculate AUC and ROC values. Default is FALSE.
 }
   \item{clroc}{
 A character containing the name of the class. Default is "autism".
@@ -73,7 +72,7 @@ The number of sub-samples. If 0 minimum number of subsets that cover all the obj
 The size of each subsample. If 0 minimum number from all groups is taken. Default is 0.
 }
   \item{ruleFiltration}{
-Logical. If TRUE, rule filtration is on. Default is TRUE.
+Logical. If TRUE, rule filtration is on. Default is FALSE.
 }
   \item{ruleFiltrSupport}{
 A vector of two numbers containing interval of support values to filter out. Default is c(1,3).
@@ -100,18 +99,20 @@ A vector containing manual names for manual reducer.
 Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
 }
   \item{pAdjustMethod}{
-A character containing the method: holm, hochberg, hommel, bonferroni, BH, BY,fdr or none
+A character containing the method: holm, hochberg, hommel, bonferroni, BH, BY,fdr or none.
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and pvalue.
+  \item{out$main}{A data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and p-value.
 }
     \item{out$quality}{A table of quality of the model: accuracy, ROC and AUC measures.
 }
     \item{out$rules}{A character vector of raw rules that are not sorted.
+}
+    \item{out$usn}{An integer indicating the minimum number of required for subsets in undersumpling.
 }
 }
 \references{
@@ -180,38 +181,39 @@ resultsRosO$quality$Accuracy.Mean
 
 ###### discretization ######
 # EqualFrequencyScaler
-resultsRosEF=rosetta(df, discrete=TRUE, discreteMethod="EqualFrequency", discreteParam=3)
+resultsRosEF=rosetta(df, discrete=FALSE, discreteMethod="EqualFrequency", discreteParam=3)
 resultsRosEF$quality$Accuracy.Mean
 
 # MDL
-resultsRosMDL=rosetta(df, discrete=TRUE, discreteMethod="MDL")
+resultsRosMDL=rosetta(df, discrete=FALSE, discreteMethod="MDL")
 resultsRosMDL$quality$Accuracy.Mean
 
 # Naive
-resultsRosNaive=rosetta(df, discrete=TRUE, discreteMethod="Naive")
+resultsRosNaive=rosetta(df, discrete=FALSE, discreteMethod="Naive")
 resultsRosNaive$quality$Accuracy.Mean
 
 # SemiNaive
-resultsRosSN=rosetta(df, discrete=TRUE, discreteMethod="SemiNaive")
+resultsRosSN=rosetta(df, discrete=FALSE, discreteMethod="SemiNaive")
 resultsRosSN$quality$Accuracy.Mean
 
 # BRO
-resultsRosBR=rosetta(df, discrete=TRUE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
+resultsRosBR=rosetta(df, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
 resultsRosBR$quality$Accuracy.Mean
 
 # without discretization mask
-resultsRosMask=rosetta(df, discrete=TRUE, discreteMask=F)
+resultsRosMask=rosetta(df, discrete=FALSE, discreteMask=FALSE)
 resultsRosMask$quality$Accuracy.Mean
 
-###### no discretization ######
-# for discrete data
-resultsRosNoD=rosetta(df, discrete=FALSE)
+###### for discrete data ######
+# no discretization is performed
+resultsRosNoD=rosetta(df, discrete=TRUE)
 resultsRosNoD$quality$Accuracy.Mean
 
 ###### calculate AUC #########  
 #for class: autism
 resultsRosAUCa=rosetta(autcon, roc= TRUE, clroc = "autism")
 resultsRosAUCa$quality
+
 #for class: control
 resultsRosAUCc=rosetta(autcon, roc= TRUE, clroc = "control")
 resultsRosAUCc$quality
@@ -224,6 +226,7 @@ resultsRosAUCa$quality
 #for class: autism
 resultsRosFBa=rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
 resultsRosFBa$quality$Accuracy.Mean
+
 #for class: control
 resultsRosFBc=rosetta(autcon, fallBack=TRUE, fallBackClass="control")
 resultsRosFBc$quality$Accuracy.Mean
@@ -251,7 +254,6 @@ resultsRosMF1$quality$Accuracy.Mean
 
 resultsRosMF3=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("DDX60L", "SENCR", "ZSCAN18"))
 resultsRosMF3$quality$Accuracy.Mean
-
 
 }
 
