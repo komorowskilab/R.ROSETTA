@@ -493,7 +493,7 @@ rosetta <- function(df,
   ## p-value for rules calculation ##
   PVAL=c()
    for(i in 1:length(df_out2$SUPP_RHS)){
-   k=round(df_out2$SUPP_LHS[i]*df_out2$ACC_RHS[i])
+   k=round(df_out2$SUPP_RHS[i]*df_out2$ACC_RHS[i]) #total support adjusted by accuracy
    R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))==as.character(df_out2$DECISION[i])])
    N=dim(df)[1] 
    R2=N-R1
@@ -502,7 +502,7 @@ rosetta <- function(df,
    #C2=N-C1                  # total drawn
    #R1=dim(df)[2]            # total hits, number of features
    #R2=N-R1                  # number of features - number of decisions
-   PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
+   PVAL[i]=phyper(k-1, m=R1, n=R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
    }
   
    if(pAdjust){
