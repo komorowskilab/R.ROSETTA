@@ -19,16 +19,16 @@ ManualNames=c(), pAdjust=TRUE, pAdjustMethod="BH", seed=0, invert=FALSE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-A data frame containing decision table. The last column should contain decisions. 
+A data frame containing decision table. The last column is decision. 
 }
   \item{classifier}{
 A character containing the type of classifier: StandardVoter, ObjectTrackingVoter or NaiveBayesClassifier. Default is StandardVoter.
 }
   \item{cvNum}{
-The number of cross validations. Default is 10.
+A numeric value of the number of cross-validation. Default is 10.
 }
   \item{discrete}{
-Logical. If FALSE, your data will be discretized in ROSETTA. Set TRUE when your data is already discretized. Default is FALSE.
+Logical. Set TRUE for non-discrete data. Default is FALSE.
 }
   \item{discreteMethod}{
 A character containing discretization method: EqualFrequency, MDL, Naive, SemiNaive or BROrthogonal.  Default is EqualFrequency.
