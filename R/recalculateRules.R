@@ -48,7 +48,7 @@ for(j in 1:dim(rls)[1]){
 cnds=cnd2[[j]]
 cnds[cnds == "value>cut"] <- 1
 cnds[cnds == "value<cut"] <- 1
-cnds[cnds == "cut<nvalue<cut"] <- 2
+cnds[cnds == "cut<value<cut"] <- 2
 cnds<-as.numeric(cnds)
 cndsLen=length(cnds)
 cndsCS=cumsum(cnds)
