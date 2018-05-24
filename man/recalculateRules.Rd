@@ -7,7 +7,7 @@ Recalculate rules
 Recalculate rules according to the input decision table. Retrieves the true support sets for rules and renew the p-values.
 }
 \usage{
-recalculateRules(df, rls, discrete=FALSE)
+recalculateRules(df, rls, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
