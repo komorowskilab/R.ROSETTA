@@ -1,3 +1,4 @@
 exportPattern("^[[:alpha:]]+")
 import(arules)
 import(gplots)
+import(fmsb)
