@@ -1,4 +1,4 @@
-recalculateRules<-function(df, rls, discrete=FALSE){
+recalculateRules<-function(df, rls, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH"){
 discretized=discrete
 rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
 cnd2=strsplit(as.character(rls$CUTS_COND),",",fixed = T)
@@ -131,7 +131,9 @@ newAccuracy=newSupportRHS/newSupportLHS
   }
 
  
-  PVAL=p.adjust(PVAL, method="BH")
+  if(pAdjust){
+   PVAL <- p.adjust(PVAL, method=pAdjustMethod)
+  }
 
 #decsFinal= unlist(lapply(rls$DECISION, FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
 
