@@ -58,18 +58,17 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-df=autcon
-out=rosetta(df)
-rls=out$main
+out=rosetta(autcon)
+rules=out$main
 
 # default
-saveLineByLine(rls, "outFile.txt")
+saveLineByLine(rules, "outFile.txt")
 
 # filter by p-value
-saveLineByLine(rls, "outFile.txt", filterByPval=TRUE, pval=0.01)
+saveLineByLine(rules, "outFile.txt", filterByPval=TRUE, pval=0.01)
 
 # for non discrete gene expression data 
-saveLineByLine(resultsRosGR$main, "outFile.txt", geneExprData=TRUE, discrete=FALSE)
+saveLineByLine(rules, "outFile.txt", geneExprData=TRUE, discrete=FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
