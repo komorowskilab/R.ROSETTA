@@ -103,7 +103,12 @@ newSupportLHS=unlist(lapply(outLst, function(x) length(x)))
 newSupportRHS=unlist(lapply(outLst2, function(x) length(x)))
 newAccuracy=newSupportRHS/newSupportLHS
 
-  PVAL=c()
+  ## p-value for rules calculation ##
+  PVAL <- c()
+  RISK_PVAL <- c()
+  CONF_INT <- c()
+  REL_RISK <- c()
+                            
   for(i in 1:length(newSupportLHS)){
     k=round(newSupportLHS[i]*newAccuracy[i])
     
@@ -115,9 +120,17 @@ newAccuracy=newSupportRHS/newSupportLHS
     #C2=N-C1                  # total drawn
     #R1=dim(df)[2]            # total hits, number of features
     #R2=N-R1                  # number of features - number of decisions
-    PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
+    PVAL[i]=phyper(k-1, R1, R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
+   
+   # risk ratio
+   invisible(capture.output(rr<-riskratio(k, C1, R1, N, conf.level=0.95)))
+     
+   CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":")
+   RISK_PVAL[i] <- rr$p.value
+   REL_RISK[i] <- rr$estimate
   }
-  
+
+ 
   PVAL=p.adjust(PVAL, method="BH")
 
 #decsFinal= unlist(lapply(rls$DECISION, FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
@@ -133,9 +146,9 @@ percSuppLHS=round(newSupportLHS/numClass, digits=3)*100
 percSuppRHS=round(newSupportRHS/numClass, digits=3)*100                          
 
 cutsDF=rls[,which(grepl("CUT_", colnames(rls)))]                           
-newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUTS_COND,cutsDF,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
+newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUTS_COND,cutsDF,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
 newDF2=newDF[order(newDF$PVAL),]
-colnames(newDF2)<-c("FEATURES","DECISION","CUTS_COND",colnames(cutsDF),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL")
+colnames(newDF2)<-c("FEATURES","DECISION","CUTS_COND",colnames(cutsDF),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL", "RISK_PVAL", "REL_RISK", "CONF_INT")
 rownames(newDF2)<-NULL
 return(newDF2)
 }
