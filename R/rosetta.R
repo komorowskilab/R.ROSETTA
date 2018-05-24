@@ -509,7 +509,7 @@ rosetta <- function(df,
    PVAL[i] <- phyper(k-1, m=R1, n=R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
    
    # risk ratio
-   rr=riskratio(k, C1, R1, N, conf.level=0.95)
+   invisible(capture.output(rr<-riskratio(k, C1, R1, N, conf.level=0.95)))
      
    CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":")
    RISK_PVAL[i] <- rr$p.value
