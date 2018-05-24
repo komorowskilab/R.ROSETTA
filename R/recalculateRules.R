@@ -46,16 +46,16 @@ outLst2=list()
 for(j in 1:dim(rls)[1]){
 
 cnds=cnd2[[j]]
-cnds[cnds == "num>cut"] <- 1
-cnds[cnds == "num<cut"] <- 1
-cnds[cnds == "cut1<num<cut2"] <- 2
+cnds[cnds == "value>cut"] <- 1
+cnds[cnds == "value<cut"] <- 1
+cnds[cnds == "cut<nvalue<cut"] <- 2
 cnds<-as.numeric(cnds)
 cndsLen=length(cnds)
 cndsCS=cumsum(cnds)
 vec4=c()
 for(i in 1:cndsLen){
 
-  if(cnd2[[j]][i]=="num>cut")
+  if(cnd2[[j]][i]=="value>cut")
   {
     vec3=more2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
     
@@ -66,7 +66,7 @@ for(i in 1:cndsLen){
     vec4=vec3 & vec4
     }
   }
-  if(cnd2[[j]][i]=="num<cut")
+  if(cnd2[[j]][i]=="value<cut")
   {
     vec3=less2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
     
@@ -77,7 +77,7 @@ for(i in 1:cndsLen){
       vec4=vec3 & vec4
     }
   }
-  if(cnd2[[j]][i]=="cut1<num<cut2")
+  if(cnd2[[j]][i]=="cut<value<cut")
   {
     vec1=less2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
     vec2=more2Vec(as.data.frame(df[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]-1]))
