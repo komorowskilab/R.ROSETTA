@@ -491,24 +491,35 @@ rosetta <- function(df,
   #}
   
   ## p-value for rules calculation ##
-  PVAL=c()
+  PVAL <- c()
+  RISK_PVAL <- c()
+  CONF_INT <- c()
+  REL_RISK <- c()
+                   
    for(i in 1:length(df_out2$SUPP_RHS)){
-   k=round(df_out2$SUPP_RHS[i]*df_out2$ACC_RHS[i]) #total support adjusted by accuracy
-   R1=unname(table(df[,length(df)])[names(table(df[,length(df)]))==as.character(df_out2$DECISION[i])])
-   N=dim(df)[1] 
-   R2=N-R1
+   k <- round(df_out2$SUPP_RHS[i]*df_out2$ACC_RHS[i]) #total support adjusted by accuracy
+   R1 <- unname(table(df[,length(df)])[names(table(df[,length(df)]))==as.character(df_out2$DECISION[i])])
+   N <- dim(df)[1] 
+   R2 <- N-R1
    # the number of decisions/objects/patients
-   C1=df_out2$SUPP_LHS[i]    # LHS Support
+   C1 <- df_out2$SUPP_LHS[i]    # LHS Support
    #C2=N-C1                  # total drawn
    #R1=dim(df)[2]            # total hits, number of features
    #R2=N-R1                  # number of features - number of decisions
-   PVAL[i]=phyper(k-1, m=R1, n=R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric 
+   PVAL[i] <- phyper(k-1, m=R1, n=R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
+   
+   # risk ratio
+   rr=riskratio(k, C1, R1, N, conf.level=0.95)
+     
+   CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":")
+   RISK_PVAL[i] <- rr$p.value
+   REL_RISK[i] <- rr$estimate
    }
   
    if(pAdjust){
    PVAL=p.adjust(PVAL, method=pAdjustMethod)}
   
-  df_out3=data.frame(df_out2,PVAL)
+  df_out3=data.frame(df_out2,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
   df_out4=df_out3[order(df_out3$PVAL,decreasing = F),]
   # clear all the created files and set the first driectory
   unlink(tempDirNam, recursive = TRUE)
