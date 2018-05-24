@@ -100,7 +100,7 @@ A vector containing manual names for manual reducer.
 Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
 }
   \item{pAdjustMethod}{
-A character containing the method: holm, hochberg, hommel, bonferroni, BH, BY,fdr or none.
+A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none.
 }
     \item{seed}{
 An integer. Seed to the random number generator.
