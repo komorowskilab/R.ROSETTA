@@ -45,15 +45,14 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-df=autcon
-out=rosetta(df)
-rls=out$main
+out <- rosetta(autcon)
+rls <- out$main
 
-#default
-features=getFeatures(df, rls)
+# default
+features <- getFeatures(autcon, rls)
 
-#change pvalue
-features=getFeatures(df, rls, pval=0.01)
+# change p-value
+features <- getFeatures(autcon, rls, pval=0.01)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
