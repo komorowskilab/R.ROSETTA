@@ -12,10 +12,10 @@ recalculateRules(df, rls, discrete=FALSE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-A data frame containing decision table. The last column should contain decisions.
+A data frame containing decision table. The last column is decision.
 }
   \item{rls}{
-A data frame of rules in a form like an output from rosetta.
+A data frame of rules in a form of rosetta output from $main.
 }
   \item{discrete}{
 Logical. Set TRUE if data are discrete. Default is FALSE.
