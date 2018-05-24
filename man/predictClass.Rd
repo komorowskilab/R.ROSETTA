@@ -12,7 +12,7 @@ predictClass(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validat
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-A data frame of feature values. Should contain the same feature names as the rules were made of.
+A data frame of decision table. The last column is decision.
 }
   \item{rls}{
 A data frame of rules in a form of rosetta output from $main.
