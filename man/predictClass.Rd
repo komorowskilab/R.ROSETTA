@@ -64,20 +64,18 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-df=autcon
-out=rosetta(df)
-rls=out$main
+out <- rosetta(autcon)
+rls <- out$main
 
-#default
-decisions=predictClass(df, rls)
+# default
+decisions <- predictClass(autcon, rls)
 
-#change normalization method
-method="median"
-decisions=predictClass(df, rls, normalize = T, normalizeMethod = method)
+# change normalization method
+decisions <- predictClass(autcon, rls, normalize = T, normalizeMethod = "median")
 
-#with validation
-oldDecisions=as.character(autism[,length(autism)])
-decisions=predictClass(df, rls, validate = T, valiDec=oldDecisions)
+# with validation
+oldDecisions <- as.character(autism[,length(autism)])
+decisions <- predictClass(autcon, rls, validate = T, valiDec=oldDecisions)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
