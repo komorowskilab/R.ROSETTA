@@ -50,12 +50,12 @@ Mateusz Garbulowski
 }
 \examples{
 library(R.ROSETTA)
-df=autcon
-out=rosetta(df)
-rls=out$main
-rls2=recalculateRules(df, rls)
 
-ruleHeatmap(df, rls2, ind=1)
+out=rosetta(autcon)
+rules=out$main
+recRules=recalculateRules(autcon, rls)
+
+ruleHeatmap(autcon, recRules, ind=1)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
