@@ -21,9 +21,9 @@ saveLineByLine <- function(rls, path, discrete=FALSE, geneExprData=TRUE, filterB
   else{
     if(geneExprData)
       {
-      lst11=lapply(rls["CUT_COND"], function(x) gsub("num>cut", "3", x, fixed = T))
-      lst22=lapply(lst11, function(x) gsub("cut1<num<cut2", "2", x, fixed = T))
-      lst33=lapply(lst22, function(x) gsub("num<cut", "1", x, fixed = T))
+      lst11=lapply(rls["CUT_COND"], function(x) gsub("value>cut", "3", x, fixed = T))
+      lst22=lapply(lst11, function(x) gsub("cut<value<cut", "2", x, fixed = T))
+      lst33=lapply(lst22, function(x) gsub("value<cut", "1", x, fixed = T))
 
       vec=as.character(as.matrix(rls["FEATURES"]))
       lst1=sapply(vec, function(x) strsplit(x, ","))
