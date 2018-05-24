@@ -12,10 +12,10 @@ ruleHeatmap(df, rls, ind=1, nbins=3, showClust=FALSE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{df}{
-A data frame of decision table. The last column should contain decisions.
+A data frame of decision table. The last column is decision.
 }
   \item{rls}{
-A data frame of rules.
+A data frame of rules in a form of rosetta output from $main.
 }
   \item{ind}{
 A numeric value of index of rule.
