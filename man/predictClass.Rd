@@ -15,7 +15,7 @@ predictClass(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validat
 A data frame of feature values. Should contain the same feature names as the rules were made of.
 }
   \item{rls}{
-A data frame of rules in a form like an output from rosetta.
+A data frame of rules in a form of rosetta output from $main.
 }
   \item{discrete}{
 Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
