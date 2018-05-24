@@ -46,11 +46,10 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-df=autcon
-out=rosetta(df)
-rls=out$main
+out=rosetta(autcon)
+rules=out$main
 
-newRls=recalculateRules(df, rls)
+recRules=recalculateRules(autcon, rules)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
