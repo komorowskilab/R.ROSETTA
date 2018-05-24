@@ -20,6 +20,12 @@ A data frame of rules in a form of rosetta output from $main.
   \item{discrete}{
 Logical. Set TRUE if data are discrete. Default is FALSE.
 }
+    \item{pAdjust}{
+Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
+}
+  \item{pAdjustMethod}{
+A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none.
+}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
