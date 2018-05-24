@@ -99,7 +99,7 @@ if(discretized)
     
     for(i in 1:cndsLen){
       #i=2
-      if(cnd2[[j]][i]=="num>cut")
+      if(cnd2[[j]][i]=="value>cut")
       {
         vec3=more2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
         
@@ -110,7 +110,7 @@ if(discretized)
           vec4=vec3 & vec4
         }
       }
-      if(cnd2[[j]][i]=="num<cut")
+      if(cnd2[[j]][i]=="value<cut")
       {
         vec3=less2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
         
@@ -121,7 +121,7 @@ if(discretized)
           vec4=vec3 & vec4
         }
       }
-      if(cnd2[[j]][i]=="cut1<num<cut2")
+      if(cnd2[[j]][i]=="cut<value<cut")
       {
         vec1=less2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
         vec2=more2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]-1]))
