@@ -18,11 +18,11 @@ A data frame of decision table. The last column is decision.
 A data frame of rules in a form of rosetta output from $main.
 }
   \item{discrete}{
-Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
+Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default is FALSE.
 }
 
   \item{normalize}{
-Logical. If TRUE votes are normalized. If FALSE normalization of votes is not performed. Default TRUE.
+Logical. If TRUE votes are normalized. If FALSE normalization of votes is not performed. Default is TRUE.
 }
 
   \item{normalizeMethod}{
