@@ -141,89 +141,89 @@ Mateusz Garbulowski, Karolina Smolinska
 \examples{
 library(R.ROSETTA)
 
-#sample data
-df=autcon
+#assign sample data
+df <- autcon
 
 ###### default parameters ######
-resultsRos=rosetta(df) 
+resultsRos <- rosetta(df) 
 resultsRos$quality$Accuracy.Mean
 
 ###### under-sampling ######
-resultsRosU=rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=10)
+resultsRosU <- rosetta(df, underSample=TRUE, underSampleNum=20, underSampleSize=10)
 resultsRosU$quality$Accuracy.Mean
 
 ###### under-sampling with default parameters ######
-resultsRosUD=rosetta(df, underSample=TRUE)
+resultsRosUD <- rosetta(df, underSample=TRUE)
 resultsRosUD$quality$Accuracy.Mean
 
 ###### classifiers ######
 # StandardVoter
-resultsRosSV=rosetta(df, classifier="StandardVoter")
+resultsRosSV <- rosetta(df, classifier="StandardVoter")
 resultsRosSV$quality$Accuracy.Mean
 
 # ObjectTrackingVoter
-resultsRosOTV=rosetta(df, classifier="ObjectTrackingVoter")
+resultsRosOTV <- rosetta(df, classifier="ObjectTrackingVoter")
 resultsRosOTV$quality$Accuracy.Mean
 
 # NaiveBayesClassifier
-resultsRosNB=rosetta(df, classifier="NaiveBayesClassifier")
+resultsRosNB <- rosetta(df, classifier="NaiveBayesClassifier")
 resultsRosNB$quality$Accuracy.Mean
 
 ###### reducers ######
 # Johnson
-resultsRosJR=rosetta(df, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE,BRTprec=0.1,Precompute=FALSE,Approximate=TRUE,Fraction=0.9))
+resultsRosJR <- rosetta(df, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE,BRTprec=0.1,Precompute=FALSE,Approximate=TRUE,Fraction=0.9))
 resultsRosJR$quality$Accuracy.Mean
 
 # Genetic
-resultsRosGR=rosetta(df, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
+resultsRosGR <- rosetta(df, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
 resultsRosGR$quality$Accuracy.Mean
 
 ###### discernibility ######
 # Full
-resultsRosF=rosetta(df, reducerDiscernibility="Full")
+resultsRosF <- rosetta(df, reducerDiscernibility="Full")
 resultsRosF$quality$Accuracy.Mean
 
 # Object
-resultsRosO=rosetta(df, reducerDiscernibilit="Object")
+resultsRosO <- rosetta(df, reducerDiscernibilit="Object")
 resultsRosO$quality$Accuracy.Mean
 
 ###### discretization ######
 # EqualFrequencyScaler
-resultsRosEF=rosetta(df, discrete=FALSE, discreteMethod="EqualFrequency", discreteParam=3)
+resultsRosEF <- rosetta(df, discrete=FALSE, discreteMethod="EqualFrequency", discreteParam=3)
 resultsRosEF$quality$Accuracy.Mean
 
 # MDL
-resultsRosMDL=rosetta(df, discrete=FALSE, discreteMethod="MDL")
+resultsRosMDL <- rosetta(df, discrete=FALSE, discreteMethod="MDL")
 resultsRosMDL$quality$Accuracy.Mean
 
 # Naive
-resultsRosNaive=rosetta(df, discrete=FALSE, discreteMethod="Naive")
+resultsRosNaive <- rosetta(df, discrete=FALSE, discreteMethod="Naive")
 resultsRosNaive$quality$Accuracy.Mean
 
 # SemiNaive
-resultsRosSN=rosetta(df, discrete=FALSE, discreteMethod="SemiNaive")
+resultsRosSN <- rosetta(df, discrete=FALSE, discreteMethod="SemiNaive")
 resultsRosSN$quality$Accuracy.Mean
 
 # BRO
-resultsRosBR=rosetta(df, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
+resultsRosBR <- rosetta(df, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
 resultsRosBR$quality$Accuracy.Mean
 
 # without discretization mask
-resultsRosMask=rosetta(df, discrete=FALSE, discreteMask=FALSE)
+resultsRosMask <- rosetta(df, discrete=FALSE, discreteMask=FALSE)
 resultsRosMask$quality$Accuracy.Mean
 
 ###### for discrete data ######
 # no discretization is performed
-resultsRosNoD=rosetta(df, discrete=TRUE)
+resultsRosNoD <- rosetta(df, discrete=TRUE)
 resultsRosNoD$quality$Accuracy.Mean
 
 ###### calculate AUC #########  
 #for class: autism
-resultsRosAUCa=rosetta(autcon, roc= TRUE, clroc = "autism")
+resultsRosAUCa <- rosetta(autcon, roc= TRUE, clroc = "autism")
 resultsRosAUCa$quality
 
 #for class: control
-resultsRosAUCc=rosetta(autcon, roc= TRUE, clroc = "control")
+resultsRosAUCc <- rosetta(autcon, roc= TRUE, clroc = "control")
 resultsRosAUCc$quality
   
 #without ROC.AUC
@@ -232,36 +232,36 @@ resultsRosAUCa$quality
 
 ###### set fallback class ######
 #for class: autism
-resultsRosFBa=rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
+resultsRosFBa <- rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
 resultsRosFBa$quality$Accuracy.Mean
 
 #for class: control
-resultsRosFBc=rosetta(autcon, fallBack=TRUE, fallBackClass="control")
+resultsRosFBc <- rosetta(autcon, fallBack=TRUE, fallBackClass="control")
 resultsRosFBc$quality$Accuracy.Mean
 
 ###### rules filtration ######
 # accuracy
-resultsRosFA=rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
+resultsRosFA <- rosetta(df, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
 resultsRosFA$quality$Accuracy.Mean
 
 # support
-resultsRosFS=rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
+resultsRosFS <- rosetta(df, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
 resultsRosF2$quality$Accuracy.Mean
 
 # coverage
-resultsRosFC=rosetta(df, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
+resultsRosFC <- rosetta(df, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
 resultsRosFC$quality$Accuracy.Mean
 
 # stability
-resultsRosFST=rosetta(df, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
+resultsRosFST <- rosetta(df, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
 resultsRosFST$quality$Accuracy.Mean
 
 ###### mask features ######
-resultsRosMF1=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
+resultsRosMF1 <- rosetta(df, maskFeatures=TRUE, maskFeaturesNames=c("MAP7"))
 resultsRosMF1$quality$Accuracy.Mean
 
 # remove first 20 features
-resultsRosMF2=rosetta(df, maskFeatures=TRUE, maskFeaturesNames=colnames(df)[1:20])
+resultsRosMF2 <- rosetta(df, maskFeatures=TRUE, maskFeaturesNames=colnames(df)[1:20])
 resultsRosMF2$quality$Accuracy.Mean
 }
 
