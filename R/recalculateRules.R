@@ -1,4 +1,4 @@
-recalculateRules<-function(df,rls,discrete=F){
+recalculateRules<-function(df, rls, discrete=FALSE){
 discretized=discrete
 rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
 cnd2=strsplit(as.character(rls$CUT_COND),",",fixed = T)
@@ -136,5 +136,6 @@ cutsDF=rls[,which(grepl("CUTS", colnames(rls)))]
 newDF=data.frame(rls$FEATURES,rls$DECISION,rls$CUT_COND,cutsDF,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL)
 newDF2=newDF[order(newDF$PVAL),]
 colnames(newDF2)<-c("FEATURES","DECISION","CUT_COND",colnames(cutsDF),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL")
+rownames(newDF2)<-NULL
 return(newDF2)
 }
