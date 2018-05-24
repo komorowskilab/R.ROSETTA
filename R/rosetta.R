@@ -385,9 +385,9 @@ rosetta <- function(df,
   lst_cuts22=unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
   
   # remove brackets and change them into conditions
-  lst1=lapply(lst_cuts, function(x) gsub(".*\\*\\).*", "value > cut", x))
-  lst2=lapply(lst1, function(x) gsub(".*\\[\\*.*", "value < cut", x))
-  lst3=lapply(lst2, function(x) gsub(".*\\[.*\\).*", "cut < value < cut", x))
+  lst1=lapply(lst_cuts, function(x) gsub(".*\\*\\).*", "value>cut", x))
+  lst2=lapply(lst1, function(x) gsub(".*\\[\\*.*", "value<cut", x))
+  lst3=lapply(lst2, function(x) gsub(".*\\[.*\\).*", "cut<value<cut", x))
   lst4=lapply(lst3, function(x) gsub(".*).*","discrete",x))
   
   cuts2=unlist(lapply(lapply(lst4, function(x) paste(x, collapse = ",")), unlist))
