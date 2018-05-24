@@ -403,10 +403,10 @@ rosetta <- function(df,
   
   decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
   df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
-  colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUT_COND",paste0("CUTS_",seq(1:max(table(df222$group)))))
+  colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUTS_COND",paste0("CUT_",seq(1:max(table(df222$group)))))
   
-  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUT_COND")])
-  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUT_COND")])
+  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND")])
+  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND")])
   subMat=as.matrix(do.call(paste0, df_outU))
   
    aggregate2 <- function(x){ 
@@ -427,7 +427,7 @@ rosetta <- function(df,
     
    indx <- sapply(df_out3, is.factor)
    df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-   df_out4=aggregate(.~FEATURES+DECISION+CUT_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+   df_out4=aggregate(.~FEATURES+DECISION+CUTS_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
    return(df_out4)
    }
   
@@ -475,7 +475,7 @@ rosetta <- function(df,
       
   indx <- sapply(df_out3, is.factor)
   df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-  df_out4=aggregate(.~FEATURES+DECISION+CUT_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+  df_out4=aggregate(.~FEATURES+DECISION+CUTS_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
   return(df_out4)
   }
     
