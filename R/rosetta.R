@@ -521,6 +521,7 @@ rosetta <- function(df,
   
   df_out3=data.frame(df_out2,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
   df_out4=df_out3[order(df_out3$PVAL,decreasing = F),]
+  rownames(df_out4) <- NULL
   # clear all the created files and set the first driectory
   unlink(tempDirNam, recursive = TRUE)
   
