@@ -452,10 +452,10 @@ rosetta <- function(df,
   df3=t(as.data.frame(lst_cuts3))
   decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
   df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, df3, lst_cuts22)
-  colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS",paste0("CUTS_",seq(1:max(table(df222$group)))),"CUT_COND")
+  colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS",paste0("CUT_",seq(1:max(table(df222$group)))),"CUTS_COND")
   #df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, mean, data = df_out, na.action = na.pass)
-  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUT_COND")])
-  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUT_COND")])
+  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND")])
+  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND")])
   subMat=as.matrix(do.call(paste0, df_outU))
   
    aggregate2 <- function(x){ 
