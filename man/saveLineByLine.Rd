@@ -12,7 +12,7 @@ saveLineByLine(rls, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{rls}{
-A data frame containing output from rosetta function.
+A data frame of rules in a form of rosetta output from $main.
 }
   \item{path}{
 Path to save the output file. Should contain name of the file in .txt format.
