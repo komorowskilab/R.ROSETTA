@@ -2,7 +2,7 @@ getFeatures <- function(df, rls, pval=0.05){
 
 newRls=rls
 decis2=newRls$DECISION
-decsCounts=table(df[,length(df)])
+decsCounts=table(as.character(df[,length(df)]))
 
 lstOut=list()
 for(i in 1:length(table(df[,length(df)]))){
