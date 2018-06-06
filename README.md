@@ -18,9 +18,9 @@ These include:
 ## Getting Started
 
 ### Prerequisites
-R.ROSETTA works with windows and macOS platforms.<br />
-For macOS systems wine is required.<br />
-<a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">Here</a> is a tutorial by David Baumgold how to install wine in macOS platforms.
+R.ROSETTA works with windows, linux and macOS platforms.<br />
+For linux and macOS systems wine is required.<br />
+<a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">A tutorial</a> by David Baumgold, how to install wine on macOS platforms.
 
 ### Installing
 
@@ -29,7 +29,7 @@ Installation from github requires devtools package:
 install.packages("devtools")
 ```
 
-Install and load R.ROSETTA package from github:
+Installation and loading R.ROSETTA package from github:
 ```R
 library(devtools)
 install_github("mategarb/R.ROSETTA")
@@ -38,15 +38,15 @@ library(R.ROSETTA)
 ```
 ### Functions
 **rosetta()** <-> *runs ROSETTA rough set classifier*<br />
-**recalculateRules()** <-> *recalculates rules after undersampling and retrieves the support sets for rules*<br />
-**saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/*<br />
-**predictClass()** <-> *predicts decision according to created model*<br />
-**getFeatures()** <-> *retrieves the most significant features from rules*<br />
-**ruleHeatmap()** <-> *creates a heatmap per one rule*<br />
+**recalculateRules()** <-> *recalculates rules after according to decision table and retrieves the support sets for rules*<br />
+**saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ and Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
+**predictClass()** <-> *predicts outcome according to the model*<br />
+**getFeatures()** <-> *retrieves the most significant features from the rules*<br />
+**ruleHeatmap()** <-> *creates heatmap of support sets for a rule*<br />
 
 ## Examples
 
-All the examples you can find by typing ? and name of the function in R environment e.g.
+All the examples you can find by typing ? and the name of the function in R environment e.g.
 ```
 ?rosetta
 ```
