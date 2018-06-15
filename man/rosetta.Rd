@@ -8,7 +8,7 @@ Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algori
 }
 \usage{
 rosetta(df, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequencyScaler",
-discreteParam=3, discreteMask=TRUE, reducer="JohnsonReducer", reducerDiscernibility="Object",
+discreteParam=3, discreteMask=TRUE, reducer="Johnson", reducerDiscernibility="Object",
 roc=FALSE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
 underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ruleFiltrSupport=c(1,3),
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
