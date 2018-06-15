@@ -18,8 +18,8 @@ These include:
 ## Getting Started
 
 ### Prerequisites
-R.ROSETTA works with windows, linux and macOS platforms.<br />
-For linux and macOS systems wine is required.<br />
+R.ROSETTA works with unix and windows OS.<br />
+For unix systems wine is required.<br />
 <a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">A tutorial</a> by David Baumgold, how to install wine on macOS platforms.
 
 ### Installing
