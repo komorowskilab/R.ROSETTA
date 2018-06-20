@@ -36,10 +36,12 @@ if(showClust){
   rf1=(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
   fit_fp <- kmeans(df2[rf1,], factorial(length(table(as.matrix(df2[rf1,])))))
   df2_2=df2[rf1,][order(fit_fp$cluster),]
+  df2_2<-df2_2[order(apply(df2_2, 1, paste, collapse="")),]
   
   rf2=(length(objs_tp)+length(objs_fp)+1):(length(objs_tp)+length(objs_fp)+length(objs_tn))
   fit_tn <- kmeans(df2[rf2,], factorial(length(table(as.matrix(df2[rf2,])))))
   df2_3=df2[rf2,][order(fit_tn$cluster),]
+  df2_3<-df2_3[order(apply(df2_3, 1, paste, collapse="")),]
   
   rf3=1:length(objs_tp)
   df2_1=df2[rf3,]
