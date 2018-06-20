@@ -20,10 +20,10 @@ objs_tn = which(rownames(df) %in% objs_restclasses)# the rest of objects
 df2=as.matrix(df[c(objs_tp, objs_fp, objs_tn), which(colnames(df) %in% ftrs)])
 
 if (nbins >= 3){
-cols=colorRampPalette(c("limegreen", "gray90", "tomato2"))(n = nbins)
+cols=colorRampPalette(c("yellowgreen", "gray90", "firebrick1"))(n = nbins)
 }else
 {
-cols=colorRampPalette(c("limegreen", "tomato2"))(n = 2)
+cols=colorRampPalette(c("yellowgreen", "firebrick1"))(n = 2)
 }
 
 for(i in 1:length(ftrs)){
@@ -71,12 +71,12 @@ heatmap.2(df2,
           symkey=FALSE,
           rowsep=c(length(objs_tp), length(objs_tp)+length(objs_fp)),
           colsep=1:(length(ftrs)-1),
-          RowSideColors = c(rep("gold", length(objs_tp)), rep("firebrick1", length(objs_fp)),rep("dodgerblue", length(objs_tn))))
+          RowSideColors = c(rep("gold", length(objs_tp)), rep("sandybrown", length(objs_fp)),rep("dodgerblue", length(objs_tn))))
 
 #list('x'=-0.1,'y'=1.2)
 legend(list('x'=0,'y'=1.05),      # location of the legend on the heatmap plot
        legend = c(paste0("Objects supporting ",decs), paste0("Objects not supporting ",decs), "Rest of the objects"), # category labels
-       col = c("gold", "firebrick1", "dodgerblue"),  # color key
+       col = c("gold", "sandybrown", "dodgerblue"),  # color key
        lty= 1,             # line style
        lwd = 10,
        cex=.7,
