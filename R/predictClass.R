@@ -26,7 +26,7 @@ if(discretized)
     outLst2=list()
     rls=rls3
     rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
-    cnd2=strsplit(as.character(rls$CUT_COND),",",fixed = T)
+    cnd2=strsplit(as.character(rls$CUTS_COND),",",fixed = T)
     
     
     for(k in 1:dim(df)[1]){
@@ -78,7 +78,7 @@ if(discretized)
     outLst2=list()
     rls=rls3
     rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
-    cnd2=strsplit(as.character(rls$CUT_COND),",",fixed = T)
+    cnd2=strsplit(as.character(rls$CUTS_COND),",",fixed = T)
     
     
   for(k in 1:dim(df)[1]){
