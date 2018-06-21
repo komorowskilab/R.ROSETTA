@@ -87,9 +87,9 @@ if(discretized)
   for(j in 1:dim(rls)[1]){
     #j=1
     cnds=cnd2[[j]]
-    cnds[cnds == "num>cut"] <- 1
-    cnds[cnds == "num<cut"] <- 1
-    cnds[cnds == "cut1<num<cut2"] <- 2
+    cnds[cnds == "value>cut"] <- 1
+    cnds[cnds == "value<cut"] <- 1
+    cnds[cnds == "cut1<value<cut2"] <- 2
     cnds<-as.numeric(cnds)
     cndsLen=length(cnds)
     cndsCS=cumsum(cnds)
