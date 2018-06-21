@@ -6,7 +6,7 @@ dec2=as.character(rls$DECISION)
 decs2=unique(dec2)
 objs=rownames(df)
 feats=colnames(df)
-cuts=rls[,grep('CUTS_', colnames(rls), value=TRUE)]
+cuts=rls[,grep('CUT_', colnames(rls), value=TRUE)]
 less2Vec<-function(x,y){ (x-y)<=0}
 more2Vec<-function(x,y){ (x-y)>=0}
 eqal2Vec<-function(x,y){ (x-y)==0}
