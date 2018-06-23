@@ -18,7 +18,7 @@ A data frame of decision table. The last column is decision.
 A data frame of rules in a form of rosetta output from $main.
 }
   \item{discrete}{
-Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default is FALSE.
+Logical. If TRUE the data has all discrete values. Default is FALSE.
 }
 
   \item{normalize}{
