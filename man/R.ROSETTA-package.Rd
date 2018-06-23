@@ -28,11 +28,27 @@ A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data
 \link[ROSETTA]{bioinf.icm.uu.se/rosetta}
 }
 \examples{
-df=autism
-
-resultsRos=rosetta(df)
-resultsRos$statistic
-resultsRos$rules
-
-saveLineByLine(resultsRos$rules,"out.txt")
+  ## LOAD sample dataset
+  ## you can find a sample dataset under "autcon"
+  ## run rosetta on default parameters
+  resultsRos<-rosetta(autcon)
+  
+  ##print the accuracy of your model
+  print(resultsRos$quality$Accuracy.Mean)
+  
+  ## assign the rule table for p-value < 0.05
+  rules<-resultsRos$main[which(resultsRos$main$PVAL<0.05),]
+  
+  ## print the features distribution
+  print(getFeatures(autcon,rules))
+  
+  ## print rule heatmap for the most significant autism rule
+  rules2=recalculateRules(autcon, rules)
+  ruleHeatmap(autcon, rules2, ind=5, nbins=3, showClust=TRUE)
+  
+  ## print support set for the rules
+  print(rules2$SUPP_SET_RHS)
+  
+  ## save rules to generate the networks
+  saveLineByLine(rules,"rules.txt")
 }
