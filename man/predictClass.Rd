@@ -1,10 +1,10 @@
 \name{predictClass}
 \alias{predictClass}
 \title{
-Class prediction.
+Predict new classes.
 }
 \description{
-Use model to predict classes.
+Use created model to validate external dataset.
 }
 \usage{
 predictClass(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
@@ -30,7 +30,7 @@ A character containing votes normalization method: median, mean, max, scalar, ru
 }
 
   \item{validate}{
-Logical. If TRUE decisions are validated using known ones. Default FALSE.
+Logical. If TRUE, decisions are validated using established ones. Default is FALSE.
 }
 
   \item{valiDec}{
