@@ -2,12 +2,12 @@ Package: R.ROSETTA
 Version: 0.2.2
 Imports: arules, gplots, fmsb
 Date: 2018-09-01
-Title: R.ROSETTA - A Rough Set Toolkit for Analysis of Data in R
+Title: R.ROSETTA - a toolkit to create rough set classification models
 Author: Mateusz Garbulowski [aut, cre],
   Karolina Smolinska [aut, cre],
   Jan Komorowski [aut]
-Maintainer: Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
-Description: R.ROSETTA is a toolkit for analyzing tabular data within the framework of rough set theory. R.ROSETTA is designed to support the overall data mining and knowledge discovery process: From initial browsing and preprocessing of the data, via computation of minimal attribute sets and generation of if-then rules or descriptive patterns, to validation and analysis of the induced rules or patterns.
+Maintainer: Jan Komorowski <jan.komorowski@icm.uu.se>, Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
+Description: R.ROSETTA is a package for creating and analyzing rough set classification models.  R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA system.
 License: GPL (>= 2)
 LazyData: true
 URL: https://www.r-project.org, http://www.another.url
