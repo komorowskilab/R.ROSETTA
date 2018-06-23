@@ -1,10 +1,10 @@
 \name{recalculateRules}
 \alias{recalculateRules}
 \title{
-Recalculate rules
+Recalculate the rule table.
 }
 \description{
-Recalculate rules according to the input decision table. Retrieves the true support sets for rules and renew the p-values.
+Recalculate all the values in rule table according to the input decision table. Additionally, retrieves the support sets for rules.
 }
 \usage{
 recalculateRules(df, rls, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
@@ -15,7 +15,7 @@ recalculateRules(df, rls, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
 A data frame containing decision table. The last column is decision.
 }
   \item{rls}{
-A data frame of rules in a form of rosetta output from $main.
+A data frame of rule table in a form of rosetta output.
 }
   \item{discrete}{
 Logical. Set TRUE if data are discrete. Default is FALSE.
