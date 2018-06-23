@@ -15,7 +15,7 @@ ruleHeatmap(df, rls, ind=1, nbins=3, showClust=FALSE)
 A data frame of decision table. The last column is decision.
 }
   \item{rls}{
-A data frame of rules in a form of rosetta output from $main.
+A data frame of rule table in a form of rosetta output.
 }
   \item{ind}{
 A numeric value of index of rule.
