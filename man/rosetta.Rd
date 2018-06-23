@@ -4,7 +4,7 @@
 ROSETTA rough set classifier
 }
 \description{
-Run ROSETTA rough set classifier. In addition to all the existing ROSETTA algorithms we have added new functions especially useful in bioinformatics applications. These include: under-sampling, p-value estimation of the rules, rule-visualization methods and retrieving support sets from rules.
+Create ROSETTA rough set classification model.
 }
 \usage{
 rosetta(df, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequencyScaler",
@@ -114,7 +114,7 @@ test table k − 1 times. Default is FALSE.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame sorted by rule pvalue containing rules information such as: features, decision, accuracy, support, coverage, stability and p-value.
+  \item{out$main}{A data frame of rule table containing a information of: features, decision, accuracy, support, coverage, stability and p-value. The table is sorted according to the p-value.
 }
     \item{out$quality}{A table of quality of the model: accuracy, ROC and AUC measures.
 }
@@ -141,7 +141,7 @@ Mateusz Garbulowski, Karolina Smolinska
 \examples{
 library(R.ROSETTA)
 
-#assign sample data
+# assign sample data
 df <- autcon
 
 ###### default parameters ######
