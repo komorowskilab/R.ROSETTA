@@ -7,22 +7,22 @@
 
 # R.ROSETTA
 
-**ROSETTA** rough set classifier as a R package. In addition to all the existing ROSETTA (created by Öhrn and Komorowski, 1997) algorithms we have added new functions especially useful in bioinformatics applications. 
+**ROSETTA** create rough set cassification models. The R.ROSETTA is an R package based on ROSETTA(Öhrn and Komorowski, 1997) software. In addition to all the existing ROSETTA functionalities, we have added new functions especially useful in bioinformatic applications. 
 These include: 
 * under-sampling
-* p-value estimation of the rules
-* retrieving the support sets for rules
+* rule p-value estimation
+* retrieving the rule support sets
 * class prediction
-* rule heatmap
+* model visualization as a rule network or heatmap
 
 ## Getting Started
 
 ### Prerequisites
-R.ROSETTA works with unix and windows OS.<br />
+R.ROSETTA works with UNIX and windows operating systems.<br />
 For unix systems wine is required.<br />
 <a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">A tutorial</a> by David Baumgold, how to install wine on macOS platforms.
 
-### Installing
+### Installation
 
 Installation from github requires devtools package:
 ```R
@@ -37,18 +37,18 @@ install_github("mategarb/R.ROSETTA")
 library(R.ROSETTA)
 ```
 ### Functions
-**rosetta()** <-> *runs ROSETTA rough set classifier*<br />
-**recalculateRules()** <-> *recalculates rules after according to decision table and retrieves the support sets for rules*<br />
-**saveLineByLine()** <-> *saves rules to LineByLine format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ and Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
-**predictClass()** <-> *predicts outcome according to the model*<br />
-**getFeatures()** <-> *retrieves the most significant features from the rules*<br />
-**ruleHeatmap()** <-> *creates heatmap of support sets for a rule*<br />
+**rosetta()** <-> *create ROSETTA rough set classification model*<br />
+**recalculateRules()** <-> *recalculate rule table using the input data. Retrieve the support sets for rules*<br />
+**predictClass()** <-> *predicts new classes by applying the model*<br />
+**getFeatures()** <-> *retrieves the attributes from the rules*<br />
+**saveLineByLine()** <-> *saves rules to LineByLine text format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ or Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
+**ruleHeatmap()** <-> *creates a heatmap of object-attribute interactions*<br />
 
 ## Examples
 
-All the examples you can find by typing ? and the name of the function in R environment e.g.
+All the examples can be found in the R function manuals. To see the description, type "?" and the name of the function in R environment e.g.
 ```
-?rosetta
+?rosetta, ?saveLineByLine
 ```
 
 ## Acknowledgments
