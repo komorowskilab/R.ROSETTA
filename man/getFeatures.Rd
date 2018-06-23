@@ -1,7 +1,7 @@
 \name{getFeatures}
 \alias{getFeatures}
 \title{
-Retrieve important features.
+Retrieve feature distribution from the rules.
 }
 \description{
 Checks which features are the most significant and most frequent in rules per each class.
@@ -15,17 +15,17 @@ getFeatures(df, rls, pval=0.05)
 A data frame of decision table. The last column is decision.
 }
   \item{rls}{
-A data frame of rules in a form of rosetta output from $main.
+A data frame of rule-table from rosetta output.
 }
   \item{pval}{
-A numeric value containing p-value cut. Default is set to 0.05 what means that we considering only significant rules.
+A numeric value containing p-value threshold. The default significance level is 0.05.
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{list}{A list of features per each class. Each list is sorted be importance.}
+  \item{list}{A list of features for each class. Each list is sorted be importance (calculated from the feature frequency and p-value).}
 }
 \references{
 %% ~put references to the literature/web site here ~
