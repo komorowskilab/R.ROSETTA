@@ -7,8 +7,7 @@
 
 # R.ROSETTA
 
-**R.ROSETTA** is a package for creating and analyzing rough set classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system.
-These include: 
+**R.ROSETTA** is a package for creating and analyzing rough set classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system. In addition to all the existing ROSETTA functionalities, we have added new functions especially useful in bioinformatic applications. These include:
 * under-sampling
 * rule p-value estimation
 * retrieving the rule support sets
