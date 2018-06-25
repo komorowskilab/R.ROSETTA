@@ -52,7 +52,7 @@ A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data
   ## save the rules to generate networks
   saveLineByLine(rules, "rules.txt")
   
-  ## predict classes
+  ## predict decision classes
   decision<-as.character(autcon[,length(autcon)])
   prediction<-predictClass(autcon[,-length(autcon)], rules, discrete=F, normalize=T, normalizeMethod="max", validate=T, decision)
   
