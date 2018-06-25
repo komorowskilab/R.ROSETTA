@@ -1,24 +1,24 @@
 \name{predictClass}
 \alias{predictClass}
 \title{
-Predict new classes.
+Predict new decision classes.
 }
 \description{
-Use created model to validate external dataset.
+Use generated model to validate independent dataset.
 }
 \usage{
-predictClass(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
+predictClass(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="scalar", validate=FALSE, valiDec)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{df}{
+  \item{dt}{
 A data frame of decision table. The last column is decision.
 }
-  \item{rls}{
-A data frame of rules in a form of rosetta output from $main.
+  \item{rules}{
+A data frame of rule table in a form of rosetta $main output.
 }
   \item{discrete}{
-Logical. If TRUE the data has all discrete values. Default is FALSE.
+Logical. If TRUE the dataset is discrete. Default is FALSE. 
 }
 
   \item{normalize}{
@@ -30,19 +30,19 @@ A character containing votes normalization method: median, mean, max, scalar, ru
 }
 
   \item{validate}{
-Logical. If TRUE, decisions are validated using established ones. Default is FALSE.
+Logical. If TRUE, new decisions are validated using fixed ones. Default is FALSE.
 }
 
   \item{valiDec}{
-A vector containing decisions to validate. Should be a character vector. }
+A character vector containing decisions to validate.}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{decisions$out}{A data frame containing names of objects, votes for each decision and predicted decisions.
+  \item{decisions$out}{A data frame containing names of the objects, votes for each decision and predicted outcome.
 }
-  \item{decisions$accuracy}{A numeric value containing an accuracy of the model.
+  \item{decisions$accuracy}{A numeric value containing an accuracy of the model. Only if validate is TRUE.
 }
 
 }
@@ -65,17 +65,17 @@ Mateusz Garbulowski
 library(R.ROSETTA)
 
 out <- rosetta(autcon)
-rls <- out$main
+rules <- out$main
 
-# default
-decisions <- predictClass(autcon, rls)
+# default settings
+decisions <- predictClass(autcon, rules)
 
 # change normalization method
-decisions <- predictClass(autcon, rls, normalize = T, normalizeMethod = "median")
+decisions <- predictClass(autcon, rules, normalize = TRUE, normalizeMethod = "median")
 
 # with validation
 oldDecisions <- as.character(autism[,length(autism)])
-decisions <- predictClass(autcon, rls, validate = T, valiDec=oldDecisions)
+decisions <- predictClass(autcon, rules, validate = TRUE, valiDec=oldDecisions)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
