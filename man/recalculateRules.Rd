@@ -4,21 +4,21 @@
 Recalculate the rule table.
 }
 \description{
-Recalculate all the values in rule table according to the input decision table. Additionally, retrieves the support sets for rules.
+Recalculate all the values in rule table according to the input decision table. Additionally, retrieves the rule support sets.
 }
 \usage{
-recalculateRules(df, rls, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
+recalculateRules(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{df}{
-A data frame containing decision table. The last column is decision.
+  \item{dt}{
+A data frame of decision table. The last column is decision.
 }
-  \item{rls}{
-A data frame of rule table in a form of rosetta output.
+  \item{rules}{
+A data frame of rule table in a form of rosetta $main output.
 }
   \item{discrete}{
-Logical. Set TRUE if data are discrete. Default is FALSE.
+Logical. If TRUE the dataset is discrete. Default is FALSE. 
 }
     \item{pAdjust}{
 Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
