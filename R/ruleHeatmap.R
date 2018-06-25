@@ -1,23 +1,22 @@
-ruleHeatmap <- function(df, rls, ind=1, nbins=3, showClust=FALSE){
+ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=FALSE){
 
-rls2=rls
 r=ind
   
-ftrs=unlist(strsplit(as.character(rls2$FEATURES)[r], ","))
-perc=unlist(strsplit(as.character(rls2$PERC_SUPP_RHS)[r], ","))
-decs=unlist(as.character(rls2$DECISION))[r]
+ftrs=unlist(strsplit(as.character(rules$FEATURES)[r], ","))
+perc=unlist(strsplit(as.character(rules$PERC_SUPP_RHS)[r], ","))
+decs=unlist(as.character(rules$DECISION))[r]
 
-objs_supp_rule=unlist(strsplit(as.character(rls2$SUPP_SET_RHS)[r], ","))
-objs_class=rownames(df)[which(df$decision == decs)]
-objs_restclasses=rownames(df)[which(df$decision != decs)]
+objs_supp_rule=unlist(strsplit(as.character(rules$SUPP_SET_RHS)[r], ","))
+objs_class=rownames(dt)[which(dt$decision == decs)]
+objs_restclasses=rownames(dt)[which(dt$decision != decs)]
 
 ## selecting TP, FP, TN objects
-objs_tp = which(rownames(df) %in% objs_supp_rule)# objs supporting rule
-objs_fp = which(rownames(df) %in% setdiff(objs_class, objs_supp_rule))# objs not supporting the rule
-objs_tn = which(rownames(df) %in% objs_restclasses)# the rest of objects
+objs_tp = which(rownames(dt) %in% objs_supp_rule)# objs supporting rule
+objs_fp = which(rownames(dt) %in% setdiff(objs_class, objs_supp_rule))# objs not supporting the rule
+objs_tn = which(rownames(dt) %in% objs_restclasses)# the rest of objects
 
 ## choosing frame for rules
-df2=as.matrix(df[c(objs_tp, objs_fp, objs_tn), which(colnames(df) %in% ftrs)])
+dt2=as.matrix(dt[c(objs_tp, objs_fp, objs_tn), which(colnames(dt) %in% ftrs)])
 
 if (nbins >= 3){
 cols=colorRampPalette(c("yellowgreen", "gray90", "firebrick1"))(n = nbins)
@@ -27,30 +26,30 @@ cols=colorRampPalette(c("yellowgreen", "firebrick1"))(n = 2)
 }
 
 for(i in 1:length(ftrs)){
-df2[,i]=discretize(df2[,i], method="frequency", categories = nbins, labels=1:nbins)
+dt2[,i]=discretize(dt2[,i], method="frequency", categories = nbins, labels=1:nbins)
 }
 
 if(showClust){
   
   
   rf1=(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
-  fit_fp <- kmeans(df2[rf1,], factorial(length(table(as.matrix(df2[rf1,])))))
-  df2_2=df2[rf1,][order(fit_fp$cluster),]
-  df2_2<-df2_2[order(apply(df2_2, 1, paste, collapse="")),]
+  fit_fp <- kmeans(dt2[rf1,], factorial(length(table(as.matrix(dt2[rf1,])))))
+  dt2_2=dt2[rf1,][order(fit_fp$cluster),]
+  dt2_2<-dt2_2[order(apply(dt2_2, 1, paste, collapse="")),]
   
   rf2=(length(objs_tp)+length(objs_fp)+1):(length(objs_tp)+length(objs_fp)+length(objs_tn))
-  fit_tn <- kmeans(df2[rf2,], factorial(length(table(as.matrix(df2[rf2,])))))
-  df2_3=df2[rf2,][order(fit_tn$cluster),]
-  df2_3<-df2_3[order(apply(df2_3, 1, paste, collapse="")),]
+  fit_tn <- kmeans(dt2[rf2,], factorial(length(table(as.matrix(dt2[rf2,])))))
+  dt2_3=dt2[rf2,][order(fit_tn$cluster),]
+  dt2_3<-dt2_3[order(apply(dt2_3, 1, paste, collapse="")),]
   
   rf3=1:length(objs_tp)
-  df2_1=df2[rf3,]
+  dt2_1=dt2[rf3,]
   
-  df2=rbind(df2_1,df2_2,df2_3)
+  dt2=rbind(dt2_1,dt2_2,dt2_3)
 }
 
 
-heatmap.2(df2,
+heatmap.2(dt2,
           Rowv=F,
           #Colv=FALSE,
           #margins = c(7,10),
