@@ -4,18 +4,18 @@
 Converts rules to LineByLine format.
 }
 \description{
-Saves rules in LineByLine format that is compatible with VisuNet software. Allows to filter out not-significant rules by setting the threshold of p-value.
+Saves rule table as LineByLine txt format that is compatible with VisuNet and Ciruvis framework.
 }
 \usage{
-saveLineByLine(rls, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
+saveLineByLine(rules, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{rls}{
+  \item{rules}{
 A data frame of rule table in a form of rosetta output.
 }
   \item{path}{
-Path to save the output file. Should contain name of the file in .txt format.
+Path to save the output file. Should contain the name of the file with .txt extension.
 }
   \item{discrete}{
 Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
@@ -24,10 +24,10 @@ Logical. If TRUE data are discrete. If FALSE data are not discrete values. Defau
 Logical. If TRUE data are gene expression with 2 or 3 classes. Default is FALSE.
 }
   \item{filterByPval}{
-Logical. If TRUE the filtration will be done. Default is FALSE.
+Logical. If TRUE the filtration is performed. Default is FALSE.
 }
   \item{pval}{
-A numeric value containing p-value threshold allows filtering. Default is 0.05.
+A numeric value containing p-value threshold. Default is 0.05.
 }
 }
 \details{
