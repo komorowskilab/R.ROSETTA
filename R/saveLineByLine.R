@@ -1,50 +1,50 @@
-saveLineByLine <- function(rls, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
+saveLineByLine <- function(rules, path, discrete=FALSE, geneExprData=TRUE, filterByPval=FALSE, pval=0.05)
   
 {
-  discretized=discrete
-  if(discretized)
+ 
+  if(discrete)
   {
-      vec=as.character(as.matrix(rls["FEATURES"]))
+      vec=as.character(as.matrix(rules["FEATURES"]))
       lst1=sapply(vec, function(x) strsplit(x, ","))
-      vec2=as.character(as.matrix(rls["CUTS_COND"]))
+      vec2=as.character(as.matrix(rules["CUTS_COND"]))
       lst2=sapply(vec2, function(x) strsplit(x, ","))
       newLst=mapply(paste,collapse=",",sep="=",lst1,lst2)
       lst5=as.character(unname(newLst))
       if(filterByPval){
-      dflbl=cbind(lst5,rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)[which(rls["PVAL"]<pval),]
+      dflbl=cbind(lst5,rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)[which(rules["PVAL"]<pval),]
       }else
       {
-      dflbl=cbind(lst5,rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)
+      dflbl=cbind(lst5,rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)
       }
       }
   
   else{
     if(geneExprData)
       {
-      lst11=lapply(rls["CUTS_COND"], function(x) gsub("value>cut", "3", x, fixed = T))
+      lst11=lapply(rules["CUTS_COND"], function(x) gsub("value>cut", "3", x, fixed = T))
       lst22=lapply(lst11, function(x) gsub("cut<value<cut", "2", x, fixed = T))
       lst33=lapply(lst22, function(x) gsub("value<cut", "1", x, fixed = T))
 
-      vec=as.character(as.matrix(rls["FEATURES"]))
+      vec=as.character(as.matrix(rules["FEATURES"]))
       lst1=sapply(vec, function(x) strsplit(x, ","))
       #vec2=as.character(lst33)
       lst2=strsplit(unlist(lst33), ",")
       newLst=mapply(paste,collapse=",",sep="=",lst1,lst2)
       lst5=as.character(unname(newLst))
       if(filterByPval){
-        dflbl=cbind(lst5,rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)[which(rls["PVAL"]<pval),]
+        dflbl=cbind(lst5,rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)[which(rules["PVAL"]<pval),]
       }else
       {
-        dflbl=cbind(lst5,rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)
+        dflbl=cbind(lst5,rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)
       }
     }
     else{
       
       if(filterByPval){
-        dflbl=cbind(rls["FEATURES"],rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)[which(rls["PVAL"]<pval),]
+        dflbl=cbind(rules["FEATURES"],rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)[which(rules["PVAL"]<pval),]
       }else
       {
-        dflbl=cbind(rls["FEATURES"],rls["DECISION"],rls["ACC_RHS"],rls["SUPP_RHS"],row.names = NULL)
+        dflbl=cbind(rules["FEATURES"],rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)
       }
     }
   }
