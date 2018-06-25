@@ -1,20 +1,20 @@
 \name{getFeatures}
 \alias{getFeatures}
 \title{
-Retrieve feature distribution from the rules.
+Retrieves feature lists from the rules.
 }
 \description{
-Checks which features are the most significant and most frequent in rules per each class.
+Inspects the most significant and frequent features from the rules. Creates seperate list of the features for each decision class.
 }
 \usage{
-getFeatures(df, rls, pval=0.05)
+getFeatures(dt, rules, pval=0.05)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{df}{
+  \item{dt}{
 A data frame of decision table. The last column is decision.
 }
-  \item{rls}{
+  \item{rules}{
 A data frame of rule table in a form of rosetta output.
 }
   \item{pval}{
@@ -25,7 +25,7 @@ A numeric value containing p-value threshold. The default significance level is 
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{list}{A list of features for each class. Each list is sorted be importance (calculated from the feature frequency and p-value).}
+  \item{list}{A list of the features for each class. Each list is sorted be the importance (calculated from the feature frequency and p-value).}
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -46,13 +46,13 @@ Mateusz Garbulowski
 library(R.ROSETTA)
 
 out <- rosetta(autcon)
-rls <- out$main
+rules <- out$main
 
 # default
-features <- getFeatures(autcon, rls)
+features <- getFeatures(autcon, rules)
 
 # change p-value
-features <- getFeatures(autcon, rls, pval=0.01)
+features <- getFeatures(autcon, rules, pval=0.01)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
