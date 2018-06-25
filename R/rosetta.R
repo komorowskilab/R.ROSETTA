@@ -2,7 +2,7 @@
 ####################### R.ROSETTA main function ######################
 ######################################################################
 
-rosetta <- function(df,
+rosetta <- function(dt,
                     classifier="StandardVoter",
                     cvNum=10,
                     discrete=FALSE,
@@ -34,9 +34,10 @@ rosetta <- function(df,
                     invert=FALSE
                     )
 {
+  df<-dt
   # setting paths, creating temp directory where the analysis will go
-  firstPath=tempdir()
-  fname="data"
+  firstPath<-tempdir()
+  fname<-"data"
   
   if(discrete){
   discrete=FALSE}else
