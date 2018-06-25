@@ -7,7 +7,7 @@
 
 # R.ROSETTA
 
-**ROSETTA** generates rough set cassification models. The R.ROSETTA is an R package based on ROSETTA(Öhrn and Komorowski, 1997) software. In addition to all the existing ROSETTA functionalities, we have added new functions especially useful in bioinformatic applications. 
+**R.ROSETTA** is a package for creating and analyzing rough set classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system.
 These include: 
 * under-sampling
 * rule p-value estimation
