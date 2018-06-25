@@ -1,38 +1,38 @@
-predictClass<-function(df, rls, discrete=F, normalize=T, normalizeMethod="scalar", validate=F, valiDec)
+predictClass<-function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="scalar", validate=FALSE, valiDec)
   {
 
 discretized=discrete
-dec2=as.character(rls$DECISION)
+dec2=as.character(rules$DECISION)
 decs2=unique(dec2)
-objs=rownames(df)
-feats=colnames(df)
-cuts=rls[,grep('CUT_', colnames(rls), value=TRUE)]
+objs=rownames(dt)
+feats=colnames(dt)
+cuts=rules[,grep('CUT_', colnames(rules), value=TRUE)]
 less2Vec<-function(x,y){ (x-y)<=0}
 more2Vec<-function(x,y){ (x-y)>=0}
 eqal2Vec<-function(x,y){ (x-y)==0}
 
-#pb = txtProgressBar(min = 0, max = (dim(df)[1])*(dim(rls)[1]), initial = 0, style=3)
+#pb = txtProgressBar(min = 0, max = (dim(dt)[1])*(dim(rules)[1]), initial = 0, style=3)
 #stepi=0
 
 if(discretized)
 {
   
-  dfn=df
+  dtn=dt
   outVotes=c()
   
 
-  calcClass<-function(rls3){
+  calcClass<-function(rules3){
     outLst=list()
     outLst2=list()
-    rls=rls3
-    rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
-    cnd2=strsplit(as.character(rls$CUTS_COND),",",fixed = T)
+    rules=rules3
+    rl2=strsplit(as.character(rules$FEATURES),",",fixed = T)
+    cnd2=strsplit(as.character(rules$CUTS_COND),",",fixed = T)
     
     
-    for(k in 1:dim(df)[1]){
+    for(k in 1:dim(dt)[1]){
       #k=1
-      vecObj=dfn[k,]
-      for(j in 1:dim(rls)[1]){
+      vecObj=dtn[k,]
+      for(j in 1:dim(rules)[1]){
         #j=1
         cnds=cnd2[[j]]
         cnds<-as.numeric(cnds)
@@ -70,21 +70,21 @@ if(discretized)
   
 }else{
 
-  dfn=df
+  dtn=dt
   outVotes=c()
 
-  calcClass<-function(rls3){
+  calcClass<-function(rules3){
     outLst=list()
     outLst2=list()
-    rls=rls3
-    rl2=strsplit(as.character(rls$FEATURES),",",fixed = T)
-    cnd2=strsplit(as.character(rls$CUTS_COND),",",fixed = T)
+    rules=rules3
+    rl2=strsplit(as.character(rules$FEATURES),",",fixed = T)
+    cnd2=strsplit(as.character(rules$CUTS_COND),",",fixed = T)
     
     
-  for(k in 1:dim(df)[1]){
+  for(k in 1:dim(dt)[1]){
   #k=1
-  vecObj=dfn[k,]
-  for(j in 1:dim(rls)[1]){
+  vecObj=dtn[k,]
+  for(j in 1:dim(rules)[1]){
     #j=1
     cnds=cnd2[[j]]
     cnds[cnds == "value>cut"] <- 1
@@ -152,12 +152,12 @@ if(discretized)
 
 }
 #common part
-outListVotes=data.frame(rownames(df))
+outListVotes=data.frame(rownames(dt))
 for(i in 1:length(decs2)){
-  rls3=rls[which(as.character(rls$DECISION)==decs2[i]),]
+  rules3=rules[which(as.character(rules$DECISION)==decs2[i]),]
   
   #print(decs2[i])
-  outListVotes2=data.frame(calcClass(rls3))
+  outListVotes2=data.frame(calcClass(rules3))
   
   if(normalize){
   if(normalizeMethod=="median"){
@@ -177,7 +177,7 @@ for(i in 1:length(decs2)){
   }
   
   if(normalizeMethod=="rulnum"){
-    outListVotes=data.frame(outListVotes,(as.numeric(as.matrix(outListVotes2)))/length(which(as.character(rls$DECISION)==decs2[i])))
+    outListVotes=data.frame(outListVotes,(as.numeric(as.matrix(outListVotes2)))/length(which(as.character(rules$DECISION)==decs2[i])))
   }
   }else{
     outListVotes=data.frame(outListVotes,outListVotes2)
