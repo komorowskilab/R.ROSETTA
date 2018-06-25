@@ -1,24 +1,24 @@
 \name{ruleHeatmap}
 \alias{ruleHeatmap}
 \title{
-Plot heatmap of a rule.
+Plot rule-based heatmap.
 }
 \description{
-Plotting a heatmap of objects supporting given rule. The background is the rest of classes.
+Plots a heatmap of objects supporting the rule. Additionally, the rest of the objects is displayed. Works with the discretization bins less or equal than 3.
 }
 \usage{
-ruleHeatmap(df, rls, ind=1, nbins=3, showClust=FALSE)
+ruleHeatmap(dt, rules, ind=1, nbins=3, showClust=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{df}{
+  \item{dt}{
 A data frame of decision table. The last column is decision.
 }
-  \item{rls}{
-A data frame of rule table in a form of rosetta output.
+  \item{rules}{
+A data frame of rule table in a form of rosetta $main output.
 }
   \item{ind}{
-A numeric value of index of rule.
+A numeric value of index of the rule in the table.
 }
   \item{nbins}{
 A numeric value of discretization bins.
@@ -53,7 +53,7 @@ library(R.ROSETTA)
 
 out=rosetta(autcon)
 rules=out$main
-recRules=recalculateRules(autcon, rls)
+recRules=recalculateRules(autcon, rules)
 
 ruleHeatmap(autcon, recRules, ind=1)
 
