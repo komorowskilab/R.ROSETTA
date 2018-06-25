@@ -1,11 +1,11 @@
-getFeatures <- function(df, rls, pval=0.05){
+getFeatures <- function(dt, rules, pval=0.05){
 
-newRls=rls
+newRls=rules
 decis2=newRls$DECISION
-decsCounts=table(as.character(df[,length(df)]))
+decsCounts=table(as.character(dt[,length(dt)]))
 
 lstOut=list()
-for(i in 1:length(table(df[,length(df)]))){
+for(i in 1:length(table(dt[,length(dt)]))){
   t11=unlist(strsplit(as.character(newRls$FEATURES)[newRls$PVAL<pval & newRls$DECISION==names(decsCounts)[i]],","))
   
   t1=table(t11)
