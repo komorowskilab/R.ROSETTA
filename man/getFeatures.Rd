@@ -15,10 +15,10 @@ getFeatures(dt, rules, pval=0.05)
 A data frame of decision table. The last column is decision.
 }
   \item{rules}{
-A data frame of rule table in a form of rosetta output.
+A data frame of rule table in a form of rosetta $main output.
 }
   \item{pval}{
-A numeric value containing p-value threshold. The default significance level is 0.05.
+A numeric value of p-value threshold. The default is 0.05.
 }
 }
 \details{
