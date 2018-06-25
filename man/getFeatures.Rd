@@ -48,10 +48,10 @@ library(R.ROSETTA)
 out <- rosetta(autcon)
 rules <- out$main
 
-# default
+# default settings
 features <- getFeatures(autcon, rules)
 
-# change p-value
+# changed significance threshold
 features <- getFeatures(autcon, rules, pval=0.01)
 
 }
