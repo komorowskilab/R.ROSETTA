@@ -18,7 +18,7 @@
 
 ### Prerequisites
 R.ROSETTA works with UNIX and windows operating systems.<br />
-For unix systems wine is required.<br />
+UNIX operating systems require wine.<br />
 <a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">A tutorial</a> by David Baumgold, how to install wine on macOS platforms.
 
 ### Installation
@@ -36,8 +36,8 @@ install_github("mategarb/R.ROSETTA")
 library(R.ROSETTA)
 ```
 ### Functions
-**rosetta()** <-> *create ROSETTA rough set classification model*<br />
-**recalculateRules()** <-> *recalculate rule table using the input data. Retrieve the support sets for rules*<br />
+**rosetta()** <-> *creates ROSETTA rough set classification model*<br />
+**recalculateRules()** <-> *recalculates rule table using the input data. Retrieve the support sets for rules*<br />
 **predictClass()** <-> *predicts new classes by applying the model*<br />
 **getFeatures()** <-> *retrieves the attributes from the rules*<br />
 **saveLineByLine()** <-> *saves rules to LineByLine text format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ or Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
@@ -45,7 +45,7 @@ library(R.ROSETTA)
 
 ## Examples
 
-All the examples can be found in the R function manuals. To see the description, type "?" and the name of the function in R environment e.g.
+All the examples can be found in the R function manuals. To see the description, type "?" and the name of the function e.g.
 ```
 ?rosetta, ?saveLineByLine
 ```
