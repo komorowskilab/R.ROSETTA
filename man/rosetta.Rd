@@ -7,7 +7,7 @@ ROSETTA rough set classifier
 Creates a rough set classification model.
 }
 \usage{
-rosetta(dt, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequencyScaler",
+rosetta(dt, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequency",
 discreteParam=3, discreteMask=TRUE, reducer="Johnson", reducerDiscernibility="Object",
 roc=FALSE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
 underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ruleFiltrSupport=c(1,3),
