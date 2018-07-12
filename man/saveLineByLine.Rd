@@ -21,7 +21,7 @@ Path to save the output file. Should contain the name of the file with .txt exte
 Logical. If TRUE data are discrete. If FALSE data are not discrete values. Default FALSE.
 }
   \item{geneExprData}{
-Logical. If TRUE data are gene expression with 2 or 3 classes. Default is FALSE.
+Logical. If TRUE data are gene expression with 2 or 3 classes. Default is TRUE.
 }
   \item{filterByPval}{
 Logical. If TRUE the filtration is performed. Default is FALSE.
