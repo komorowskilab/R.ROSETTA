@@ -419,10 +419,10 @@ rosetta <- function(dt,
       if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1]){
           return(as.character(x)[1]) 
       }else{
-      return(round(mean(as.numeric(as.character(x))),  digits = 6))}
+      return(round(mean(as.numeric(as.character(x))),  digits = 5))}
      }
       if(class(x) == "numeric"){
-        out <- round(mean(as.numeric(x), na.rm = TRUE), digits = 6)
+        out <- round(mean(as.numeric(x), na.rm = TRUE), digits = 5)
         return(out)}
     }
     
