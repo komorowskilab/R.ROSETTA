@@ -4,7 +4,7 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
   if(disc){
   
   vecHead=unname(sapply(df, class))
-  vecHead[vecHead=="numeric"]<-"Float"
+  vecHead[vecHead=="numeric"]<-"Float(3)"
   vecHead[vecHead=="integer"]<-"Integer"
   vecHead[vecHead=="logical"]<-"String"
   vecHead[vecHead=="factor"]<-"String"
@@ -28,6 +28,6 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
   OUTPUT_DT_TRAIN=rbind(OUTPUT_DT_TRAIN[dim(OUTPUT_DT_TRAIN)[1],],OUTPUT_DT_TRAIN[-dim(OUTPUT_DT_TRAIN)[1],])
 
   write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F, row.names = F)
-  write.table(format(df, digits=6),file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)
+  write.table(format(df, digits=3),file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)
   
   }
