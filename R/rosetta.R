@@ -463,6 +463,7 @@ for(l in 1:length(LFout)){
     ##create states
     st2=lapply(1:length(lst_feat),FUN = function(j){
       st=c()
+      epsilon=0.0001
       for(i in 1:length(lstc3[[j]]))
       {
         tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
@@ -470,14 +471,14 @@ for(l in 1:length(LFout)){
         
         if(grepl(",",lstc3[[j]][i])) #ranges
         {
-          st[i]<-which(tempCuts$V2==min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))))+1 
+          st[i]<-which(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))) < epsilon)+1 
         }else{ #single
           
-          if(which(tempCuts$V2==as.numeric(lstc3[[j]][i]))==1){
+          if(which(tempCuts$V2-as.numeric(lstc3[[j]][i]) < epsilon)==1){
             st[i]<-1
           }else
           {
-            st[i]<-which(tempCuts$V2==as.numeric(lstc3[[j]][i]))+1
+            st[i]<-which(tempCuts$V2-as.numeric(lstc3[[j]][i]) < epsilon)+1
           }
         }
       }
