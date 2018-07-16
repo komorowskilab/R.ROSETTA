@@ -426,9 +426,9 @@ for(l in 1:length(LFout)){
     rm(temp_dataset)
     
     dataset_cuts[,2]<-dataset_cuts[,2]/1e+06
-    key <- 0:(dim(autcon)[2]-2)
-    val <- colnames(autcon)[-length(colnames(autcon))]
-    out<-lapply(1:100,FUN = function(i){dataset_cuts[dataset_cuts == key[i],1] <<- val[i]})
+    key <- 0:(dim(dt)[2]-2)
+    val <- colnames(dt)[-length(colnames(dt))]
+    out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts == key[i],1] <<- val[i]})
     
     # filter out comments
     rl=dataset_rules
@@ -458,7 +458,7 @@ for(l in 1:length(LFout)){
     ## library - dataset_cuts
     ## list of the features
     lst_feat=lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
-    features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
+    #features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
     
     ##create states
     st2=lapply(1:length(lst_feat),FUN = function(j){
