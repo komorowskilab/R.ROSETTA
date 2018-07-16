@@ -398,16 +398,105 @@ rosetta <- function(dt,
                    group = rep(1:length(lst_cuts2), 
                    sapply(lst_cuts2, length)))
   
-  # create constant size data frame
+  # create constant size data frame for cuts
   lst_cuts3=lapply(lst_cuts2, 'length<-', max(table(df222$group)))
   df3=t(as.data.frame(lst_cuts3, stringsAsFactors=FALSE))
   
+### retrieve discretization states ###
+dataset_cuts=data.frame()
+dataset_rules=data.frame()
+
+st3=list()
+#loop on undersampling files
+for(l in 1:length(LFout)){
+  path_rules=paste0(tempDirNam,"/results/",LFout[l],"/outRosetta/rules")
+  path_cuts=paste0(tempDirNam,"/results/",LFout[l],"/outRosetta/cuts")
+  files_rules <- paste0(path_rules,"/",list.files(path=path_rules))
+  files_cuts <- paste0(path_cuts,"/",list.files(path=path_cuts))
+
+  #loop on CV files
+  for(k in 1:length(files_rules)){
+    temp_dataset <-read.table(files_rules[k], header=FALSE, sep="\t")
+    colnames(temp_dataset)<-"rules"
+    dataset_rules<-temp_dataset
+    rm(temp_dataset)
+    
+    temp_dataset <-read.table(files_cuts[k], header=FALSE, sep="\t")
+    dataset_cuts<-temp_dataset
+    rm(temp_dataset)
+    
+    dataset_cuts[,2]<-dataset_cuts[,2]/1e+06
+    key <- 0:(dim(autcon)[2]-2)
+    val <- colnames(autcon)[-length(colnames(autcon))]
+    out<-lapply(1:100,FUN = function(i){dataset_cuts[dataset_cuts == key[i],1] <<- val[i]})
+    
+    # filter out comments
+    rl=dataset_rules
+    rl2=as.matrix(rl[!grepl("%", rl, fixed = T)]) #deleting comments
+    rl_r=which(grepl("=>", rl2, fixed = T)) #choosing rules
+    rules=rl2[rl_r]
+    
+    rules2=unlist(lapply(strsplit(as.character(rules), " =>", fixed=TRUE), `[`, 1))
+    rl2=strsplit(rules2," AND ")
+    lst=lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
+    
+    lst_cuts=lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+    lstc=lapply(lst_cuts,function(x) gsub("[[() *]", "", x))
+    lstc2=lapply(lstc,function(x) (gsub(',$','', x)))
+    lstc3=lapply(lstc2,function(x) (gsub('^,','', x)))
+    lstc4=lapply(lstc3, function(x) unlist(strsplit(x, ",")))
+    
+    ## catch only numeric values
+    catchNumeric <- function(mylist){
+      newlist <- suppressWarnings(as.numeric(mylist))
+      mylist <- list(mylist)
+      mylist[!is.na(newlist)] <- newlist[!is.na(newlist)]
+      unlist(mylist)}
+    lst_cuts2=lapply(lstc4, catchNumeric)
+    
+    ## list of the cuts - lstc3
+    ## library - dataset_cuts
+    ## list of the features
+    lst_feat=lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
+    features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
+    
+    ##create states
+    st2=lapply(1:length(lst_feat),FUN = function(j){
+      st=c()
+      for(i in 1:length(lstc3[[j]]))
+      {
+        tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
+        rownames(tempCuts)<-NULL
+        
+        if(grepl(",",lstc3[[j]][i])) #ranges
+        {
+          st[i]<-which(tempCuts$V2==min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))))+1 
+        }else{ #single
+          
+          if(which(tempCuts$V2==as.numeric(lstc3[[j]][i]))==1){
+            st[i]<-1
+          }else
+          {
+            st[i]<-which(tempCuts$V2==as.numeric(lstc3[[j]][i]))+1
+          }
+        }
+      }
+      return(st)
+      
+    })
+    
+    st3[[k]]=unlist(lapply(lapply(st2, function(x) paste(x, collapse = ",")), unlist))
+  }
+}
+                        
+  #######################################                           
+                             
   decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
-  df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
-  colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUTS_COND",paste0("CUT_",seq(1:max(table(df222$group)))))
+  df_out=data.frame(features2,decsFinal,unlist(st3), supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
+  colnames(df_out)<-c("FEATURES","DECISION","DISC_CLASSES","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUTS_COND",paste0("CUT_",seq(1:max(table(df222$group)))))
   
-  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND")])
-  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND")])
+  df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND","DISC_CLASSES")])
+  allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND","DISC_CLASSES")])
   subMat=as.matrix(do.call(paste0, df_outU))
   
    aggregate2 <- function(x){ 
@@ -428,7 +517,7 @@ rosetta <- function(dt,
     
    indx <- sapply(df_out3, is.factor)
    df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-   df_out4=aggregate(.~FEATURES+DECISION+CUTS_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+   df_out4=aggregate(.~FEATURES+DECISION+CUTS_COND+DISC_CLASSES, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
    return(df_out4)
    }
   
