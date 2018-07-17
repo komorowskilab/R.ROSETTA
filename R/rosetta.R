@@ -468,31 +468,35 @@ for(l in 1:length(LFout)){
       }
     }
     
-    epsil=0.0001
-    ##create states
-    st2=lapply(1:length(lst_feat),FUN = function(j){
-      st=c()
-      for(i in 1:length(lstc3[[j]]))
-      {
-        tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
-        rownames(tempCuts)<-NULL
-        
-        if(grepl(",",lstc3[[j]][i])) #ranges
-        {
-          st[i]<-which(abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) < epsil & abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) >= 0)+1 
-        }else{ #single
-          
-          if(which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)==1){
-            st[i]<-1
-          }else
+  epsil=0.0001
+        ##create states
+        st2=lapply(1:length(lst_feat),FUN = function(j){
+          st=c()
+          for(i in 1:length(lstc3[[j]]))
           {
-            st[i]<-which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)+1
+            tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
+            rownames(tempCuts)<-NULL
+            if(dim(tempCuts)[1]==0){
+              st[i]<-lstc3[[j]][i]
+            }
+            else{
+            if(grepl(",",lstc3[[j]][i])) #ranges
+            {
+              st[i]<-which(abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) < epsil & abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) >= 0)+1 
+            }else{ #single
+              
+              if(which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)==1){
+                st[i]<-1
+              }else
+              {
+                st[i]<-which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)+1
+              }
+            }
+            }
           }
-        }
-      }
-      return(st)
-      
-    })
+          return(st)
+          
+        })
     
     st3[[k]]=unlist(lapply(lapply(st2, function(x) paste(x, collapse = ",")), unlist))
   }
