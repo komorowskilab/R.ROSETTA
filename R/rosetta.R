@@ -597,8 +597,8 @@ for(l in 1:length(LFout)){
                    
    for(i in 1:length(df_out2$SUPP_RHS)){
    k <- round(df_out2$SUPP_RHS[i]*df_out2$ACC_RHS[i]) #total support adjusted by accuracy
-   R1 <- unname(table(df[,length(df)])[names(table(df[,length(df)]))==as.character(df_out2$DECISION[i])])
-   N <- dim(df)[1] 
+   R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(df_out2$DECISION[i])])
+   N <- dim(dt)[1] 
    R2 <- N-R1
    # the number of decisions/objects/patients
    C1 <- df_out2$SUPP_LHS[i]    # LHS Support
