@@ -34,7 +34,7 @@ rosetta <- function(dt,
                     invert=FALSE
                     )
 {
-  df<-dt
+  #df<-dt
   # setting paths, creating temp directory where the analysis will go
   firstPath<-tempdir()
   fname<-"data"
@@ -72,9 +72,9 @@ rosetta <- function(dt,
   {
    if(underSampleNum == 0)
    {
-    tab=df
-    n=min(unname(table(as.character(tab[,length(tab)])))) #min
-    k=max(unname(table(as.character(tab[,length(tab)])))) #max
+    #tab=df
+    n=min(unname(table(as.character(dt[,length(dt)])))) #min
+    k=max(unname(table(as.character(dt[,length(dt)])))) #max
     rep=1000
     out=c()
      for(j in 1:rep){
@@ -90,7 +90,7 @@ rosetta <- function(dt,
    }
     
   # vector of the classes
-  clvec=as.character(df[,length(df)])
+  clvec=as.character(dt[,length(dt)])
   # number of the classes
   clnum=length(table(clvec))
   # names of the classes
@@ -113,13 +113,13 @@ rosetta <- function(dt,
     for(i in 1:clnum){
     samp[[i]]=sample(classL[[i]], minC)
     }
-   df2=df[c(1,unlist(samp)),]
+   df2=dt[c(1,unlist(samp)),]
    dfToCsv(df2, paste0(fname,"_",j), tempDirNam, disc=discrete)
    }
   
   ## without undersampling
   }else{
-  dfToCsv(df, fname, tempDirNam, disc=discrete)
+  dfToCsv(dt, fname, tempDirNam, disc=discrete)
   }
   
   ##############################
@@ -603,7 +603,7 @@ for(l in 1:length(LFout)){
    # the number of decisions/objects/patients
    C1 <- df_out2$SUPP_LHS[i]    # LHS Support
    #C2=N-C1                  # total drawn
-   #R1=dim(df)[2]            # total hits, number of features
+   #R1=dim(dt)[2]            # total hits, number of features
    #R2=N-R1                  # number of features - number of decisions
    PVAL[i] <- phyper(k-1, m=R1, n=R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
    
