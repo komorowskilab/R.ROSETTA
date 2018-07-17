@@ -458,12 +458,20 @@ for(l in 1:length(LFout)){
     ## library - dataset_cuts
     ## list of the features
     lst_feat=lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
-    #features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
+    ##features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
     
+    decimalplaces <- function(x) {
+      if (abs(x - round(x)) > .Machine$double.eps^0.5) {
+        nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed = TRUE)[[1]][[2]])
+      } else {
+        return(0)
+      }
+    }
+    
+    epsil=0.0001
     ##create states
     st2=lapply(1:length(lst_feat),FUN = function(j){
       st=c()
-      epsilon=0.0001
       for(i in 1:length(lstc3[[j]]))
       {
         tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
@@ -471,14 +479,14 @@ for(l in 1:length(LFout)){
         
         if(grepl(",",lstc3[[j]][i])) #ranges
         {
-          st[i]<-which(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))) < epsilon)+1 
+          st[i]<-which(abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) < epsil & abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) >= 0)+1 
         }else{ #single
           
-          if(which(tempCuts$V2-as.numeric(lstc3[[j]][i]) < epsilon)==1){
+          if(which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)==1){
             st[i]<-1
           }else
           {
-            st[i]<-which(tempCuts$V2-as.numeric(lstc3[[j]][i]) < epsilon)+1
+            st[i]<-which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)+1
           }
         }
       }
