@@ -5,7 +5,7 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
   
   vecHead=unname(sapply(df, class))
   vecHead[vecHead=="numeric"]<-"Float(6)"
-  vecHead[vecHead=="integer"]<-"Float(6)"
+  vecHead[vecHead=="integer"]<-"Float(0)"
   vecHead[vecHead=="logical"]<-"String"
   vecHead[vecHead=="factor"]<-"String"
   vecHead[vecHead=="character"]<-"String"
