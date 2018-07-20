@@ -425,7 +425,6 @@ for(l in 1:length(LFout)){
     dataset_cuts<-temp_dataset
     rm(temp_dataset)
     
-    dataset_cuts[,2]<-dataset_cuts[,2]/1e+06
     key <- 0:(dim(dt)[2]-2)
     val <- colnames(dt)[-length(colnames(dt))]
     out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts == key[i],1] <<- val[i]})
@@ -460,15 +459,18 @@ for(l in 1:length(LFout)){
     lst_feat=lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
     ##features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
     
-    decimalplaces <- function(x) {
-      if (abs(x - round(x)) > .Machine$double.eps^0.5) {
-        nchar(strsplit(sub('0+$', '', as.character(x)), ".", fixed = TRUE)[[1]][[2]])
-      } else {
-        return(0)
-      }
-    }
-    
-  epsil=0.0001
+ #dataset_cuts[,2]<-dataset_cuts[,2]/1e+06
+        
+        round2 = function(x, n) {
+          posneg = sign(x)
+          z = abs(x)*10^n
+          z = z + 0.5
+          z = trunc(z)
+          z = z/10^n
+          z*posneg
+        }
+        
+        epsil=0.0001
         ##create states
         st2=lapply(1:length(lst_feat),FUN = function(j){
           st=c()
@@ -476,27 +478,48 @@ for(l in 1:length(LFout)){
           {
             tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
             rownames(tempCuts)<-NULL
+            
+            ##check if the feature is character
             if(dim(tempCuts)[1]==0){
               st[i]<-lstc3[[j]][i]
             }
             else{
-            if(grepl(",",lstc3[[j]][i])) #ranges
+            if(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))[1]%%1==0){ #integers
+              if(grepl(",",lstc3[[j]][i])) ##for ranges -> middle classes
+              {
+                st[i]<-which(round2(tempCuts$V2,0)==min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))))+1 
+              }else{ ##for single -> extremes
+                #left
+                if(which(round2(tempCuts$V2,0)==as.numeric(unlist(lstc3[[j]][i])))==1){
+                  st[i]<-1
+                }else #right
+                {
+                  st[i]<-which(round2(tempCuts$V2,0)==as.numeric(unlist(lstc3[[j]][i])))+1
+                }
+              }
+              
+                
+            }else{
+              
+            tempCuts$V2<-tempCuts$V2/1e+06
+            
+            if(grepl(",",lstc3[[j]][i])) ##for ranges -> middle classes
             {
               st[i]<-which(abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) < epsil & abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) >= 0)+1 
-            }else{ #single
-              
+            }else{ ##for single -> extremes
+              #left
               if(which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)==1){
                 st[i]<-1
-              }else
+              }else #right
               {
                 st[i]<-which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)+1
               }
-            }
-            }
-          }
+                }
+                }#else from integer
+               }#else from character
+             }#end for
           return(st)
-          
-        })
+          }) #end of function
     
     st3[[k]]=unlist(lapply(lapply(st2, function(x) paste(x, collapse = ",")), unlist))
   }
