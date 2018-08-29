@@ -13,9 +13,12 @@ rosResults<-function(path, roc){
   colnames(stats2)<-c("Measure","Value")
   
   ##MCC
-  cts<-statsTab[which(statsTab$V2=="|"),]
-  #cts<-cts[-which(cts$V1=="Undefined"),]
+  cts<-statsTab2[which(statsTab2$V2=="|"),]
+  if(length(which(cts$V1=="Undefined"))!=0){
+  cts<-cts[-which(cts$V1=="Undefined"),]
+  }
   noc<-unique(as.numeric(as.character(cts$V1)))
+
   MCC=c()
 
 for(i in seq(1, dim(cts)[1], by = length(noc))){
