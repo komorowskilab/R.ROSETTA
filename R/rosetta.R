@@ -227,6 +227,7 @@ rosetta <- function(dt,
   dfRes_rocseStdDev=c()
   dfRes_rocseMin=c()
   dfRes_rocseMax=c()
+  dfRes_mccMean=c()
   
   # statistic
   if(roc){
