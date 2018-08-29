@@ -28,11 +28,11 @@ if(length(noc) == 2){
   FN=as.numeric(as.character(cts$V3[i+1]))
   FP=as.numeric(as.character(cts$V4[i]))
   TN=as.numeric(as.character(cts$V4[i+1]))
-  MCC[i]<-((TP*TN)-(FP*FN))/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN))
+  MCC<-c(MCC,((TP*TN)-(FP*FN))/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN)))
     
 }else{
   
-  MCC=NaN
+  MCC<-c(MCC,NA)
   ##in progress##
   #TP=cts$V3[i]
   #FN=cts$V3[i+1]
@@ -40,7 +40,7 @@ if(length(noc) == 2){
   #TN=cts$V4[i+1]
   
 }
-  statsMCC=data.frame("MCC.mean",mean(MCC, na.rm=TRUE))
+  statsMCC=data.frame("MCC.mean",mean(MCC))
   colnames(statsMCC)<-c("Measure","Value")
 }
   
