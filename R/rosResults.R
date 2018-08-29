@@ -13,7 +13,7 @@ rosResults<-function(path, roc){
   colnames(stats2)<-c("Measure","Value")
   
   ##MCC
-  cts<-statsTab2[which(statsTab2$V2=="|"),]
+  cts<-statsTab[which(statsTab$V2=="|"),]
   if(length(which(cts$V1=="Undefined"))!=0){
   cts<-cts[-which(cts$V1=="Undefined"),]
   }
