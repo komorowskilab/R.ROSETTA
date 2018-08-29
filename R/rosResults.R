@@ -40,7 +40,7 @@ if(length(noc) == 2){
   #TN=cts$V4[i+1]
   
 }
-  statsMCC=data.frame("MCC.mean",mean(MCC))
+  statsMCC=data.frame("MCC.mean",mean(MCC, na.rm=TRUE))
   colnames(statsMCC)<-c("Measure","Value")
 }
   
