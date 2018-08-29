@@ -19,7 +19,7 @@ rosResults<-function(path, roc){
   MCC=c()
 
 for(i in seq(1, dim(cts)[1], by = length(noc))){
-if(noc == 2){
+if(length(noc) == 2){
   
   TP=as.numeric(as.character(cts$V3[i]))
   FN=as.numeric(as.character(cts$V3[i+1]))
