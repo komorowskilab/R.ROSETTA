@@ -5,6 +5,19 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
   ftrs=unlist(strsplit(as.character(rules$FEATURES)[r], ","))
   perc=unlist(strsplit(as.character(rules$PERC_SUPP_RHS)[r], ","))
   decs=unlist(as.character(rules$DECISION))[r]
+  pval=unlist(as.numeric(rules$PVAL))[r]
+  if(pval<0.05){
+  pvalw="*" 
+  }
+  if(pval<0.01){
+    pvalw="**" 
+  }
+  if(pval<0.001){
+    pvalw="***" 
+  }
+  if(pval>0.05){
+    pvalw="ns" 
+  }
   
   objs_supp_rule=unlist(strsplit(as.character(rules$SUPP_SET_RHS)[r], ","))
   objs_class=rownames(dt)[which(dt$decision == decs)]
@@ -30,8 +43,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
   }
   
   if(showClust){
-    
-    
+
     rf1=(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
     fit_fp <- kmeans(dt2[rf1,], factorial(length(table(as.matrix(dt2[rf1,])))))
     dt2_2=dt2[rf1,][order(fit_fp$cluster),]
@@ -53,7 +65,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
             Rowv=F,
             #Colv=FALSE,
             #margins = c(7,10),
-            xlab=paste0("Support set for class: ",decs),
+            xlab=paste0("Rule class: ",decs,", (",pvaw,")"),
             srtCol=0,
             #lwid=c(0.5,4),
             #lhei=c(1,4),
