@@ -28,7 +28,7 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
   OUTPUT_DT_TRAIN=rbind(dfc,fRow)
   OUTPUT_DT_TRAIN=rbind(OUTPUT_DT_TRAIN[dim(OUTPUT_DT_TRAIN)[1],],OUTPUT_DT_TRAIN[-dim(OUTPUT_DT_TRAIN)[1],])
   
-  write.csv2(OUTPUT_DT_TRAIN,file=paste0(tempDirNam,"/data/",fname,".csv"),quote = F, row.names = F)
+  write.csv(OUTPUT_DT_TRAIN,file=paste0(tempDirNam,"/data/",fname,".csv"),quote = F, row.names = F)
   
   
   #write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F, row.names = F)
