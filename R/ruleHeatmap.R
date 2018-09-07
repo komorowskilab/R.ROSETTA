@@ -65,7 +65,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
             Rowv=F,
             #Colv=FALSE,
             #margins = c(7,10),
-            xlab=paste0("Rule class: ",decs,", (",pvalw,")"),
+            xlab=paste0("Rule class: ",decs,", significance: (",pvalw,")"),
             srtCol=0,
             #lwid=c(0.5,4),
             #lhei=c(1,4),
