@@ -60,7 +60,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
     dt2=rbind(dt2_1,dt2_2,dt2_3)
   }
   
-  
+  rownames(dt2)<-""
   heatmap.2(dt2,
             Rowv=F,
             #Colv=FALSE,
