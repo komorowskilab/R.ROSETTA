@@ -26,7 +26,7 @@ cols=colorRampPalette(c("yellowgreen", "firebrick1"))(n = 2)
 }
 
 for(i in 1:length(ftrs)){
-dt2[,i]=discretize(dt2[,i], method="frequency", categories = nbins, labels=1:nbins)
+dt2[,i]=discretize(dt2[,i], method="frequency", breaks = nbins, labels=1:nbins)
 }
 
 if(showClust){
