@@ -60,7 +60,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
     dt2=rbind(dt2_1,dt2_2,dt2_3)
   }
   
-  rownames(dt2)<-""
+  
   heatmap.2(dt2,
             Rowv=F,
             #Colv=FALSE,
@@ -80,6 +80,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
             key=FALSE,
             density.info="none",
             symkey=FALSE,
+            labRow= "",
             rowsep=c(length(objs_tp), length(objs_tp)+length(objs_fp)),
             colsep=1:(length(ftrs)-1),
             RowSideColors = c(rep("gold", length(objs_tp)), rep("sandybrown", length(objs_fp)),rep("dodgerblue", length(objs_tn))))
