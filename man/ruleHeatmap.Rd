@@ -1,13 +1,13 @@
 \name{ruleHeatmap}
 \alias{ruleHeatmap}
 \title{
-Plot rule-based heatmap.
+A rule-based heatmap.
 }
 \description{
-Plots a heatmap of objects supporting the rule. Additionally, the rest of the objects is displayed. Works with the discretization bins less or equal than 3.
+A heatmap of single rule, showing objects supporting the rule. The reamining objects are displayed and coloured separately.
 }
 \usage{
-ruleHeatmap(dt, rules, ind=1, nbins=3, showClust=FALSE)
+ruleHeatmap(dt, rules, ind=1, nbins=3, showClust=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
