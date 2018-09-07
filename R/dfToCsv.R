@@ -29,8 +29,8 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
 
   #write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F, row.names = F)
   #write.table(format(df, digits=6),file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)
-  write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F, row.names = F)
+  write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep=",",quote = F, row.names = F)
   dfc<-trimws(as.matrix(format(df, digits=6)))
-  write.table(dfc,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)
+  write.table(dfc,file=paste0(tempDirNam,"/data/",fname,".csv"),sep=",",quote = F,col.names = F, row.names = F, append = TRUE)
   
   }
