@@ -47,14 +47,18 @@ rosetta <- function(dt,
 
   if(.Platform$OS.type=="unix")
   {
-  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="/")}else
-  {
-  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="\\")
-  }
-
+  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="/")
   dir.create(tempDirNam)
   dir.create(paste0(tempDirNam,"/data"))
-  dir.create(paste0(tempDirNam,"/results"))
+  dir.create(paste0(tempDirNam,"/results"))}else
+  {
+  tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="\\")
+  dir.create(tempDirNam)
+  dir.create(paste0(tempDirNam,"\\data"))
+  dir.create(paste0(tempDirNam,"\\results"))
+  }
+
+
   
   # training pipline length
   if(discrete==TRUE)
@@ -123,13 +127,33 @@ rosetta <- function(dt,
   }
   
   ##############################
-  csvFileName <- list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$")
+  
+  
+    if(.Platform$OS.type=="unix")
+  {
+  csvFileName <- list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$")}else{
+  csvFileName <- list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.csv$")
+  }
+  
   #loop by files
  for(i in 1:length(csvFileName)){
+
+  if(.Platform$OS.type=="unix")
+  {
   dir.create(paste0(tempDirNam,"/results/",csvFileName[i]))
   dir.create(paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep"))
   file.copy(paste0(tempDirNam,"/data/",csvFileName[i]), paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep"))
   dirList=paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep")
+  }else{
+  dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i]))
+  dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i],"/outPrep"))
+  file.copy(paste0(tempDirNam,"\\data\\",csvFileName[i]), paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep"))
+  dirList=paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep")
+  }
+  
+  
+  
+  
   ###### convert CSV to ROS ######
   csvToRos(dirList)
   # check ROS filename
@@ -142,11 +166,17 @@ rosetta <- function(dt,
    dirList2=paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  
    pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
    }
+   
    dir.create(dirList2)
    
    ## masking the attributes
    maskAttribute(maskFeaturesNames, dirList2)
+   if(.Platform$OS.type=="unix"){
    file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2)
+   }else{
+   file.copy(paste(dirList,"\\",rosFileName,sep=""), dirList2)
+   }
+   
    
    IDGfnam="maIDG.txt"
    FoldNam="objects"
@@ -209,7 +239,11 @@ rosetta <- function(dt,
  }
   
   # prepare all results
-  LFout=list.files(paste0(tempDirNam,"/results"))
+  if(.Platform$OS.type=="unix")
+  {
+  LFout=list.files(paste0(tempDirNam,"/results"))}else{
+  LFout=list.files(paste0(tempDirNam,"\\results"))
+  }
   dfRes_rocAucSE=c()
   dfRes_rocAuc=c()
   dfRes_accMean=c()
@@ -232,7 +266,12 @@ rosetta <- function(dt,
   # statistic
   if(roc){
    for(i in 1:length(LFout)){
-   path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")
+     if(.Platform$OS.type=="unix")
+   {
+   path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")}else{
+   path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
+   }
+   
    # ROC AUC
    dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
    dfRes_rocAucSE[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
@@ -269,7 +308,12 @@ rosetta <- function(dt,
     
   }else{ # just accuracy values
    for(i in 1:length(LFout)){
-   path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")
+   
+   if(.Platform$OS.type=="unix")
+   {
+   path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")}else{
+   path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
+   }
    # ACCURACY
    dfRes_accMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
    dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
@@ -287,8 +331,13 @@ rosetta <- function(dt,
   # make mean accuracy for CV and undersampled files
   dataset_merged=data.frame()
   for(i in 1:length(LFout)){
+     if(.Platform$OS.type=="unix")
+   {
   path2=paste0(tempDirNam,"/results/",LFout[i],"/outRosetta/rules")
-  file_list <- paste0(path2,"/",list.files(path=path2))
+  file_list <- paste0(path2,"/",list.files(path=path2))}else{
+  path2=paste0(tempDirNam,"\\results\\",LFout[i],"\\outRosetta\\rules")
+  file_list <- paste0(path2,"\\",list.files(path=path2))
+  }
     
    for(file in file_list){
    temp_dataset <-read.table(file, header=TRUE, sep="\t")
@@ -411,10 +460,19 @@ dataset_rules=data.frame()
 st3=list()
 #loop on undersampling files
 for(l in 1:length(LFout)){
+
+     if(.Platform$OS.type=="unix")
+   {
   path_rules=paste0(tempDirNam,"/results/",LFout[l],"/outRosetta/rules")
   path_cuts=paste0(tempDirNam,"/results/",LFout[l],"/outRosetta/cuts")
   files_rules <- paste0(path_rules,"/",list.files(path=path_rules))
-  files_cuts <- paste0(path_cuts,"/",list.files(path=path_cuts))
+  files_cuts <- paste0(path_cuts,"/",list.files(path=path_cuts))}else{
+  
+   path_rules=paste0(tempDirNam,"\\results\\",LFout[l],"\\outRosetta\\rules")
+  path_cuts=paste0(tempDirNam,"\\results\\",LFout[l],"\\outRosetta\\cuts")
+  files_rules <- paste0(path_rules,"\\",list.files(path=path_rules))
+  files_cuts <- paste0(path_cuts,"\\",list.files(path=path_cuts))
+  }
 
   #loop on CV files
   for(k in 1:length(files_rules)){
