@@ -225,7 +225,7 @@ rosetta <- function(dt,
                )
 	 try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
   }else{
-  comm=sprintf('cmd %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+  comm=sprintf('cmd /K %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
                 pathExe,
                 substr(as.character(invert),1,1),
                 cvNum,
