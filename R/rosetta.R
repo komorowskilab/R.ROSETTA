@@ -223,6 +223,7 @@ rosetta <- function(dt,
                 paste0(dirList2,"/","logMain.txt"),
                 paste0(dirList2,"/",rosFileName)
                )
+	 try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
   }else{
   comm=sprintf('%s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
                 pathExe,
@@ -234,8 +235,9 @@ rosetta <- function(dt,
                 paste(dirList2,"logMain.txt",sep="\\"),
                 paste(dirList2,rosFileName,sep="\\")
                )
+	try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
   }
-  try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
+
  }
   
   # prepare all results
