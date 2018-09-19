@@ -146,7 +146,7 @@ rosetta <- function(dt,
   dirList=paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep")
   }else{
   dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i]))
-  dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i],"/outPrep"))
+  dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep"))
   file.copy(paste0(tempDirNam,"\\data\\",csvFileName[i]), paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep"))
   dirList=paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep")
   }
