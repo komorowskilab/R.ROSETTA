@@ -235,7 +235,7 @@ rosetta <- function(dt,
                 paste(dirList2,rosFileName,sep="\\")
                )
   }
-  try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
+  try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
  }
   
   # prepare all results
