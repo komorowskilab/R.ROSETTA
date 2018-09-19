@@ -1,6 +1,9 @@
 rosResults<-function(path, roc){
-  
-  statsTab=read.table(paste0(path,"/logMain.txt"),fill=T)
+  if(.Platform$OS.type=="unix")
+  {
+  statsTab=read.table(paste0(path,"/logMain.txt"),fill=T)}else{
+  statsTab=read.table(paste0(path,"\\logMain.txt"),fill=T)
+  }
   if(roc)
   {
   stats=statsTab[((dim(statsTab)[1]-16):dim(statsTab)[1]),]
