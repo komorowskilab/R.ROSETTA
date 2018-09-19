@@ -31,8 +31,8 @@ comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/l
 try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
 }
 else{
-  #pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
-  pathExe <- paste(system.file(package="R.ROSETTA"), "exec","clrosetta.exe", sep="/")
+  pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
+  #pathExe <- paste(system.file(package="R.ROSETTA"), "exec","clrosetta.exe", sep="/")
   comm=sprintf('cmd /K %s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
 #comm=paste0(pathExe," SerialExecutor")
 #argms=paste0("FILENAME.COMMANDS=",dirList,"\\",f_out_dir,"; ", "FILENAME.LOG=",dirList,"\\log.txt")
