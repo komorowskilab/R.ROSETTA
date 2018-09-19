@@ -30,9 +30,13 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
   
   #write.csv(OUTPUT_DT_TRAIN,file=paste0(tempDirNam,"/data/",fname,".csv"),quote = F, row.names = F)
   
-  
+    if(.Platform$OS.type=="unix")
+  {
   write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F, row.names = F)
-  write.table(dfc,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)
+  write.table(dfc,file=paste0(tempDirNam,"/data/",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)}else{
+  write.table(fRow,file=paste0(tempDirNam,"\\data\\",fname,".csv"),sep="\t",quote = F, row.names = F)
+  write.table(dfc,file=paste0(tempDirNam,"\\data\\",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)  
+      }
   #write.table(fRow,file=paste0(tempDirNam,"/data/",fname,".csv"),sep=",",quote = F, row.names = F)
   
   #write.table(dfc,file=paste0(tempDirNam,"/data/",fname,".csv"),sep=",",quote = F,col.names = F, row.names = F, append = TRUE)
