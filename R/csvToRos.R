@@ -2,12 +2,12 @@
 csvToRos <- function(dirList){
 
 ############## serching for CSV file ###############
-if(.Platform$OS.type=="unix")
-{  
-file_name=gsub(paste0(dirList,"/"),"", list.files(dirList))}else{
-file_name=gsub(paste0(dirList,"\\"),"", list.files(dirList)) 
- }
-  
+#if(.Platform$OS.type=="unix")
+#{  
+#file_name=gsub(paste0(dirList,"/"),"", list.files(dirList))}else{
+#file_name=gsub(paste0(dirList,"\\"),"", list.files(dirList)) 
+# }
+file_name=list.files(dirList)
 file_name=gsub(".csv","",file_name[grep('.csv',file_name)])
 #storing name of found csv file 
   
