@@ -231,9 +231,9 @@ rosetta <- function(dt,
                 cvNum,
                 seed,
                 pipeLen,
-                paste(dirList2,"OUT_cmdCV.txt",sep="\\"),
-                paste(dirList2,"logMain.txt",sep="\\"),
-                paste(dirList2,rosFileName,sep="\\")
+                paste0(dirList2,"\\","OUT_cmdCV.txt"),
+                paste0(dirList2,"\\","logMain.txt"),
+                paste0(dirList2,"\\",rosFileName)
                )
 	try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
   }
