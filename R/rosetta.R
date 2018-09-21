@@ -39,6 +39,11 @@ rosetta <- function(dt,
   firstPath<-tempdir()
   fname<-"data"
   
+  if(discrete){
+    discrete=FALSE}else
+    {
+      discrete=TRUE
+    }
   
   if(.Platform$OS.type=="unix")
   {
@@ -56,7 +61,7 @@ rosetta <- function(dt,
   
   
   # training pipline length
-  if(discrete==FALSE)
+  if(discrete==TRUE)
   {
     pipeLen=5}else
     {
@@ -411,7 +416,7 @@ rosetta <- function(dt,
     features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
     
     ### each element separately ###
-    if(discrete==FALSE){
+    if(discrete==T){
       # for non discrete data  
       lst_cuts=lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
       
