@@ -1,7 +1,7 @@
 dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
 {
   
-  if(disc){
+  if(disc==FALSE){
   
   vecHead=unname(sapply(df, class))
   vecHead[vecHead=="numeric"]<-"Float(6)"
