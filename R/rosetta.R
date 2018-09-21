@@ -30,7 +30,7 @@ rosetta <- function(dt,
                     ManualNames=c(),
                     pAdjust=TRUE,
                     pAdjustMethod="BH",
-                    seed=0,
+                    seed=1,
                     invert=FALSE
 )
 {
