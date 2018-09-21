@@ -35,7 +35,7 @@ genCmdFilesRosetta <- function (dir_file3,
   maFoNam=paste("OUT_",proNam,sep="")
   if (file.exists(fn)) unlink(file.path(dir_file3, fn), recursive=TRUE)
 
-  ######-----DISCRETIZATION ON-----####################################
+  ######-----NON-DISCRETE DATA-----####################################
   ##########################################################################
   
   ##converting names of reducers
@@ -192,7 +192,7 @@ genCmdFilesRosetta <- function (dir_file3,
               quote=F,col.names = F,row.names = F)
   }
   
-  ######-----DISCRETIZATION OFF-----########################################
+  ######-----DISCRETE DATA-----########################################
   ##########################################################################
   
     else{ 
@@ -274,7 +274,7 @@ genCmdFilesRosetta <- function (dir_file3,
 
   }
   }else{ ##WINDOWS##
-    
+    ##NON-DISCRETE DATA
   if(disc==FALSE){
     
     dir.create(paste0(dir_file3,"\\rules"))
@@ -409,7 +409,7 @@ genCmdFilesRosetta <- function (dir_file3,
               quote=F,col.names = F,row.names = F)
   }
   
-  ######-----DISCRETIZATION OFF-----########################################
+  ######-----DISCRETE DATA-----########################################
   ##########################################################################
   
     else{ 
