@@ -7,10 +7,10 @@
 
 # R.ROSETTA
 
-**R.ROSETTA** is a package for creating and analyzing rough set classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system. In addition to all the existing ROSETTA functionalities, we have added new functions especially useful in bioinformatic applications. These include:
-* under-sampling
+**R.ROSETTA** is an R package for creating and analyzing rough set-based classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system. In addition to all the existing ROSETTA functionalities, we have added new functions such as:
+* undersampling
 * rule p-value estimation
-* retrieving the rule support sets
+* retrieving support sets from rules
 * class prediction
 * model visualization as a rule network or heatmap
 
@@ -36,8 +36,8 @@ install_github("mategarb/R.ROSETTA")
 library(R.ROSETTA)
 ```
 ### Functions
-**rosetta()** <-> *creates ROSETTA rough set classification model*<br />
-**recalculateRules()** <-> *recalculates rule table using the input data. Retrieve the support sets for rules*<br />
+**rosetta()** <-> *generates rough set-based classification model*<br />
+**recalculateRules()** <-> *recalculates rules using the input data. Retrieve the support sets for rules*<br />
 **predictClass()** <-> *predicts new classes by applying the model*<br />
 **getFeatures()** <-> *retrieves the attributes from the rules*<br />
 **saveLineByLine()** <-> *saves rules to LineByLine text format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ or Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
@@ -51,7 +51,7 @@ All the examples can be found in the R function manuals. To see the description,
 ```
 
 ## Acknowledgments
-R.ROSETTA includes an example dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
+R.ROSETTA includes a sample dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
 
 
 ### Built With
