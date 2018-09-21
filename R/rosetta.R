@@ -36,6 +36,8 @@ rosetta <- function(dt,
 {
   #df<-dt
   # setting paths, creating temp directory where the analysis will go
+  set.seed(seed)
+  
   firstPath<-tempdir()
   fname<-"data"
   
