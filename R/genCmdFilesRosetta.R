@@ -58,7 +58,7 @@ genCmdFilesRosetta <- function (dir_file3,
   
   if(.Platform$OS.type=="unix")
   {
-  if(disc){
+  if(disc==FALSE){
     
     dir.create(paste0(dir_file3,"/rules"))
     dir.create(paste0(dir_file3,"/logs"))
@@ -275,7 +275,7 @@ genCmdFilesRosetta <- function (dir_file3,
   }
   }else{ ##WINDOWS##
     
-  if(disc){
+  if(disc==FALSE){
     
     dir.create(paste0(dir_file3,"\\rules"))
     dir.create(paste0(dir_file3,"\\logs"))
