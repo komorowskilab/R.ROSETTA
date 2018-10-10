@@ -19,14 +19,14 @@ saveLineByLine <- function(rules, path, discrete=FALSE, filterByPval=FALSE, pval
   }
   
   else{
-      lst33=rules["DISC_CLASSES"]
-      
-      vec=as.character(as.matrix(rules["FEATURES"]))
-      lst1=sapply(vec, function(x) strsplit(x, ","))
-      #vec2=as.character(lst33)
-      lst2=strsplit(unlist(lst33), ",")
-      newLst=mapply(paste,collapse=",",sep="=",lst1,lst2)
-      lst5=as.character(unname(newLst))
+    
+lst33=as.character(as.matrix(rules$DISC_CLASSES))
+vec=as.character(as.matrix(rules$FEATURES))
+lst1=sapply(vec, function(x) strsplit(x, ","))
+lst2=strsplit(unlist(lst33), ",")
+newLst=mapply(paste,collapse=",",sep="=",lst1,lst2)
+lst5=as.character(unname(newLst))
+            
       if(filterByPval){
         dflbl=cbind(lst5,rules["DECISION"],rules["ACC_RHS"],rules["SUPP_RHS"],row.names = NULL)[which(rules["PVAL"]<pval),]
       }else
