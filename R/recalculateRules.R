@@ -147,10 +147,10 @@ numClass[which(rules$DECISION==names(table(dt[,length(dt)]))[i])]<-unname(table(
 percSuppLHS=round(newSupportLHS/numClass, digits=3)*100                          
 percSuppRHS=round(newSupportRHS/numClass, digits=3)*100                          
 
-cutsDT=rules[,which(grepl("CUT_", colnames(rules)))]                           
-newDT=data.frame(rules$FEATURES,rules$DECISION,rules$CUTS_COND,cutsDT,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
-newDT2=newDT[order(newDT$PVAL),]
-colnames(newDT2)<-c("FEATURES","DECISION","CUTS_COND",colnames(cutsDT),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL", "RISK_PVAL", "REL_RISK", "CONF_INT")
-rownames(newDT2)<-NULL
-return(newDT2)
+ cutsDT=rules[,which(grepl("CUT_", colnames(rules)))]                           
+ newDT=data.frame(rules$FEATURES,rules$DECISION,rules$CUTS_COND,rules$DISC_CLASSES,cutsDT,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
+ newDT2=newDT[order(newDT$PVAL),]
+ colnames(newDT2)<-c("FEATURES","DECISION","CUTS_COND","DISC_CLASSES",colnames(cutsDT),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL", "RISK_PVAL", "REL_RISK", "CONF_INT")
+ rownames(newDT2)<-NULL
+ return(newDT2)
 }
