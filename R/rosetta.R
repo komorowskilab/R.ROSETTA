@@ -544,7 +544,7 @@ rosetta <- function(dt,
                 st[i]<-lstc3[[j]][i]
               }
               else{
-                if(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))[1]%%1==0){ #integers
+               if(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))[1]%%1==0 & !grepl("\\.",unlist(strsplit(lstc3[[j]][i], ","))[1])){ #integers
                   if(grepl(",",lstc3[[j]][i])) ##for ranges -> middle classes
                   {
                     st[i]<-which(round2(tempCuts$V2,0)==min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))))+1 
