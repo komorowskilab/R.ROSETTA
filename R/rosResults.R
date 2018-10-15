@@ -16,38 +16,38 @@ rosResults<-function(path, roc){
   colnames(stats2)<-c("Measure","Value")
   
   ##MCC
-  cts<-statsTab[which(statsTab$V2=="|"),]
-  if(length(which(cts$V1=="Undefined"))!=0){
-  cts<-cts[-which(cts$V1=="Undefined"),]
-  }
-  noc<-unique(as.numeric(as.character(cts$V1)))
+  #cts<-statsTab[which(statsTab$V2=="|"),]
+  #if(length(which(cts$V1=="Undefined"))!=0){
+  #cts<-cts[-which(cts$V1=="Undefined"),]
+  #}
+  #noc<-unique(as.numeric(as.character(cts$V1)))
 
-  MCC=c()
+  #MCC=c()
 
-for(i in seq(1, dim(cts)[1], by = length(noc))){
-if(length(noc) == 2){
+#for(i in seq(1, dim(cts)[1], by = length(noc))){
+#if(length(noc) == 2){
   
-  TP=as.numeric(as.character(cts$V3[i]))
-  FN=as.numeric(as.character(cts$V3[i+1]))
-  FP=as.numeric(as.character(cts$V4[i]))
-  TN=as.numeric(as.character(cts$V4[i+1]))
-  MCC<-c(MCC,((TP*TN)-(FP*FN))/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN)))
+  #TP=as.numeric(as.character(cts$V3[i]))
+  #FN=as.numeric(as.character(cts$V3[i+1]))
+  #FP=as.numeric(as.character(cts$V4[i]))
+  #TN=as.numeric(as.character(cts$V4[i+1]))
+  #MCC<-c(MCC,((TP*TN)-(FP*FN))/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN)))
     
-}else{
+#}else{
   
-  MCC<-c(MCC,NA)
+  #MCC<-c(MCC,NA)
   ##in progress##
   #TP=cts$V3[i]
   #FN=cts$V3[i+1]
   #FP=cts$V4[i]
   #TN=cts$V4[i+1]
   
-}
-  statsMCC=data.frame("MCC.mean",as.factor(mean(MCC)))
-  colnames(statsMCC)<-c("Measure","Value")
-}
+#}
+  #statsMCC=data.frame("MCC.mean",as.factor(mean(MCC)))
+  #colnames(statsMCC)<-c("Measure","Value")
+#}
   
-  stats2=rbind(stats2,statsMCC)
+  #stats2=rbind(stats2,statsMCC)
   
   
   
