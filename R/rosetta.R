@@ -322,7 +322,9 @@ rosetta <- function(dt,
       #dfRes_mccMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[6])))
     }
     
-    outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax), mean(dfRes_mccMean))
+    #outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax), mean(dfRes_mccMean))
+    outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax))
+    
     #colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max","MCC.mean")
     colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max")
     rownames(outRos)<-""
