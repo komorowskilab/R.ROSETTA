@@ -271,27 +271,31 @@ rosetta <- function(dt,
           path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
         }
       
-      # ROC AUC
-      dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
-      dfRes_rocAucSE[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
-      # ACCURACY
-      dfRes_accMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
-      dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
-      dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
-      dfRes_accMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[6])))
-      dfRes_accMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[7])))
-      # ROC
-      dfRes_rocMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[8])))
-      dfRes_rocMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[9])))
-      dfRes_rocStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[10])))
-      dfRes_rocMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[11])))
-      dfRes_rocMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[12])))
-      # ROC SE
-      dfRes_rocseMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[13])))
-      dfRes_rocseMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[14])))
-      dfRes_rocseStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[15])))
-      dfRes_rocseMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[16])))
-      dfRes_rocseMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[17])))
+    rosres=rosResults(path, roc)
+
+
+# ROC AUC
+dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC"),2])))
+dfRes_rocAucSE[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE"),2])))
+# ACCURACY
+dfRes_accMean[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Mean"),2])))
+dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Median"),2])))
+dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.StdDev"),2])))
+dfRes_accMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Minimum"),2])))
+dfRes_accMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Maximum"),2])))
+# ROC
+dfRes_rocMean[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Mean"),2])))
+dfRes_rocMedian[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Median"),2])))
+dfRes_rocStdDev[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.StdDev"),2])))
+dfRes_rocMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Minimum"),2])))
+dfRes_rocMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Maximum"),2])))
+# ROC SE
+dfRes_rocseMean[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Mean"),2])))
+dfRes_rocseMedian[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Median"),2])))
+dfRes_rocseStdDev[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.StdDev"),2])))
+dfRes_rocseMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Minimum"),2])))
+dfRes_rocseMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Maximum"),2])))
+      
     }
     
     outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),
