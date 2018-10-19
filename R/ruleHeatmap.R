@@ -1,13 +1,14 @@
-ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
+ruleHeatmap <- function(dt, rules, ind=15, nbins=3, showClust=TRUE){
   
   r=ind
   
   ftrs=unlist(strsplit(as.character(rules$FEATURES)[r], ","))
+  dicl=unlist(strsplit(as.character(rules$DISC_CLASSES)[r], ","))
   perc=unlist(strsplit(as.character(rules$PERC_SUPP_RHS)[r], ","))
   decs=unlist(as.character(rules$DECISION))[r]
   pval=unlist(as.numeric(rules$PVAL))[r]
   if(pval<0.05){
-  pvalw="*" 
+    pvalw="*" 
   }
   if(pval<0.01){
     pvalw="**" 
@@ -32,10 +33,10 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
   dt2=as.matrix(dt[c(objs_tp, objs_fp, objs_tn), which(colnames(dt) %in% ftrs)])
   
   if (nbins >= 3){
-    cols=colorRampPalette(c("darkolivegreen3", "whitesmoke", "coral2"))(n = nbins)
+    cols=colorRampPalette(c("olivedrab3", "gray90", "indianred1"))(n = nbins)
   }else
   {
-    cols=colorRampPalette(c("darkolivegreen3", "coral2"))(n = 2)
+    cols=colorRampPalette(c("olivedrab3", "indianred1"))(n = 2)
   }
   
   for(i in 1:length(ftrs)){
@@ -43,7 +44,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
   }
   
   if(showClust){
-
+    
     rf1=(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
     fit_fp <- kmeans(dt2[rf1,], factorial(length(table(as.matrix(dt2[rf1,])))))
     dt2_2=dt2[rf1,][order(fit_fp$cluster),]
@@ -65,7 +66,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
             Rowv=F,
             #Colv=FALSE,
             #margins = c(7,10),
-            xlab=paste0("Rule class: ",decs,", significance: (",pvalw,")"),
+            xlab=paste0(pvalw, " IF ",paste(paste0(ftrs,paste("(",dicl,")",sep="")), collapse =" AND ")," THEN ",decs),
             srtCol=0,
             #lwid=c(0.5,4),
             #lhei=c(1,4),
@@ -87,7 +88,7 @@ ruleHeatmap <- function(dt, rules, ind=1, nbins=3, showClust=TRUE){
   
   #list('x'=-0.1,'y'=1.2)
   legend(list('x'=0,'y'=1.2),      # location of the legend on the heatmap plot
-         legend = c(paste0("Objects supporting ",decs), paste0("Objects not supporting ",decs), "Remaining objects"), # category labels
+         legend = c(paste0("Objects supporting the rule"), paste0("Objects not supporting the rule"), "Object for the remaining classes"), # category labels
          col = c("gold", "sandybrown", "dodgerblue"),  # color key
          lty= 1,             # line style
          lwd = 10,
