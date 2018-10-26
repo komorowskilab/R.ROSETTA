@@ -26,7 +26,7 @@ Logical. If TRUE votes are normalized. If FALSE normalization of votes is not pe
 }
 
   \item{normalizeMethod}{
-A character containing votes normalization method: median, mean, max, rss, rms, rulnum. Default is rss.
+A character containing votes normalization method: median, mean, max, rss (root sum square), rulnum (rule number). Default is rss.
 }
 
   \item{validate}{
