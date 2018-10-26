@@ -7,7 +7,7 @@ Predict new decision classes.
 Use generated model to validate independent dataset.
 }
 \usage{
-predictClass(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="scalar", validate=FALSE, valiDec)
+predictClass(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,7 +26,7 @@ Logical. If TRUE votes are normalized. If FALSE normalization of votes is not pe
 }
 
   \item{normalizeMethod}{
-A character containing votes normalization method: median, mean, max, scalar, rulnum. Default is scalar.
+A character containing votes normalization method: median, mean, max, rss, rms, rulnum. Default is rss.
 }
 
   \item{validate}{
