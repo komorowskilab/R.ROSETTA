@@ -175,10 +175,6 @@ for(i in 1:length(decs2)){
   if(normalizeMethod=="rss"){ #root sum square
     outListVotes=data.frame(outListVotes,as.numeric(as.matrix(outListVotes2))/sqrt(sum(as.numeric(as.matrix(outListVotes2))^2)))
   }
-    
-  if(normalizeMethod=="rms"){ #root mean square
-    outListVotes=data.frame(outListVotes,as.numeric(as.matrix(outListVotes2))/sqrt(mean(as.numeric(as.matrix(outListVotes2))^2)))
-  }
   
   if(normalizeMethod=="rulnum"){
     outListVotes=data.frame(outListVotes,(as.numeric(as.matrix(outListVotes2)))/length(which(as.character(rules$DECISION)==decs2[i])))
