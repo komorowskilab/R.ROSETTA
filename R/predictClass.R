@@ -172,8 +172,12 @@ for(i in 1:length(decs2)){
     outListVotes=data.frame(outListVotes,outListVotes2/max(as.numeric(as.matrix(outListVotes2))))
   }
   
-  if(normalizeMethod=="scalar"){
+  if(normalizeMethod=="rss"){ #root sum square
     outListVotes=data.frame(outListVotes,as.numeric(as.matrix(outListVotes2))/sqrt(sum(as.numeric(as.matrix(outListVotes2))^2)))
+  }
+    
+  if(normalizeMethod=="rms"){ #root mean square
+    outListVotes=data.frame(outListVotes,as.numeric(as.matrix(outListVotes2))/sqrt(mean(as.numeric(as.matrix(outListVotes2))^2)))
   }
   
   if(normalizeMethod=="rulnum"){
