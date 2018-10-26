@@ -1,4 +1,4 @@
-predictClass<-function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="scalar", validate=FALSE, valiDec)
+predictClass<-function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec)
   {
 
 discretized=discrete
