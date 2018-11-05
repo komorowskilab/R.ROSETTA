@@ -1,4 +1,4 @@
-ruleHeatmap <- function(dt, rules, discrete=FALSE, ind=15, nbins=3, showClust=TRUE){
+ruleHeatmap <- function(dt, rules, discrete=FALSE, discreteMethod="EF", ind=15, nbins=3, showClust=TRUE){
   
   r=ind
   
@@ -34,6 +34,15 @@ ruleHeatmap <- function(dt, rules, discrete=FALSE, ind=15, nbins=3, showClust=TR
   
   if(discrete==TRUE){
   }else{
+  
+  if(discreteMethod=="EW"){
+  dmeth="interval"
+  }
+  
+  if(discreteMethod=="EB"){
+  dmeth="frequency"
+  }  
+    
   if (nbins >= 3){
     cols=colorRampPalette(c("olivedrab3", "gray90", "indianred1"))(n = nbins)
   }else
@@ -42,7 +51,7 @@ ruleHeatmap <- function(dt, rules, discrete=FALSE, ind=15, nbins=3, showClust=TR
   }
   
   for(i in 1:length(ftrs)){
-    dt2[,i]=discretize(dt2[,i], method="frequency", breaks = nbins, labels=1:nbins)
+    dt2[,i]=discretize(dt2[,i], method=dmeth, breaks = nbins, labels=1:nbins)
   }
   }
   
