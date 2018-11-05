@@ -12,12 +12,12 @@
 * rule p-value estimation
 * retrieving support sets from rules
 * class prediction
-* model visualization as a rule network or heatmap
+* model visualization on a rule network or heatmap
 
 ## Getting Started
 
 ### Prerequisites
-R.ROSETTA works with UNIX and windows operating systems.<br />
+R.ROSETTA works with UNIX and Windows OS.<br />
 UNIX operating systems require wine.<br />
 <a href="https://www.davidbaumgold.com/tutorials/wine-mac/" target="_blank">A tutorial</a> by David Baumgold, how to install wine on macOS platforms.
 
@@ -37,21 +37,21 @@ library(R.ROSETTA)
 ```
 ### Functions
 **rosetta()** <-> *generates rough set-based classification model*<br />
-**recalculateRules()** <-> *recalculates rules using the input data. Retrieve the support sets for rules*<br />
+**recalculateRules()** <-> *recalculates rules using the input data. Retrieves the support sets for rules*<br />
 **predictClass()** <-> *predicts new classes by applying the model*<br />
 **getFeatures()** <-> *retrieves the attributes from the rules*<br />
 **saveLineByLine()** <-> *saves rules to LineByLine text format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ or Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
-**ruleHeatmap()** <-> *creates a heatmap of object-attribute interactions*<br />
+**ruleHeatmap()** <-> *creates a heatmap of object-attribute interactions for a single rule*<br />
 
 ## Examples
 
-All the examples can be found in the R function manuals. To see the description, type "?" and the name of the function e.g.
+Sample code can be found in the R function manuals. To see the description, type "?" and the name of the function e.g.
 ```
 ?rosetta, ?saveLineByLine
 ```
 
 ## Acknowledgments
-R.ROSETTA includes a sample dataset obtained from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
+R.ROSETTA includes a sample dataset collected from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
 
 
 ### Built With
