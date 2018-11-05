@@ -1,4 +1,4 @@
-ruleHeatmap <- function(dt, rules, disc=FALSE, ind=15, nbins=3, showClust=TRUE){
+ruleHeatmap <- function(dt, rules, discrete=FALSE, ind=15, nbins=3, showClust=TRUE){
   
   r=ind
   
@@ -32,7 +32,7 @@ ruleHeatmap <- function(dt, rules, disc=FALSE, ind=15, nbins=3, showClust=TRUE){
   ## choosing frame for rules
   dt2=as.matrix(dt[c(objs_tp, objs_fp, objs_tn), which(colnames(dt) %in% ftrs)])
   
-  if(disc==TRUE){
+  if(discrete==TRUE){
   }else{
   if (nbins >= 3){
     cols=colorRampPalette(c("olivedrab3", "gray90", "indianred1"))(n = nbins)
