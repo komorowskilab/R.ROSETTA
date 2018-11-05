@@ -4,7 +4,7 @@
 Recalculate the rule table.
 }
 \description{
-Recalculate all the values in rule table according to the input decision table. Additionally, retrieves the rule support sets.
+Recalculates the values in the rule table according to the input decision table. Retrieves the rule support sets.
 }
 \usage{
 recalculateRules(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
@@ -15,7 +15,7 @@ recalculateRules(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
 A data frame of decision table. The last column is decision.
 }
   \item{rules}{
-A data frame of rule table in a form of rosetta $main output.
+A data frame of rule table from rosetta main output.
 }
   \item{discrete}{
 Logical. If TRUE the dataset is discrete. Default is FALSE. 
@@ -24,14 +24,14 @@ Logical. If TRUE the dataset is discrete. Default is FALSE.
 Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
 }
   \item{pAdjustMethod}{
-A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none.
+A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none. Default is BH.
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{output}{A data frame containing recaluclated rules with: support, accuracy and lists of objects that support each rule.
+  \item{output}{A data frame containing recaluclated rules with: feature names, accuracy, support, normalized support and support sets.
 }
 }
 \references{
