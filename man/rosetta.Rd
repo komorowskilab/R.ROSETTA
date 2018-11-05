@@ -1,10 +1,10 @@
 \name{rosetta}
 \alias{rosetta}
 \title{
-ROSETTA rough set classifier
+ROSETTA classifier
 }
 \description{
-Creates a rough set classification model.
+Creates a rule-based classification model.
 }
 \usage{
 rosetta(dt, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequency",
@@ -37,16 +37,16 @@ A character containing discretization method: EqualFrequency, MDL, Naive, SemiNa
 A vector containing discretization parameters. May be of different length and values. See examples in rosetta.
 }
   \item{discreteMask}{
-Logical. If TRUE, set the discretization mask option. Default is TRUE.
+Logical. If TRUE, set the discretization mask option on. Default is TRUE.
 }
   \item{reducer}{
-A character containing reducer method: Johnson, Genetic, Holte1R or Manual. Default is Johnson.
+A character containing name of reducer method: Johnson, Genetic, Holte1R or Manual. Default is Johnson.
 }
   \item{reducerDiscernibility}{
 A character containing reducer discernibility option: Full or Object. Default is Object.
 }
   \item{roc}{
-Logical. If TRUE, calculate AUC and ROC values. Default is FALSE.
+Logical. If TRUE, calculate the AUC and ROC values. Default is FALSE.
 }
   \item{clroc}{
 A character containing the name of the class. Default is "autism".
@@ -64,10 +64,10 @@ Logical. If TRUE, masks features during the classification process. Default is F
 A character vector of the feature names to mask. Names should correspond to the column names.
 }
   \item{underSample}{
-Logical. If TRUE, the under-sampling is performed. Default is FALSE. 
+Logical. If TRUE, an undersampling is performed. Default is FALSE. 
 }
   \item{underSampleNum}{
-The number of sub-samples. If 0 minimum number of subsets that cover all the objects is taken. Default is 0.
+The number of subsamples. If 0 minimum number of subsets that cover all the objects is taken. Default is 0.
 }
   \item{underSampleSize}{
 The size of each subsample. If 0 the size is taken from the smallest decision class. Default is 0.
@@ -100,10 +100,10 @@ A vector containing manual names for manual reducer.
 Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
 }
   \item{pAdjustMethod}{
-A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none.
+A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none. Default is BH.
 }
     \item{seed}{
-An integer. Seed to the random number generator.
+An integer. Seed to the random number generator. Default is 1.
 }
       \item{invert}{
 Logical.  If TRUE, the classifier is inverted. Default is FALSE. 
@@ -113,11 +113,11 @@ Logical.  If TRUE, the classifier is inverted. Default is FALSE.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame of rule table containing an information of: features, decision, accuracy, support, coverage, stability and p-value. The table is sorted according to the p-value.
+  \item{out$main}{A data frame of rule table containing the information about: features, decision, accuracy, support, coverage, stability and p-value. The table is decreasingly sorted according to the p-value.
 }
-    \item{out$quality}{A table of quality of the model: accuracy, ROC and AUC measures.
+    \item{out$quality}{A table of quality of the model: accuracy statistic, ROC and AUC measures.
 }
-    \item{out$rules}{A character vector of raw rules computed by ROSETTA.
+    \item{out$rules}{A character vector of raw unique rules computed by ROSETTA.
 }
     \item{out$usn}{An integer indicating the minimum number of required for subsets in undersumpling.
 }
@@ -138,21 +138,16 @@ Mateusz Garbulowski, Karolina Smolinska
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
+  
 library(R.ROSETTA)
-
-
 
 ###### default settings ######
 resultsRos <- rosetta(autcon)
 resultsRos$quality$Accuracy.Mean
 
-###### under-sampling ######
+###### undersampling ######
 resultsRosU <- rosetta(autcon, underSample=TRUE, underSampleNum=20, underSampleSize=10)
 resultsRosU$quality$Accuracy.Mean
-
-###### under-sampling with default parameters ######
-resultsRosUD <- rosetta(autcon, underSample=TRUE)
-resultsRosUD$quality$Accuracy.Mean
 
 ###### classifiers ######
 # StandardVoter
@@ -173,7 +168,7 @@ resultsRosJR <- rosetta(autcon, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, B
 resultsRosJR$quality$Accuracy.Mean
 
 # Genetic
-resultsRosGR <- rosetta(autcon, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.85, Algorithm="Simple"))
+resultsRosGR <- rosetta(autcon, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.9, Algorithm="Simple"))
 resultsRosGR$quality$Accuracy.Mean
 
 ###### discernibility ######
@@ -206,15 +201,18 @@ resultsRosSN$quality$Accuracy.Mean
 resultsRosBR <- rosetta(autcon, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
 resultsRosBR$quality$Accuracy.Mean
 
-# without discretization mask
-resultsRosMask <- rosetta(autcon, discrete=FALSE, discreteMask=FALSE)
-resultsRosMask$quality$Accuracy.Mean
-
-###### for discrete data e.g. binary values or characters ######
+###### for discrete data #######
 # discretization is turned off
 resultsRosNoD <- rosetta(autcon, discrete=TRUE)
 resultsRosNoD$quality$Accuracy.Mean
-
+  
+###### for mixed data: discrete and non-discrete #######
+# data.frame should contain specific structures:
+# discrete values: logical, character or factor
+# non-discrete values: float, numeric or integer
+resultsRosDM <- rosetta(autcon, discrete=FALSE)
+resultsRosDM$quality$Accuracy.Mean
+  
 ###### calculate AUC #########  
 # for class: autism
 resultsRosAUCa <- rosetta(autcon, roc=TRUE, clroc="autism")
@@ -258,8 +256,8 @@ resultsRosFST$quality$Accuracy.Mean
 resultsRosMF1 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=c("COX2"))
 resultsRosMF1$quality$Accuracy.Mean
 
-# remove first 20 features
-resultsRosMF2 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=colnames(df)[1:20])
+# remove first 10 features
+resultsRosMF2 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=colnames(autcon)[1:10])
 resultsRosMF2$quality$Accuracy.Mean
 }
 
