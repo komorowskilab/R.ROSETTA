@@ -7,7 +7,7 @@
 
 # R.ROSETTA
 
-**R.ROSETTA** is an R package for creating and analyzing rule-based classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system. In addition to all the existing ROSETTA functionalities, we have added new functions such as:
+**R.ROSETTA** is an R package for constructing and analyzing rule-based classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA (Öhrn and Komorowski, 1997) system. In addition to all the existing ROSETTA functionalities, we have added new functions such as:
 * undersampling
 * rule p-value estimation
 * retrieving support sets from rules
