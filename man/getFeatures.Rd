@@ -1,10 +1,10 @@
 \name{getFeatures}
 \alias{getFeatures}
 \title{
-Retrieves feature lists from the rules.
+Features list extraction
 }
 \description{
-Inspects the most significant and frequent features from the rules. Creates seperate list of the features for each decision class.
+Extracts the features from the rules. Sorts the features according to their frequency and rule significance. Creates a list of the features for each decision class.
 }
 \usage{
 getFeatures(dt, rules, pval=0.05)
@@ -15,10 +15,10 @@ getFeatures(dt, rules, pval=0.05)
 A data frame of decision table. The last column is decision.
 }
   \item{rules}{
-A data frame of rule table in a form of rosetta $main output.
+A data frame of rule table in a form of main rosetta output.
 }
   \item{pval}{
-A numeric value of p-value threshold. The default is 0.05.
+A numeric value of rule p-value threshold. The default is 0.05.
 }
 }
 \details{
