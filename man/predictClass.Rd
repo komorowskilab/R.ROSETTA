@@ -1,10 +1,10 @@
 \name{predictClass}
 \alias{predictClass}
 \title{
-Predict new decision classes.
+Class prediction
 }
 \description{
-Use generated model to validate independent dataset.
+Use a rosetta model to validate independent dataset or reclassify the existing one.
 }
 \usage{
 predictClass(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec)
@@ -15,14 +15,14 @@ predictClass(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", v
 A data frame of decision table. The last column is decision.
 }
   \item{rules}{
-A data frame of rule table in a form of rosetta $main output.
+A data frame of rule table in a form of main rosetta output.
 }
   \item{discrete}{
 Logical. If TRUE the dataset is discrete. Default is FALSE. 
 }
 
   \item{normalize}{
-Logical. If TRUE votes are normalized. If FALSE normalization of votes is not performed. Default is TRUE.
+Logical. If FALSE normalization of votes is not performed. Default is TRUE.
 }
 
   \item{normalizeMethod}{
@@ -30,11 +30,11 @@ A character containing votes normalization method: median, mean, max, rss (root 
 }
 
   \item{validate}{
-Logical. If TRUE, new decisions are validated using fixed ones. Default is FALSE.
+Logical. If TRUE, the accuracy is calculated. Default is FALSE.
 }
 
   \item{valiDec}{
-A character vector containing decisions to validate.}
+A character vector containing outcome. Required for accuracy calculation. Only if validate is TRUE. }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
