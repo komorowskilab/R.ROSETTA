@@ -148,6 +148,7 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
   percSuppRHS=round(newSupportRHS/numClass, digits=3)*100                          
   
   cutsDT=rules[,which(grepl("CUT_", colnames(rules)))]
+                              
   if(length(as.character(rules$DISC_CLASSES) == 0)){
   newDT=data.frame(rules$FEATURES,rules$DECISION,rules$CUTS_COND,cutsDT,objectsPerRuleLHS,objectsPerRuleRHS,newSupportLHS,newSupportRHS,percSuppLHS,percSuppRHS,newAccuracy,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
   colnames(newDT)<-c("FEATURES","DECISION","DISC_CLASSES",colnames(cutsDT),"SUPP_SET_LHS","SUPP_SET_RHS","SUPP_LHS","SUPP_RHS","PERC_SUPP_LHS","PERC_SUPP_RHS","ACC_RHS","PVAL", "RISK_PVAL", "REL_RISK", "CONF_INT")
