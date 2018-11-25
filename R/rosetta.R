@@ -269,26 +269,11 @@ rosetta <- function(dt,
       {
         path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")
         path_rocs=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta/rocs")}else{
-          path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
+        path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
         path_rocs=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta\\rocs")
         }
       
      
-# Create list of text files
-txt_files_ls = list.files(path=path_rocs, pattern="*.txt", full.names = T) 
-# Read the files in, assuming comma separator
-txt_files_df <- lapply(txt_files_ls, function(x) {read.table(file = x, fill=T)})
-# Combine them
-combined_df=data.frame()
-
-for(i in 1:length(txt_files_df)){
-  
-  combined_df=rbind(combined_df, data.frame(rep(i, dim(as.data.frame(txt_files_df[[i]])[,1:7])[1]),as.data.frame(txt_files_df[[i]])[,1:7]))
-}
-
-
-combined_df2 <- as.data.frame(apply(as.matrix(combined_df[-which(combined_df[,2]=="%"),]), 2, as.numeric))
-colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Specificity","PPV","NPV","Accuracy","Threshold")
 
       
 rosres=rosResults(path, roc)
@@ -316,8 +301,24 @@ dfRes_rocseStdDev[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.A
 dfRes_rocseMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Minimum"),2])))
 dfRes_rocseMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Maximum"),2])))
       
-    }
-    
+# Create list of text files
+txt_files_ls = list.files(path=path_rocs, pattern="*.txt", full.names = T) 
+# Read the files in, assuming comma separator
+txt_files_df <- lapply(txt_files_ls, function(x) {read.table(file = x, fill=T)})
+# Combine them
+combined_df=data.frame()
+
+for(k in 1:length(txt_files_df)){
+  
+  combined_df=rbind(combined_df, data.frame(rep(i, dim(as.data.frame(txt_files_df[[k]])[,1:7])[1]),as.data.frame(txt_files_df[[k]])[,1:7]))
+}
+
+
+}
+  
+combined_df2 <- as.data.frame(apply(as.matrix(combined_df[-which(combined_df[,2]=="%"),]), 2, as.numeric))
+colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Specificity","PPV","NPV","Accuracy","Threshold")
+  
     outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),
                       mean(dfRes_accMax),mean(dfRes_rocAuc),mean(dfRes_rocAucSE),mean(dfRes_rocMean), 
                       mean(dfRes_rocMedian),mean(dfRes_rocStdDev), mean(dfRes_rocMin), mean(dfRes_rocMax),
