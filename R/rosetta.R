@@ -310,7 +310,7 @@ combined_df=data.frame()
 
 for(k in 1:length(txt_files_df)){
   
-  combined_df=rbind(combined_df, data.frame(rep(i, dim(as.data.frame(txt_files_df[[k]])[,1:7])[1]),as.data.frame(txt_files_df[[k]])[,1:7]))
+  combined_df=rbind(combined_df, data.frame(rep(k, dim(as.data.frame(txt_files_df[[k]])[,1:7])[1]),as.data.frame(txt_files_df[[k]])[,1:7]))
 }
 
 
