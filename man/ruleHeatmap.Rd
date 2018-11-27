@@ -8,7 +8,7 @@ A heatmap of single rule, showing objects supporting the rule. The reamining obj
 Only for discrete data or the data made by Equal Frequency Binning (EFB) discretization.
 }
 \usage{
-ruleHeatmap(dt, rules, discrete=FALSE, ind=1, nbins=3, showClust=TRUE)
+ruleHeatmap(dt, rules, discrete=FALSE, discreteMethod="EF", ind=1, nbins=3, showClust=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,9 @@ A data frame of rule table in a form of rosetta $main output.
 }
   \item{discrete}{
 Logical. Set TRUE for non-discrete data. Default is FALSE.
+}
+    \item{discreteMethod}{
+A character value of the discretization method to be performed, EF(equal frequency) or EW(equal width). Default is EF.
 }
   \item{ind}{
 A numeric value of index of the rule in the table.
