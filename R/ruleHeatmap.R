@@ -39,7 +39,7 @@ ruleHeatmap <- function(dt, rules, discrete=FALSE, discreteMethod="EF", ind=15, 
   dmeth="interval"
   }
   
-  if(discreteMethod=="EB"){
+  if(discreteMethod=="EF"){
   dmeth="frequency"
   }  
     
