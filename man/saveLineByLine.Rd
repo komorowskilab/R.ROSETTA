@@ -63,9 +63,6 @@ saveLineByLine(rules, "outFile.txt")
 
 # filter by p-value
 saveLineByLine(rules, "outFile.txt", filterByPval=TRUE, pval=0.01)
-
-# for non discrete gene expression data 
-saveLineByLine(rules, "outFile.txt", geneExprData=TRUE, discrete=FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
