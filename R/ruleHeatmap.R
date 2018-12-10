@@ -21,8 +21,8 @@ ruleHeatmap <- function(dt, rules, discrete=FALSE, discreteMethod="EF", ind=15, 
   }
   
   objs_supp_rule=unlist(strsplit(as.character(rules$SUPP_SET_RHS)[r], ","))
-  objs_class=rownames(dt)[which(dt$decision == decs)]
-  objs_restclasses=rownames(dt)[which(dt$decision != decs)]
+  objs_class=rownames(dt)[which(as.character(dt[,length(dt)]) == decs)]
+  objs_restclasses=rownames(dt)[which(as.character(dt[,length(dt)]) != decs)]
   
   ## selecting TP, FP, TN objects
   objs_tp = which(rownames(dt) %in% objs_supp_rule)# objs supporting rule
