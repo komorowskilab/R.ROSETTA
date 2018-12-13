@@ -617,8 +617,8 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
       #######################################                           
       
       decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
-      df_out=data.frame(features2,decsFinal,unlist(st33), supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
-      colnames(df_out)<-c("FEATURES","DECISION","DISC_CLASSES","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUTS_COND",paste0("CUT_",seq(1:max(table(df222$group)))))
+      df_out=data.frame(features2,unlist(st33),decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
+      colnames(df_out)<-c("FEATURES","DISC_CLASSES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUTS_COND",paste0("CUT_",seq(1:max(table(df222$group)))))
       
       df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND","DISC_CLASSES")])
       allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND","DISC_CLASSES")])
