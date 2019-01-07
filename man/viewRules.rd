@@ -4,7 +4,7 @@
 View rules in IF-THEN form.
 }
 \description{
-Shows rules following the IF-THEN convention. Additionally prints the most significant statistics.
+Display rules following the IF-THEN form. Additionally prints the basic rule statistics.
 }
 \usage{
 viewRules(rules, setDiscLabels=FALSE, newDiscLabels=c("down","medium", "up"))
@@ -12,7 +12,7 @@ viewRules(rules, setDiscLabels=FALSE, newDiscLabels=c("down","medium", "up"))
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{rules}{
-A data frame of decision table. The last column is decision.
+A data frame of rule table in a form of rosetta $main output.
 }
   \item{setDiscLabels}{
 Logical. If TRUE the new discretization labels can be applied. Default is FALSE.
