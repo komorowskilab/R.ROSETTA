@@ -734,7 +734,16 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
     if(pAdjust){
       PVAL=p.adjust(PVAL, method=pAdjustMethod)}
     
-    df_out3=data.frame(df_out2,PVAL, RISK_PVAL, REL_RISK, CONF_INT)
+       numClass=rep(0,length(df_out2$DECISION))
+    for(i in 1:length(table(dt[,length(dt)]))){
+      numClass[which(df_out2$DECISION==names(table(dt[,length(dt)]))[i])]<-unname(table(dt[,length(dt)]))[i]
+    }
+    
+    PERC_SUPP_LHS=round(df_out2$SUPP_LHS/numClass, digits=3)*100                          
+    PERC_SUPP_RHS=round( df_out2$SUPP_RHS/numClass, digits=3)*100
+    
+    df_out3=data.frame(df_out2, PERC_SUPP_LHS, PERC_SUPP_RHS, PVAL, RISK_PVAL, REL_RISK, CONF_INT)
+                                
     df_out4=df_out3[order(df_out3$PVAL,decreasing = F),]
     rownames(df_out4) <- NULL
     # clear all the created files and set the first driectory
