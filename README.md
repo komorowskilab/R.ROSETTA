@@ -42,6 +42,7 @@ library(R.ROSETTA)
 **getFeatures()** <-> *retrieves the attributes from the rules*<br />
 **saveLineByLine()** <-> *saves rules to LineByLine text format, compatible with VisuNet http://bioinf.icm.uu.se/~visunet/ or Ciruvis http://bioinf.icm.uu.se/~ciruvis/*<br />
 **ruleHeatmap()** <-> *creates a heatmap of object-attribute interactions for a single rule*<br />
+**viewRules()** <-> *displays rules in IF-THEN format*<br />
 
 ## Examples
 
