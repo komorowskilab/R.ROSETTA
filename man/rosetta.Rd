@@ -14,7 +14,7 @@ underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ru
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
 JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
 GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames=c(), pAdjust=TRUE, pAdjustMethod="BH", seed=1, invert=FALSE)
+ManualNames=c(), pAdjust=TRUE, pAdjustMethod="bonferroni", seed=1, invert=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,16 +28,16 @@ A character containing the classifier type: StandardVoter, ObjectTrackingVoter o
 A numeric value of the cross-validation number. Default is 10.
 }
   \item{discrete}{
-Logical. Set TRUE for non-discrete data. Default is FALSE.
+Logical. Set TRUE for discrete data. Default is FALSE.
 }
   \item{discreteMethod}{
 A character containing discretization method: EqualFrequency, MDL, Naive, SemiNaive or BROrthogonal.  Default is EqualFrequency.
 }
   \item{discreteParam}{
-A vector containing discretization parameters. May be of different length and values. See examples in rosetta.
+A vector containing discretization parameters. May be of different length and values. See examples.
 }
   \item{discreteMask}{
-Logical. If TRUE, set the discretization mask option on. Default is TRUE.
+Logical. Set FALSE to disable discretization mask. Default is TRUE.
 }
   \item{reducer}{
 A character containing name of reducer method: Johnson, Genetic, Holte1R or Manual. Default is Johnson.
@@ -46,37 +46,37 @@ A character containing name of reducer method: Johnson, Genetic, Holte1R or Manu
 A character containing reducer discernibility option: Full or Object. Default is Object.
 }
   \item{roc}{
-Logical. If TRUE, calculate the AUC and ROC values. Default is FALSE.
+Logical. Set TRUE to calculate the AUC and ROC values. Default is FALSE.
 }
   \item{clroc}{
 A character containing the name of the class. Default is "autism".
 }
   \item{fallBack}{
-Logical. If TRUE, fallback class is supported. Default is TRUE.
+Logical. Set TRUE to support classifier with fallback class. Default is TRUE.
 }
   \item{fallBackClass}{
 A character containing the name of the class. Default is "autism".
 }
   \item{maskFeatures}{
-Logical. If TRUE, masks features during the classification process. Default is FALSE.
+Logical. Set TRUE to mask features during the classification process. Default is FALSE.
 }
   \item{maskFeaturesNames}{
-A character vector of the feature names to mask. Names should correspond to the column names.
+A character vector of the feature names to mask. Names shall correspond to the column names.
 }
   \item{underSample}{
-Logical. If TRUE, an undersampling is performed. Default is FALSE. 
+Logical. Set TRUE to perform undersampling. Default is FALSE. 
 }
   \item{underSampleNum}{
-The number of subsamples. If 0 minimum number of subsets that cover all the objects is taken. Default is 0.
+The number of subsamples. For 0, minimum number of subsets that cover all the objects is selected. Default is 0.
 }
   \item{underSampleSize}{
-The size of each subsample. If 0 the size is taken from the smallest decision class. Default is 0.
+The size of each subsample. For 0, the size is taken from the smallest decision class. Default is 0.
 }
   \item{ruleFiltration}{
-Logical. If TRUE, rule filtration is performed. Default is FALSE.
+Logical. Set TRUE to filter out rules. Default is FALSE.
 }
   \item{ruleFiltrSupport}{
-A vector of two numbers containing interval of support values to filter out. Default is c(1,3).
+A vector of two integers containing interval of support values to filter out. Default is c(1,3).
 }
   \item{ruleFiltrAccuracy}{
 A vector of two numbers containing interval of accuracy values to filter out. Default is c(0,0.5).
@@ -97,29 +97,29 @@ A vector containing Genetic reducer parameters.
 A vector containing manual names for manual reducer.
 }
   \item{pAdjust}{
-Logical. If TRUE, p-value adjustment is applied. Default is TRUE.
+Logical. Set TRUE to apply p-value adjustment. Default is TRUE.
 }
   \item{pAdjustMethod}{
-A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none. Default is BH.
+A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none. Default is bonferroni.
 }
     \item{seed}{
 An integer. Seed to the random number generator. Default is 1.
 }
       \item{invert}{
-Logical.  If TRUE, the classifier is inverted. Default is FALSE. 
+Logical.  Set TRUE to swap training for test set. Default is FALSE. 
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame of rule table containing the information about: features, decision, accuracy, support, coverage, stability and p-value. The table is decreasingly sorted according to the p-value.
+  \item{out$main}{A data frame of rule table containing the information about: features, decision, accuracy, support, coverage, stability, p-value and other statistic. The table is decreasingly sorted according to the p-value.
 }
-    \item{out$quality}{A table of quality of the model: accuracy statistic, ROC and AUC measures.
+    \item{out$quality}{A table of model quality: accuracy statistic, ROC and AUC measures.
 }
     \item{out$rules}{A character vector of raw unique rules computed by ROSETTA.
 }
-    \item{out$usn}{An integer indicating the minimum number of required for subsets in undersumpling.
+    \item{out$usn}{An integer indicating the minimum number of required for subsets in undersampling.
 }
 }
 \references{
