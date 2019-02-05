@@ -1,4 +1,4 @@
-recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH"){
+recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni"){
 
   rl2=strsplit(as.character(rules$FEATURES),",",fixed = T)
   cnd2=strsplit(as.character(rules$CUTS_COND),",",fixed = T)
