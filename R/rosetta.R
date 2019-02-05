@@ -29,7 +29,7 @@ rosetta <- function(dt,
                     GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=TRUE,Approximate=TRUE,Fraction=0.9,Algorithm="Simple"),
                     ManualNames=c(),
                     pAdjust=TRUE,
-                    pAdjustMethod="BH",
+                    pAdjustMethod="Bonferroni",
                     seed=1,
                     invert=FALSE
 )
