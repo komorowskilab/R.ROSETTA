@@ -515,7 +515,6 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
           
           key <- 0:(dim(dt)[2]-2)
           val <- colnames(dt)[-length(colnames(dt))]
-         
           out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$V1 == key[i],1] <<- val[i]})
           
           # filter out comments
