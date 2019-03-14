@@ -514,8 +514,8 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
           rm(temp_dataset)
           
           key <- 0:(dim(dt)[2]-2)
-          val <- colnames(dt)[-length(colnames(dt))]
-          #val <- colnames(dt)[c(unname(which(unlist(lapply(dt, is.numeric)) | unlist(lapply(dt, is.integer)))),unname(which(!unlist(lapply(dt, is.numeric)) & !unlist(lapply(dt, is.integer)))))]
+          #val <- colnames(dt)[-length(colnames(dt))]
+          val <- colnames(dt)[c(unname(which(unlist(lapply(dt, is.numeric)) | unlist(lapply(dt, is.integer)))),unname(which(!unlist(lapply(dt, is.numeric)) & !unlist(lapply(dt, is.integer)))))]
        
           out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$V1 == key[i],1] <<- val[i]})
           
