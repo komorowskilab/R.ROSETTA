@@ -7,7 +7,7 @@ Recalculate the rule table.
 Recalculates the values in the rule table according to the input decision table. Retrieves the rule support sets.
 }
 \usage{
-recalculateRules(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="BH")
+recalculateRules(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
