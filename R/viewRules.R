@@ -6,14 +6,14 @@ viewRules <- function(rules, setDiscLabels=FALSE, newDiscLabels=c("down","medium
     ftrs=unlist(strsplit(as.character(rules$FEATURES)[i], ","))
     if(setDiscLabels){
       dicl<-unlist(strsplit(as.character(rules$DISC_CLASSES)[i], ","))
-      if(is.na(dicl)){
+      if(is.na(dicl)[1]){
         dicl<-unlist(strsplit(as.character(rules$CUTS_COND)[i], ","))  
       }
       dicl<-newDiscLabels[as.numeric(dicl)]
     }else{
       dicl<-unlist(strsplit(as.character(rules$DISC_CLASSES)[i], ","))
-      if(is.na(dicl)){
-      dicl<-unlist(strsplit(as.character(rules$CUTS_COND)[i], ","))  
+      if(is.na(dicl)[1]){
+        dicl<-unlist(strsplit(as.character(rules$CUTS_COND)[i], ","))  
       }
     }
     
