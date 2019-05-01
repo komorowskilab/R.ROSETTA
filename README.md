@@ -44,6 +44,7 @@ library(R.ROSETTA)
 **ruleHeatmap()** <-> *creates a heatmap of object-attribute interactions for a single rule*<br />
 **viewRules()** <-> *displays rules in IF-THEN format*<br />
 **randRules()** <-> *generates a set of random rules*<br />
+**randDecisionTable()** <-> *generates randomized decision table*<br />
 
 ## Examples
 
