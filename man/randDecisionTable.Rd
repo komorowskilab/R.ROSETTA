@@ -46,7 +46,7 @@ A numeric value of number of unbalanced proportion for the first class. The defa
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{output}{A data frame containing random decision table.
+  \item{output}{A data frame containing random decision table.}
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -89,7 +89,12 @@ out4_1$quality
 out4_2=rosetta(dt4, underSample = T, underSampleNum = 5)
 out4_2$quality
 
-
+#saveLineByLine
+dt5=randDecisionTable(nFeatures=50, nObjects=160, nOutcome=3, unbalanced=T, pUnbalancedClass=0.7)
+out5=rosetta(dt5)
+rules=out5$main
+saveLineByLine(rules, "outFile.txt")
+  
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
