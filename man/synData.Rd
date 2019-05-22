@@ -56,9 +56,21 @@ Mateusz Garbulowski
 }
 \examples{
 library(R.ROSETTA)
-df=synData()
-out=rosetta(df)
-out$quality
+  
+#weak correlation
+df1=synData(nFeatures=c(5,5,3,2,2), R=c(0.01,0.1,0.3,0.4,0.2))
+out1=rosetta(df1)
+out1$quality
+
+#medium correlation
+df2=synData(nFeatures=c(5,5,3,2,2), R=c(0.2,0.4,0.6,0.5,0.7))
+out2=rosetta(df2)
+out2$quality
+
+#strong correlation
+df3=synData(nFeatures=c(5,5,3,2,2), R=c(0.5,0.6,0.7,0.8,0.9))
+out3=rosetta(df3)
+out3$quality
   
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
