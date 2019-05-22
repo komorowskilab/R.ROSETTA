@@ -58,7 +58,7 @@ Mateusz Garbulowski
 library(R.ROSETTA)
   
 #weak correlation
-df1=synData(nFeatures=c(5,5,3,2,2), R=c(0.01,0.1,0.3,0.4,0.2))
+df1=synData(nFeatures=c(5,5,3,2,2), R=c(0.2,0.3,0.35,0.4,0.5))
 out1=rosetta(df1)
 out1$quality
 
