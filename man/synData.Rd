@@ -7,7 +7,7 @@ Decision table generator
 Creates a decision table of correlated features.
 }
 \usage{
-synData <- function(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjects=120, nOutcome=2, unbalanced=F, pUnbalancedClass=0.8, seed=1){
+synData <- function(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjects=120, nOutcome=2, unbalanced=F, pUnbalancedClass=0.8, seed=1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
