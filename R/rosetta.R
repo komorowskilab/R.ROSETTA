@@ -11,7 +11,7 @@ rosetta <- function(dt,
                     discreteMask=TRUE,
                     reducer="JohnsonReducer",
                     reducerDiscernibility="Object", #or Full
-                    roc=FALSE,
+                    roc=FALSE, 
                     clroc="autism",
                     fallBack=TRUE,
                     fallBackClass="autism",
