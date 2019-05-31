@@ -1,7 +1,13 @@
 recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni"){
 
   rl2<-strsplit(as.character(rules$features),",",fixed = T)
-  cnd2<-strsplit(as.character(rules$cuts),",",fixed = T)
+  
+  if(discrete){
+    cnd2<-strsplit(as.character(rules$levels),",",fixed = T)
+  }else{
+    cnd2<-strsplit(as.character(rules$cuts),",",fixed = T)
+  }
+
   dec2<-as.character(rules$decision)
   objs<-rownames(dt)
   feats<-colnames(dt)
@@ -23,9 +29,9 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
       #cnds<-as.numeric(cnds)
       cndsLen<-length(cnds)
       
-      vec4=c()
+      vec4<-c()
       for(i in 1:cndsLen){
-        vec3 <- eqal2Vec(as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i], as.numeric(cuts[j,i]))
+        vec3 <- (as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i]==cnd2[[j]][i])
         ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
       }
       
