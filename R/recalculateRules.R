@@ -129,8 +129,8 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
   percSuppRHS<-round(newSupportRHS/numClass, digits=5)                         
 
   if(discrete){
-    newDT<-data.frame(rules$features,rules$levels,rules$decision,newSupportLHS,newSupportRHS,newAccuracy,rules$cuts,percSuppLHS,percSuppRHS,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
-    colnames(newDT)<-c("features","levels","decision","supportLHS","supportRHS","accuracyRHS",colnames(cuts), "supportRatioLHS", "supportRatioRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
+    newDT<-data.frame(rules$features,rules$levels,rules$decision,newSupportLHS,newSupportRHS,newAccuracy,percSuppLHS,percSuppRHS,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
+    colnames(newDT)<-c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","supportRatioLHS", "supportRatioRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
     newDT2=newDT[order(newDT$pValue),]
     rownames(newDT2)<-NULL
   }else{
