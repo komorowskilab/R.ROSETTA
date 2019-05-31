@@ -118,9 +118,9 @@ rosetta <- function(dt,
   # training pipline length
   if(discrete==FALSE)
   {
-    pipeLen=5}else
+    pipeLen<-5}else
     {
-      pipeLen=4
+      pipeLen<-4
     }
   
   ##############################
@@ -629,7 +629,7 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
     }
     else{
       #for discrete data
-      lst_cut<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+      lst_cuts<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
       lst_cuts2<-lapply(lapply(lst_cuts, function(x) gsub(")","",x)), unlist)
       lst_cuts22<-unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
       
