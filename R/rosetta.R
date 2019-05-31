@@ -358,9 +358,7 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
                         "ROC.AUC.SE.MEAN","ROC.AUC.SE.MEDIAN","ROC.AUC.SE.STDEV","ROC.AUC.SE.MIN","ROC.AUC.SE.MAX")
     rownames(outRos)<-""
     
-  }
-  # ROC FALSE just accuracy values
-  else{
+  }else{ #ROC False
       dfRes_accMean<-dfRes_accMedian<-dfRes_accStdDev<-
       dfRes_accMin<-dfRes_accMax<-c()
     
