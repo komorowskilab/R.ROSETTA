@@ -1,12 +1,11 @@
-ruleHeatmap <- function(dt, rules, discrete=FALSE, discreteMethod="EF", ind=15, nbins=3, showClust=TRUE){
+plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15){
   
-  r=ind
-  
-  ftrs=unlist(strsplit(as.character(rules$FEATURES)[r], ","))
-  dicl=unlist(strsplit(as.character(rules$DISC_CLASSES)[r], ","))
-  perc=unlist(strsplit(as.character(rules$PERC_SUPP_RHS)[r], ","))
-  decs=unlist(as.character(rules$DECISION))[r]
-  pval=unlist(as.numeric(rules$PVAL))[r]
+
+  ftrs=unlist(strsplit(as.character(rules$features)[ind], ","))
+  dicl=unlist(strsplit(as.character(rules$levels)[ind], ","))
+  perc=unlist(strsplit(as.character(rules$supportRatioRHS)[ind], ","))
+  decs=unlist(as.character(rules$decision))[ind]
+  pval=unlist(as.numeric(rules$pValue))[ind]
   if(pval<0.05){
     pvalw="*" 
   }
@@ -20,66 +19,40 @@ ruleHeatmap <- function(dt, rules, discrete=FALSE, discreteMethod="EF", ind=15, 
     pvalw="ns" 
   }
   
-  objs_supp_rule=unlist(strsplit(as.character(rules$SUPP_SET_RHS)[r], ","))
-  objs_class=rownames(dt)[which(as.character(dt[,length(dt)]) == decs)]
-  objs_restclasses=rownames(dt)[which(as.character(dt[,length(dt)]) != decs)]
+  objs_supp_rule<-unlist(strsplit(as.character(rules$supportSetRHS)[ind], ","))
+  objs_class<-rownames(dt)[which(as.character(dt[,length(dt)]) == decs)]
+  objs_restclasses<-rownames(dt)[which(as.character(dt[,length(dt)]) != decs)]
   
   ## selecting TP, FP, TN objects
-  objs_tp = which(rownames(dt) %in% objs_supp_rule)# objs supporting rule
-  objs_fp = which(rownames(dt) %in% setdiff(objs_class, objs_supp_rule))# objs not supporting the rule
-  objs_tn = which(rownames(dt) %in% objs_restclasses)# the rest of objects
+  objs_tp <- which(rownames(dt) %in% objs_supp_rule)# objs supporting rule
+  objs_fp <- which(rownames(dt) %in% setdiff(objs_class, objs_supp_rule))# objs not supporting the rule
+  objs_tn <- which(rownames(dt) %in% objs_restclasses)# the rest of objects
   
   ## choosing frame for rules
-  dt2=as.matrix(dt[c(objs_tp, objs_fp, objs_tn), which(colnames(dt) %in% ftrs)])
+  dt2 <- as.matrix(dt[c(objs_tp, objs_fp, objs_tn), which(colnames(dt) %in% ftrs)])
+
+  cols<-colorRampPalette(c("#56B4E9","ghostwhite","#E69F00"))(n=50)
   
-  if(discrete==TRUE){
-  }else{
+  rf1<-(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
+  dt2_2<-dt2[order(rowSums(dt2[rf1,])),]
   
-  if(discreteMethod=="EW"){
-  dmeth="interval"
-  }
+  rf2<-(length(objs_tp)+length(objs_fp)+1):(length(objs_tp)+length(objs_fp)+length(objs_tn))
+  dt2_3<-dt2[order(rowSums(dt2[rf2,])),]
   
-  if(discreteMethod=="EF"){
-  dmeth="frequency"
-  }  
+  rf3=1:length(objs_tp)
+  dt2_1=dt2[order(rowSums(dt2[rf3,])),]
     
-  if (nbins >= 3){
-    cols=colorRampPalette(c("olivedrab3", "gray90", "indianred1"))(n = nbins)
-  }else
-  {
-    cols=colorRampPalette(c("olivedrab3", "indianred1"))(n = 2)
-  }
+  dt3=rbind(dt2_1,dt2_2,dt2_3)
+
   
-  for(i in 1:length(ftrs)){
-    dt2[,i]=discretize(dt2[,i], method=dmeth, breaks = nbins, labels=1:nbins)
-  }
-  }
-  
-  if(showClust){
-    
-    rf1=(length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
-    fit_fp <- kmeans(dt2[rf1,], factorial(length(table(as.matrix(dt2[rf1,])))))
-    dt2_2=dt2[rf1,][order(fit_fp$cluster),]
-    dt2_2<-dt2_2[order(apply(dt2_2, 1, paste, collapse="")),]
-    
-    rf2=(length(objs_tp)+length(objs_fp)+1):(length(objs_tp)+length(objs_fp)+length(objs_tn))
-    fit_tn <- kmeans(dt2[rf2,], factorial(length(table(as.matrix(dt2[rf2,])))))
-    dt2_3=dt2[rf2,][order(fit_tn$cluster),]
-    dt2_3<-dt2_3[order(apply(dt2_3, 1, paste, collapse="")),]
-    
-    rf3=1:length(objs_tp)
-    dt2_1=dt2[rf3,]
-    
-    dt2=rbind(dt2_1,dt2_2,dt2_3)
-  }
-  
-  
-  heatmap.2(dt2,
+  if(type=="heatmap"){
+  heatmap.2(dt3,
             Rowv=F,
             #Colv=FALSE,
             #margins = c(7,10),
             xlab=paste0(pvalw, " IF ",paste(paste0(ftrs,paste("(",dicl,")",sep="")), collapse =" AND ")," THEN ",decs),
             srtCol=0,
+            scale="column",
             #lwid=c(0.5,4),
             #lhei=c(1,4),
             cexCol=1.2,
@@ -90,24 +63,36 @@ ruleHeatmap <- function(dt, rules, discrete=FALSE, discreteMethod="EF", ind=15, 
             trace="none",
             dendrogram = "none",
             col=cols,
-            key=FALSE,
+            key=T,
             density.info="none",
             symkey=FALSE,
             labRow= "",
             rowsep=c(length(objs_tp), length(objs_tp)+length(objs_fp)),
             colsep=1:(length(ftrs)-1),
-            RowSideColors = c(rep("gold", length(objs_tp)), rep("sandybrown", length(objs_fp)),rep("dodgerblue", length(objs_tn))))
+            RowSideColors = c(rep("deeppink", length(objs_tp)), rep("deeppink4", length(objs_fp)),rep("chartreuse3", length(objs_tn))))
   
   #list('x'=-0.1,'y'=1.2)
-  legend(list('x'=0,'y'=1.2),      # location of the legend on the heatmap plot
-         legend = c(paste0("Objects supporting the rule"), paste0("Objects not supporting the rule"), "Object for the remaining classes"), # category labels
-         col = c("gold", "sandybrown", "dodgerblue"),  # color key
-         lty= 1,             # line style
-         lwd = 10,
-         cex=.7,
+  legend(list('x'=1,'y'=4),      # location of the legend on the heatmap plot
+         legend = c(paste0("Objects supporting the rule"), paste0("Objects not supporting the rule"), "Objects for the remaining classes"), # category labels
+         col = c("deeppink", "deeppink4", "chartreuse3"),  # color key
+         lty= 0,             # line style
+         lwd = 5,
+         pt.cex=1.5,
+         cex=.75,
+         pch=15,
          bty = "n",
          xpd=TRUE
   )
+  }else{
+    
+    dt2=scale(dt2)
+    par(mfrow=c(1,3))
+    boxplot(dt2[rf3,], col="deeppink", ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects supporting the rule")
+    boxplot(dt2[rf1,], col="deeppink4", ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects not supporting the rule")
+    boxplot(dt2[rf2,], col="chartreuse3", ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects for the remaining classes")
+    mtext(paste0(pvalw, " IF ",paste(paste0(ftrs,paste("(",dicl,")",sep="")), collapse =" AND ")," THEN ",decs), line=-2, side=1, outer=TRUE, cex=1)
+    par(mfrow=c(1,1))
+  }
   
   
   

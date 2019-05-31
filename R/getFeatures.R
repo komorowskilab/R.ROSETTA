@@ -1,21 +1,18 @@
 getFeatures <- function(dt, rules, pval=0.05){
 
-newRls=rules
-decis2=newRls$DECISION
-decsCounts=table(as.character(dt[,length(dt)]))
+decis2<-rules$decision
+decsCounts<-table(as.character(dt[,length(dt)]))
 
-lstOut=list()
+lstOut<-list()
 for(i in 1:length(table(dt[,length(dt)]))){
-  t11=unlist(strsplit(as.character(newRls$FEATURES)[newRls$PVAL<pval & newRls$DECISION==names(decsCounts)[i]],","))
-  
-  t1=table(t11)
-  dft1=data.frame(t11, 1:length(t11))
-  dft11=aggregate(dft1[,2],list(dft1[,1]),mean)
+  t11<-unlist(strsplit(as.character(rules$features)[rules$pValue<pval & rules$decision==names(decsCounts)[i]],","))
+  t1<-table(t11)
+  dft1<-data.frame(t11, 1:length(t11))
+  dft11<-aggregate(dft1[,2],list(dft1[,1]),mean)
   dft11[,2]<-dft11[,2]/unname(t1)
-  lstOut[[i]]=dft11[order(dft11[,2]),1]
+  lstOut[[i]]<-dft11[order(dft11[,2]),1]
 }
 
 names(lstOut)<-names(decsCounts)
 return(lstOut)
-
 }

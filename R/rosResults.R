@@ -1,17 +1,8 @@
 rosResults<-function(path, roc){
-  if(.Platform$OS.type=="unix")
-  {
-  statsTab=read.table(paste0(path,"/logMain.txt"),fill=T)}else{
-  statsTab=read.table(paste0(path,"\\logMain.txt"),fill=T)
-  }
-  if(roc)
-  {
-  stats=statsTab[((dim(statsTab)[1]-16):dim(statsTab)[1]),]
-  }else{
-  stats=statsTab[((dim(statsTab)[1]-4):dim(statsTab)[1]),]
-  }
   
-  
+  statsTab<-ifelse(.Platform$OS.type=="unix", read.table(paste0(path,"/logMain.txt"),fill=T), read.table(paste0(path,"\\logMain.txt"),fill=T))
+  ifelse(roc, statsTab[((dim(statsTab)[1]-16):dim(statsTab)[1]),], statsTab[((dim(statsTab)[1]-4):dim(statsTab)[1]),])
+
   stats2=as.data.frame(as.matrix(stats)[,c(1,3)])
   colnames(stats2)<-c("Measure","Value")
   
