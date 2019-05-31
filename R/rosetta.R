@@ -306,7 +306,7 @@ rosetta <- function(dt,
         path_rocs=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta\\rocs")
         }
       
-rosres=rosResults(path, roc)
+rosres<-rosResults(path, roc)
 
 # ROC AUC
 dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC"),2])))
