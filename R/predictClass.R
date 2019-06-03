@@ -4,38 +4,41 @@ dec2<-as.character(rules$decision)
 decs2<-unique(dec2)
 objs<-rownames(dt)
 feats<-colnames(dt)
+if(discrete){
+cuts<-strsplit(as.character(rules$levels),",",fixed = T)
+}else{
 cuts<-rules[,grep('cut', colnames(rules), value=TRUE)][,-1]
+}
 less2Vec<-function(x,y){ (x-y)<=0}
 more2Vec<-function(x,y){ (x-y)>=0}
 eqal2Vec<-function(x,y){ (x-y)==0}
 
-if(discrete)
-{
-  outVotes=c()
-
+if(discrete){
   calcClass<-function(x){
+    
   outLst<-outLst2<-list()
+  outVotes<-c()
+  
   rules<-x
   rl2<-strsplit(as.character(rules$features),",",fixed = T)
   cnd2<-strsplit(as.character(rules$levels),",",fixed = T)
     
     for(k in 1:dim(dt)[1]){
 
-      vecObj=dt[k,]
+      vecObj<-dt[k,]
       for(j in 1:dim(rules)[1]){
 
-        cnds=cnd2[[j]]
-        cnds<-as.numeric(cnds)
-        cndsLen=length(cnds)
-        vec4=c()
+        cnds<-cnd2[[j]]
+        cndsLen<-length(cnds)
+        vec4<-c()
         
         for(i in 1:cndsLen){
-         vec3=eqal2Vec(as.data.frame(vecObj[which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,i]))
+         vec3<-(as.data.frame(vecObj[which(feats %in% rl2[[j]])])[,i]==cuts[[j]][i])
          ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
         }
-        outLst[[j]]=length(which(vec4))
+        outLst[[j]]<-length(which(vec4))
       }
-      outVotes[k]=sum(unlist(outLst))
+      outVotes[k]<-sum(unlist(outLst))
     }
 
     return(outVotes)
@@ -43,8 +46,8 @@ if(discrete)
   
 }else{
 
-  dtn=dt
-  outVotes=c()
+  dtn<-dt
+  outVotes<-c()
 
   calcClass<-function(x){
     outLst<-outLst2<-list()
