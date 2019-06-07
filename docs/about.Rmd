@@ -40,7 +40,7 @@ A [tutorial](https://www.davidbaumgold.com/tutorials/wine-mac/) by David Baumgol
 # Acknowledgments
 R.ROSETTA includes a sample dataset collected from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
 
-Built With
+Built With:<br>
 [ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework<br>
 [R Core](https://www.r-project.org/) - R Core Team<br>
 

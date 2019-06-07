@@ -41,6 +41,10 @@ rosetta <- function(dt,
     stop("Your dataset contains NA values.")
   }
   
+  # change integers to numeric
+  indx <- sapply(dt, is.integer)
+  dt[indx] <- lapply(dt[indx], function(x) as.numeric(x))
+  
   ##### #### additional functions ##### #####
   catchNumeric <- function(mylist){
     newlist <- suppressWarnings(as.numeric(mylist))

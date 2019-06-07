@@ -464,7 +464,7 @@ div.tocify {
 </div>
 
 
-<p>This is a collection of tutorials that will show you how to use the R.ROSETTA package.</p>
+<p>This is a collection of tutorials that show how to use the R.ROSETTA package.</p>
 <div id="installation" class="section level1">
 <h1>Installation</h1>
 <p>Installation from github requires devtools package:</p>
@@ -474,22 +474,6 @@ div.tocify {
 <span class="kw">install_github</span>(<span class="st">&quot;komorowskilab/R.ROSETTA&quot;</span>)
 <span class="kw">library</span>(R.ROSETTA)</code></pre></div>
 <hr />
-</div>
-<div id="sample-data" class="section level1">
-<h1>Sample data</h1>
-<div id="synthetic" class="section level2">
-<h2>Synthetic</h2>
-<p>You can create synthetic decision table with predefined correlation. Let’s assume that we want to create a decision table with 100 objects and 20 features that level of correlation is 0.5. The outcome is balanced and has two decision classes. To generate such synthetic data, type:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="dv">20</span>, <span class="dt">R=</span><span class="fl">0.5</span>, <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
-<p>Now we add double correlated features at the level of 0.1 and 0.7, and triple correlated features at the level of 0.8 and 0.2. We may set numeric vectors as our parameters:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
-</div>
-<div id="gene-expression" class="section level2">
-<h2>Gene expression</h2>
-<p>The package contains also gene expression dataset from case-control studies for autism prediction. The dataset exists as a <code>data.frame</code> named <code>autcon</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span>autcon</code></pre></div>
-<hr />
-</div>
 </div>
 <div id="input-format" class="section level1">
 <h1>Input format</h1>
@@ -625,9 +609,25 @@ case
 <p>To deal with complex decision tables we suggest to use feature selection methods.</p>
 <hr />
 </div>
+<div id="sample-data" class="section level1">
+<h1>Sample data</h1>
+<div id="synthetic" class="section level2">
+<h2>Synthetic</h2>
+<p>You can create a synthetic decision table with predefined correlation. Let’s assume that we want to create a decision table with 100 objects and 20 features that level of correlation is 0.5. In the example the outcome is balanced and has two decision classes. To generate such data, type:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="dv">20</span>, <span class="dt">R=</span><span class="fl">0.5</span>, <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
+<p>Now we add double correlated features at the level of 0.1 and 0.7, and triple correlated features at the level of 0.8 and 0.2. We set numeric vectors as the parameters, the order of <code>nFeatures</code> and <code>R</code> vectors must correspond to each other:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
+</div>
+<div id="gene-expression" class="section level2">
+<h2>Gene expression</h2>
+<p>The package contains gene expression dataset from case-control studies for autism prediction. Decision table exists as a <code>data.frame</code> named <code>autcon</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span>autcon</code></pre></div>
+<hr />
+</div>
+</div>
 <div id="running-data" class="section level1">
 <h1>Running data</h1>
-<p>The main function to run R.ROSETTA is <code>rosetta()</code>. The default parameters of the function are set for the processing of sample datasets.</p>
+<p>The main function to run a classifier is <code>rosetta()</code>. The default parameters of the function are set for the processing of the sample datasets. To display the parameters type the help function <code>?rosetta</code>.</p>
 <div id="continuous" class="section level2">
 <h2>Continuous</h2>
 <p>To create rough set-based models from continuous data, type:</p>
@@ -637,15 +637,15 @@ out_s &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 
 <span class="co"># gene expression data</span>
 out_ge &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)</code></pre></div>
-<p>For the function parameters look at the R manual.</p>
+<p>As you may notice, the default parametrs are set towards processing of continuous data.</p>
 </div>
 <div id="discrete" class="section level2">
 <h2>Discrete</h2>
-<p>If you decision table contains all discrete features please use option <code>discrete=TRUE</code>. Here is the example on synthetic data how to process discrete values.</p>
+<p>If your decision table contains all discrete features please use option <code>discrete=TRUE</code>. Here is an example of processing synthetic data with discrete values:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
-dt2 &lt;-<span class="st"> </span>dt[,<span class="op">-</span><span class="kw">length</span>(dt)]
-decision &lt;-<span class="st"> </span><span class="kw">as.character</span>(dt[,<span class="kw">length</span>(dt)])
-dt2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(dt2, <span class="cf">function</span>(x) <span class="kw">cut</span>(x,<span class="dv">3</span>, <span class="dt">labels =</span> F)) 
+dt2 &lt;-<span class="st"> </span>dt[,<span class="op">-</span><span class="kw">length</span>(dt)] <span class="co"># remove decision</span>
+decision &lt;-<span class="st"> </span><span class="kw">as.character</span>(dt[,<span class="kw">length</span>(dt)]) <span class="co"># keep the decision</span>
+dt2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(dt2, <span class="cf">function</span>(x) <span class="kw">cut</span>(x,<span class="dv">3</span>, <span class="dt">labels =</span> F)) <span class="co"># simple discretization into 3 levels</span>
 dt3 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(dt2, decision))
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">discrete =</span> T)</code></pre></div>
 </div>
@@ -666,7 +666,7 @@ out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span clas
 </div>
 <div id="output" class="section level1">
 <h1>Output</h1>
-<p>There are two main outputs generated by <code>rosetta()</code>.</p>
+<p>The <code>rosetta()</code> function generates two main outputs. The rule table is stored as a <code>data.frame</code> structure under <code>$main</code>. The model quality is stored as a table structure under <code>$quality</code>.</p>
 <div id="main" class="section level2">
 <h2>Main</h2>
 <p>The main output of the function contains a collection of rules in a table. The rule components and all statistics values are collected in separate columns. The individual values are comma separated.</p>
@@ -855,10 +855,20 @@ control
 </tr>
 </tbody>
 </table>
+<ul>
+<li>features - attribute names from a rule</li>
+<li>levels - discretization levels corresponding to a features</li>
+<li>decision - decision class for a rule</li>
+<li>accuracy - rule accuracy, for RHS(Righ Hand Support)</li>
+<li>support - the number of objects supporting the rule, RHS(Righ Hand Support) or LHS(Left Hand Support)</li>
+<li>coverage - rule coverage, RHS(Righ Hand Support) or LHS(Left Hand Support)</li>
+<li>cuts - information about cuts (thresholds) used for discretization. This will not exist if we use <code>discrete=T</code> option.</li>
+<li>statistics - rule p-values, risk ratios and confidence intervals for a rule.</li>
+</ul>
 </div>
 <div id="quality" class="section level2">
 <h2>Quality</h2>
-<p>For the model quality the accuracy and AUC values are estimated. The values are taken from n-fold Cross-Validation process.</p>
+<p>Estimated accuracy and AUC values are collected into table. The values are taken from n-fold Cross-Validation process.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 out<span class="op">$</span>quality</code></pre></div>
@@ -909,12 +919,16 @@ accuracyMax
 </tr>
 </tbody>
 </table>
+<p>If you need an information about AUC, please look at the code below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">roc =</span> <span class="ot">TRUE</span>, <span class="dt">clroc =</span> <span class="st">&quot;D1&quot;</span>)
+out<span class="op">$</span>quality</code></pre></div>
 <hr />
 </div>
 </div>
 <div id="print-rules" class="section level1">
 <h1>Print rules</h1>
-<p>As the main output of rosetta consist a table of rule components, we may want to print rules in a classic IF-THEN form. To do this, use <code>viewRules()</code> function.</p>
+<p>To print rules in a classic IF-THEN form, use <code>viewRules()</code>. The table display an information about RHS(Righ Hand Support) values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 vRules &lt;-<span class="st"> </span><span class="kw">viewRules</span>(rules)
@@ -1051,31 +1065,31 @@ IF F7_G1_R0.5(3) AND F1_G4_R0.8(3) THEN D2
 </div>
 <div id="recalculate-model" class="section level1">
 <h1>Recalculate model</h1>
-<p>R.ROSETTA allows to recalculate your model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling and/or corss-validation.</p>
-<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from the model that was divided into smaller training sets due to balancing process. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which is the value corresponding to the whole table. To recalculate model, run <code>recalculateRules()</code> function:</p>
+<p>R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling and/or corss-validation.</p>
+<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in balancing process. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the whole decision table. To recalculate a model, run <code>recalculateRules()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt, rules)</code></pre></div>
-<p>Additionally model recalculation calculates support sets, which are stored in the last columns of output. ***</p>
+<p>Additionally model recalculation calculates support sets, which are added as the last columns in the <code>data.frame</code> object. ***</p>
 </div>
 <div id="plot-rule" class="section level1">
 <h1>Plot rule</h1>
-<p>We can visualize a specific rule in form of a heatmap or boxplot. The plot is showing a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
+<p>We can visualize a specific rule in a form of heatmap or boxplot. The plot is showing a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(autcon, rules)
 <span class="co">#rule heatmap</span>
 <span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;heatmap&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="tutorials_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#rule boxplot</span>
 <span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="tutorials_files/figure-html/unnamed-chunk-17-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-18-2.png" width="672" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
 <div id="predict-unseen-data" class="section level1">
 <h1>Predict unseen data</h1>
-<p>To test your model on external data you can use <code>predictClass()</code> function. The algorithm checks if the cuts or levels correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
+<p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm checks if the cuts or levels correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">###prepare two datasets
 ##1. to create a model
 dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
