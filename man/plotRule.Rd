@@ -1,14 +1,13 @@
-\name{ruleHeatmap}
-\alias{ruleHeatmap}
+\name{plotRule}
+\alias{plotRule}
 \title{
-A rule-based heatmap.
+Plot values for a rule.
 }
 \description{
-A heatmap of single rule, showing objects supporting the rule. The reamining objects are displayed and coloured separately.
-Only for discrete data or the data made by Equal Frequency Binning (EFB) discretization.
+Represent rule as a heatmap or boxplot.
 }
 \usage{
-ruleHeatmap(dt, rules, discrete=FALSE, discreteMethod="EF", ind=1, nbins=3, showClust=TRUE)
+plotRule(dt, rules, type="heatmap", discrete=FALSE, ind=15)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,24 +20,21 @@ A data frame of rule table in a form of rosetta $main output.
   \item{discrete}{
 Logical. Set TRUE for non-discrete data. Default is FALSE.
 }
-    \item{discreteMethod}{
-A character value of the discretization method to be performed, EF(equal frequency) or EW(equal width). Default is EF.
+  \item{type}{
+A character indciating plot type. Heatmap or boxplot.
 }
   \item{ind}{
 A numeric value of index of the rule in the table.
-}
-  \item{nbins}{
-A numeric value of discretization bins.
-}
-  \item{showClust}{
-Logical. Set TRUE to show clusters inside of each group within heatmap. Default is FALSE.
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{heatmap}{A heatmap presenting objects supporting the rule.}
+  \item{heatmap}{A heatmap representing objects distribution in the model for the rule.}
+}
+\value{
+  \item{boxplot}{A boxplots representing objects distribution in the model for the rule.}
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -58,11 +54,12 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-out=rosetta(autcon)
-rules=out$main
-recRules=recalculateRules(autcon, rules)
+out <- rosetta(autcon)
+rules <- out$main
+recRules <- recalculateRules(autcon, rules)
 
-ruleHeatmap(autcon, recRules, ind=1)
+plotRule(autcon, recRules, type="heatmap", discrete=FALSE, ind=3)
+plotRule(autcon, recRules, type="boxplot", discrete=FALSE, ind=3)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

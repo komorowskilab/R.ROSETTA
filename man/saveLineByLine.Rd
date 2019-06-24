@@ -55,8 +55,8 @@ Mateusz Garbulowski
 \examples{
 library(R.ROSETTA)
 
-out=rosetta(autcon)
-rules=out$main
+out <- rosetta(autcon)
+rules <- out$main
 
 # default
 saveLineByLine(rules, "outFile.txt")

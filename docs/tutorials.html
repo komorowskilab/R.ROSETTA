@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R.ROSETTA tutorials</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R.ROSETTA</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="tutorials.html">Tutorials</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/komorowskilab/R.ROSETTA.git">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">R.ROSETTA tutorials</h1>
+
+</div>
+
+
+<p>This is a collection of tutorials that show how to use the R.ROSETTA package.</p>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>Installation from github requires devtools package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</code></pre></div>
+<p>Installation and loading R.ROSETTA package from github:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)
+<span class="kw">install_github</span>(<span class="st">&quot;komorowskilab/R.ROSETTA&quot;</span>)
+<span class="kw">library</span>(R.ROSETTA)</code></pre></div>
+<hr />
+</div>
+<div id="input-format" class="section level1">
+<h1>Input format</h1>
+The input is a decision table in a form of <code>data.frame</code>, where the columns represent features and rows represent objects. In the table last column shall contain the decision classes.
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Decision table format
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+feature_1
+</th>
+<th style="text-align:left;">
+feature_2
+</th>
+<th style="text-align:left;">
+…
+</th>
+<th style="text-align:left;">
+feature_n
+</th>
+<th style="text-align:left;">
+outcome
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+object_1
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+case
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+object_2
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+control
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+object_3
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+case
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+object_n
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+case
+</td>
+</tr>
+</tbody>
+</table>
+<p>To deal with complex decision tables we suggest to use feature selection methods.</p>
+<hr />
+</div>
+<div id="sample-data" class="section level1">
+<h1>Sample data</h1>
+<div id="synthetic" class="section level2">
+<h2>Synthetic</h2>
+<p>You can create a synthetic decision table with predefined correlation. Let’s assume that we want to create a decision table with 100 objects and 20 features that level of correlation is 0.5. In the example the outcome is balanced and has two decision classes. To generate such data, type:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="dv">20</span>, <span class="dt">R=</span><span class="fl">0.5</span>, <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
+<p>Now we add double correlated features at the level of 0.1 and 0.7, and triple correlated features at the level of 0.8 and 0.2. We set numeric vectors as the parameters, the order of <code>nFeatures</code> and <code>R</code> vectors must correspond to each other:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
+</div>
+<div id="gene-expression" class="section level2">
+<h2>Gene expression</h2>
+<p>The package contains gene expression dataset from case-control studies for autism prediction. Decision table exists as a <code>data.frame</code> named <code>autcon</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span>autcon</code></pre></div>
+<hr />
+</div>
+</div>
+<div id="running-data" class="section level1">
+<h1>Running data</h1>
+<p>The main function to run a classifier is <code>rosetta()</code>. The default parameters of the function are set for the processing of the sample datasets. To display the parameters type the help function <code>?rosetta</code>.</p>
+<div id="continuous" class="section level2">
+<h2>Continuous</h2>
+<p>To create rough set-based models from continuous data, type:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># synthetic data</span>
+dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+out_s &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
+
+<span class="co"># gene expression data</span>
+out_ge &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)</code></pre></div>
+<p>As you may notice, the default parametrs are set towards processing of continuous data.</p>
+</div>
+<div id="discrete" class="section level2">
+<h2>Discrete</h2>
+<p>If your decision table contains all discrete features please use option <code>discrete=TRUE</code>. Here is an example of processing synthetic data with discrete values:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+dt2 &lt;-<span class="st"> </span>dt[,<span class="op">-</span><span class="kw">length</span>(dt)] <span class="co"># remove decision</span>
+decision &lt;-<span class="st"> </span><span class="kw">as.character</span>(dt[,<span class="kw">length</span>(dt)]) <span class="co"># keep the decision</span>
+dt2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(dt2, <span class="cf">function</span>(x) <span class="kw">cut</span>(x,<span class="dv">3</span>, <span class="dt">labels =</span> F)) <span class="co"># simple discretization into 3 levels</span>
+dt3 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(dt2, decision))
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">discrete =</span> T)</code></pre></div>
+</div>
+<div id="mixed" class="section level2">
+<h2>Mixed</h2>
+<p>For data containing a mixture of continuous and discrete features, please use option <code>discrete=FALSE</code> and assign following object type to the features:</p>
+<ul>
+<li>Continuous features that require discretization: <code>numeric</code></li>
+<li>Discrete features: <code>character</code>, <code>factor</code>, <code>logical</code></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+<span class="co"># change the pair of features with R=0.1 to discrete values</span>
+dt<span class="op">$</span>F1_G2_R0.<span class="dv">1</span>&lt;-<span class="kw">as.factor</span>(<span class="kw">cut</span>(dt<span class="op">$</span>F1_G2_R0.<span class="dv">1</span>,<span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>,<span class="st">&quot;medium&quot;</span>,<span class="st">&quot;high&quot;</span>))) <span class="co">#or as.character</span>
+dt<span class="op">$</span>F2_G2_R0.<span class="dv">1</span>&lt;-<span class="kw">as.factor</span>(<span class="kw">cut</span>(dt<span class="op">$</span>F2_G2_R0.<span class="dv">1</span>,<span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>,<span class="st">&quot;medium&quot;</span>,<span class="st">&quot;high&quot;</span>))) <span class="co">#or as.character</span>
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">discrete =</span> F)</code></pre></div>
+<hr />
+</div>
+</div>
+<div id="output" class="section level1">
+<h1>Output</h1>
+<p>The <code>rosetta()</code> function generates two main outputs. The rule table is stored as a <code>data.frame</code> structure under <code>$main</code>. The model quality is stored as a table structure under <code>$quality</code>.</p>
+<div id="main" class="section level2">
+<h2>Main</h2>
+<p>The main output of the function contains a collection of rules in a table. The rule components and all statistics values are collected in separate columns. The individual values are comma separated.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
+out<span class="op">$</span>main</code></pre></div>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Main output
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+features
+</th>
+<th style="text-align:left;">
+levels
+</th>
+<th style="text-align:left;">
+decision
+</th>
+<th style="text-align:left;">
+support
+</th>
+<th style="text-align:left;">
+accuracy
+</th>
+<th style="text-align:left;">
+coverage
+</th>
+<th style="text-align:left;">
+cuts
+</th>
+<th style="text-align:left;">
+statistics
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+rule_1
+</td>
+<td style="text-align:left;">
+F1,F2
+</td>
+<td style="text-align:left;">
+1,2
+</td>
+<td style="text-align:left;">
+case
+</td>
+<td style="text-align:left;">
+43
+</td>
+<td style="text-align:left;">
+0.97
+</td>
+<td style="text-align:left;">
+0.174
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rule_2
+</td>
+<td style="text-align:left;">
+F2,F4,F5
+</td>
+<td style="text-align:left;">
+2,1,3
+</td>
+<td style="text-align:left;">
+control
+</td>
+<td style="text-align:left;">
+40
+</td>
+<td style="text-align:left;">
+0.95
+</td>
+<td style="text-align:left;">
+0.142
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rule_3
+</td>
+<td style="text-align:left;">
+F2
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+case
+</td>
+<td style="text-align:left;">
+36
+</td>
+<td style="text-align:left;">
+0.89
+</td>
+<td style="text-align:left;">
+0.097
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rule_n
+</td>
+<td style="text-align:left;">
+F7,F1
+</td>
+<td style="text-align:left;">
+3,1
+</td>
+<td style="text-align:left;">
+control
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.64
+</td>
+<td style="text-align:left;">
+0.014
+</td>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+…
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>features - attribute names from a rule</li>
+<li>levels - discretization levels corresponding to a features</li>
+<li>decision - decision class for a rule</li>
+<li>accuracy - rule accuracy, for RHS(Righ Hand Support)</li>
+<li>support - the number of objects supporting the rule, RHS(Righ Hand Support) or LHS(Left Hand Support)</li>
+<li>coverage - rule coverage, RHS(Righ Hand Support) or LHS(Left Hand Support)</li>
+<li>cuts - information about cuts (thresholds) used for discretization. This will not exist if we use <code>discrete=T</code> option.</li>
+<li>statistics - rule p-values, risk ratios and confidence intervals for a rule.</li>
+</ul>
+</div>
+<div id="quality" class="section level2">
+<h2>Quality</h2>
+<p>Estimated accuracy and AUC values are collected into table. The values are taken from n-fold Cross-Validation process.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
+out<span class="op">$</span>quality</code></pre></div>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Model quality
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+accuracyMean
+</th>
+<th style="text-align:right;">
+accuracyMedian
+</th>
+<th style="text-align:right;">
+accuracyStd
+</th>
+<th style="text-align:right;">
+accuracyMin
+</th>
+<th style="text-align:right;">
+accuracyMax
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.76
+</td>
+<td style="text-align:right;">
+0.8
+</td>
+<td style="text-align:right;">
+0.142984
+</td>
+<td style="text-align:right;">
+0.4
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+</tr>
+</tbody>
+</table>
+<p>If you need an information about AUC, please look at the code below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">roc =</span> <span class="ot">TRUE</span>, <span class="dt">clroc =</span> <span class="st">&quot;D1&quot;</span>)
+out<span class="op">$</span>quality</code></pre></div>
+<hr />
+</div>
+</div>
+<div id="print-rules" class="section level1">
+<h1>Print rules</h1>
+<p>To print rules in a classic IF-THEN form, use <code>viewRules()</code>. The table display an information about RHS(Righ Hand Support) values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)
+rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
+vRules &lt;-<span class="st"> </span><span class="kw">viewRules</span>(rules)
+<span class="kw">head</span>(vRules)</code></pre></div>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Print rules
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+rule
+</th>
+<th style="text-align:right;">
+length
+</th>
+<th style="text-align:right;">
+accuracy
+</th>
+<th style="text-align:right;">
+support
+</th>
+<th style="text-align:right;">
+pValue
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+IF F1_G4_R0.8(1) THEN D1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.91667
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+0.0001194
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IF F11_G1_R0.5(3) AND F14_G1_R0.5(3) THEN D2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0.0010306
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IF F2_G3_R0.7(3) AND F1_G4_R0.8(3) THEN D2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0.0010306
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IF F9_G1_R0.5(3) AND F14_G1_R0.5(3) THEN D2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0.0024620
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IF F5_G1_R0.5(3) AND F2_G3_R0.7(3) THEN D2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0.0057891
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IF F7_G1_R0.5(3) AND F1_G4_R0.8(3) THEN D2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0.0057891
+</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="recalculate-model" class="section level1">
+<h1>Recalculate model</h1>
+<p>R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling and/or corss-validation.</p>
+<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in balancing process. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the whole decision table. To recalculate a model, run <code>recalculateRules()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
+rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
+newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt, rules)</code></pre></div>
+<p>Additionally model recalculation calculates support sets, which are added as the last columns in the <code>data.frame</code> object. ***</p>
+</div>
+<div id="plot-rule" class="section level1">
+<h1>Plot rule</h1>
+<p>We can visualize a specific rule in a form of heatmap or boxplot. The plot is showing a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)
+rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
+newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(autcon, rules)
+<span class="co">#rule heatmap</span>
+<span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;heatmap&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#rule boxplot</span>
+<span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-18-2.png" width="672" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="predict-unseen-data" class="section level1">
+<h1>Predict unseen data</h1>
+<p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm checks if the cuts or levels correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">###prepare two datasets
+##1. to create a model
+dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+##2. to validate our model (different seed, less objects)
+dt2 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">50</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">2</span>)
+<span class="co">#store decision</span>
+dt2_decision &lt;-<span class="st"> </span>dt2<span class="op">$</span>decision
+<span class="co">#remove decision from table</span>
+dt2 &lt;-<span class="st"> </span>dt2[,<span class="op">-</span><span class="kw">length</span>(dt2)]
+
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt1)
+rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
+newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt1, rules)
+
+<span class="co"># we can predict new classes if we don&#39;t have outcome</span>
+<span class="kw">predictClass</span>(dt2, newRules)
+<span class="co"># if we know the decision, we can obtain the accuracy of prediction</span>
+<span class="kw">predictClass</span>(dt2, newRules, <span class="dt">validate =</span> <span class="ot">TRUE</span>, <span class="dt">valiDec =</span> dt2_decision)</code></pre></div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

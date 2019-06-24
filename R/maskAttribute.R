@@ -22,5 +22,7 @@ maskAttribute <- function(attributeVec, filePath)
   mat=rbind(mat,setNames(data.frame(line5), names(data.frame(line1))))
   }
   
-  write.table(mat,paste0(filePath,"/maIDG.txt"),row.names = F,col.names = F,quote = F)
+  IDGfnam<-"maIDG.txt"
+  write.table(mat,paste0(filePath,"/",IDGfnam),row.names = F,col.names = F,quote = F)
+  return(IDGfnam)
 }

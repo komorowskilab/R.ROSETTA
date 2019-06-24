@@ -6,10 +6,10 @@ rosetta <- function(dt,
                     classifier="StandardVoter",
                     cvNum=10,
                     discrete=FALSE,
-                    discreteMethod="EqualFrequencyScaler",
+                    discreteMethod="EqualFrequency",
                     discreteParam=3,
                     discreteMask=TRUE,
-                    reducer="JohnsonReducer",
+                    reducer="Johnson",
                     reducerDiscernibility="Object", #or Full
                     roc=FALSE,
                     clroc="autism",
@@ -22,7 +22,7 @@ rosetta <- function(dt,
                     underSampleSize=0,
                     ruleFiltration=FALSE,
                     ruleFiltrSupport=c(1,5),
-                    ruleFiltrAccuracy=c(0,0.5),
+                    ruleFiltrAccuracy=c(0,0.6),
                     ruleFiltrCoverage=c(0,0),
                     ruleFiltrStability=c(0,0),
                     JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=TRUE,Approximate=TRUE,Fraction=0.9),
@@ -34,10 +34,73 @@ rosetta <- function(dt,
                     invert=FALSE
 )
 {
-  #df<-dt
-  # setting paths, creating temp directory where the analysis will go
+  # set constant seed
   set.seed(seed)
   
+  if(any(is.na(dt))){
+    stop("Your dataset contains NA values.")
+  }
+  
+  # change integers to numeric
+  indx <- sapply(dt, is.integer)
+  dt[indx] <- lapply(dt[indx], function(x) as.numeric(x))
+  
+  ##### #### additional functions ##### #####
+  catchNumeric <- function(mylist){
+    newlist <- suppressWarnings(as.numeric(mylist))
+    mylist <- list(mylist)
+    mylist[!is.na(newlist)] <- newlist[!is.na(newlist)]
+    unlist(mylist)
+  }
+  
+  cleanCuts <- function(mylist){
+  lst_cuts<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+  lstc<-lapply(lst_cuts,function(x) gsub("[[() *]", "", x))
+  lstc2<-lapply(lstc,function(x) (gsub(',$','', x)))
+  lstc3<-lapply(lstc2,function(x) (gsub('^,','', x)))
+  lstc4<-lapply(lstc3, function(x) unlist(strsplit(x, ",")))
+  return(list(lstc3,lstc4))
+  }
+
+  round2 = function(x, n) {
+    posneg = sign(x)
+    z = abs(x)*10^n
+    z = z + 0.5
+    z = trunc(z)
+    z = z/10^n
+    z*posneg
+  }
+  
+  meanOrCharacter <- function(x){
+    if(class(x) == "factor"){
+      # check if in factor columns are characters or the numbers
+      if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1]){
+        return(as.character(x)[1]) 
+      }else{
+        return(round(mean(as.numeric(as.character(x))),  digits = 5))}
+    }
+    if(class(x) == "numeric"){
+      out <- round(mean(as.numeric(x), na.rm = TRUE), digits = 5)
+      return(out)}
+  }
+  
+  aggregate2 <- function(x, y){ 
+    df_out3=df_out[which(match(y, x) == 1),]
+    indx <- sapply(df_out3, is.factor)
+    df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+    df_out4=aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+    return(df_out4)
+  }
+  ##### ##### ##### ##### ##### ##### #####
+  
+
+  
+  # check if decision vector is factor and change if not
+  if(is.factor(dt[,length(dt)])==F){
+    dt[,length(dt)]<-as.factor(dt[,length(dt)])
+  }
+  
+  # setting paths, creating temp directory where the analysis will go
   firstPath<-tempdir()
   fname<-"data"
   
@@ -56,15 +119,13 @@ rosetta <- function(dt,
     }
   
   
-  
   # training pipline length
   if(discrete==FALSE)
   {
-    pipeLen=5}else
+    pipeLen<-5}else
     {
-      pipeLen=4
+      pipeLen<-4
     }
-  
   
   ##############################
   ######## undersampling #######
@@ -76,8 +137,8 @@ rosetta <- function(dt,
       #tab=df
       n=min(unname(table(as.character(dt[,length(dt)])))) #min
       k=max(unname(table(as.character(dt[,length(dt)])))) #max
-      rep=1000
-      out=c()
+      rep=5000
+      out=integer(rep)
       for(j in 1:rep){
         vec=rep(0,k)
         i=0
@@ -104,11 +165,13 @@ rosetta <- function(dt,
       {
         minC=underSampleSize ###if you want to choose the number
       }
-    #choosing class
+    
+    # choose class
     for(i in 1:clnum){
       classL[[i]]=which(clvec%in%clnames[i]) #
     }
     
+    # create files with balanced data
     for(j in 1:underSampleNum){
       samp=list()
       for(i in 1:clnum){
@@ -124,15 +187,13 @@ rosetta <- function(dt,
   }
   
   ##############################
+
+  csvFileName <- ifelse(.Platform$OS.type=="unix", 
+         list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$"),
+         list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.csv$"))
+
   
-  
-  if(.Platform$OS.type=="unix")
-  {
-    csvFileName <- list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$")}else{
-    csvFileName <- list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.csv$")
-  }
-  
-  #loop by files
+  # loop by files, 1 = no undersampling
   for(i in 1:length(csvFileName)){
     
     if(.Platform$OS.type=="unix")
@@ -148,34 +209,24 @@ rosetta <- function(dt,
       dirList=paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep")
     }
     
-    
-    
-    
     ###### convert CSV to ROS ######
     csvToRos(dirList)
     # check ROS filename
     rosFileName <- list.files(path=dirList, pattern = "\\.ros$")
     
-    if(.Platform$OS.type=="unix"){
-      dirList2=paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta")
-      pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
-    }else{
-      dirList2=paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  
-      pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
-    }
-    
+    # create directory for main results of ROSETTA
+    dirList2<-ifelse(.Platform$OS.type=="unix", paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta"), paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  )
     dir.create(dirList2)
     
+    # store pathway to ROSETTA exe
+    pathExe<-ifelse(.Platform$OS.type=="unix", paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/"), paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\"))
+    
     ## masking the attributes
-    maskAttribute(maskFeaturesNames, dirList2)
-    if(.Platform$OS.type=="unix"){
-      file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2)
-    }else{
-      file.copy(paste(dirList,"\\",rosFileName,sep=""), dirList2)
-    }
+    IDGfnam<-maskAttribute(maskFeaturesNames, dirList2)
     
-    
-    IDGfnam="maIDG.txt"
+    # copy .ros file to rosetta folder
+    cpyData <- ifelse(.Platform$OS.type=="unix", file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2), file.copy(paste(dirList,"\\",rosFileName,sep=""), dirList2))
+
     FoldNam="objects"
     
     ## to mask the features set parameter IDGfn to TRUE
@@ -204,12 +255,10 @@ rosetta <- function(dt,
                        GeneticParam=GeneticParam,
                        ManualNames=ManualNames,
                        roc=roc,
-                       clroc=clroc,)
+                       clroc=clroc)
     
-    #seed=0
-    # check the platform. For unix you have to have wine installed!
-    if(.Platform$OS.type=="unix")
-    {
+    # check the platform. Unix require wine.
+    if(.Platform$OS.type=="unix"){
       comm=sprintf('wine %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
                    pathExe,
                    substr(as.character(invert),1,1),
@@ -218,9 +267,10 @@ rosetta <- function(dt,
                    pipeLen,
                    paste0(dirList2,"/","OUT_cmdCV.txt"),
                    paste0(dirList2,"/","logMain.txt"),
-                   paste0(dirList2,"/",rosFileName)
-      )
+                   paste0(dirList2,"/",rosFileName))
+      # run ROSETTA exe
       try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
+      
     }else{
       comm=sprintf('cmd /K %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
                    pathExe,
@@ -232,52 +282,35 @@ rosetta <- function(dt,
                    paste0(dirList2,"\\","logMain.txt"),
                    paste0(dirList2,"\\",rosFileName)
       )
+      
+      # run ROSETTA exe
       try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
     }
     
   }
   
   # prepare all results
-  if(.Platform$OS.type=="unix")
-  {
-    LFout=list.files(paste0(tempDirNam,"/results"))}else{
-      LFout=list.files(paste0(tempDirNam,"\\results"))
-    }
-  dfRes_rocAucSE=c()
-  dfRes_rocAuc=c()
-  dfRes_accMean=c()
-  dfRes_accMedian=c()
-  dfRes_accStdDev=c()
-  dfRes_accMin=c()
-  dfRes_accMax=c()
-  dfRes_rocMean=c()
-  dfRes_rocMedian=c()
-  dfRes_rocStdDev=c()
-  dfRes_rocMin=c()
-  dfRes_rocMax=c()
-  dfRes_rocseMean=c()
-  dfRes_rocseMedian=c()
-  dfRes_rocseStdDev=c()
-  dfRes_rocseMin=c()
-  dfRes_rocseMax=c()
+  LFout<-ifelse(.Platform$OS.type=="unix", list.files(paste0(tempDirNam,"/results")), list.files(paste0(tempDirNam,"\\results")))
+  
   #dfRes_mccMean=c()
   
   # statistic
   if(roc){
+    dfRes_rocAucSE<-dfRes_rocAuc<-dfRes_accMean<-dfRes_accMedian<-dfRes_accStdDev<-
+      dfRes_accMin<-dfRes_accMax<-dfRes_rocMean<-dfRes_rocMedian<-dfRes_rocStdDev<-
+      dfRes_rocMin<-dfRes_rocMax<-dfRes_rocseMean<-dfRes_rocseMedian<-dfRes_rocseStdDev<-
+      dfRes_rocseMin<-dfRes_rocseMax<-c()
     for(i in 1:length(LFout)){
       if(.Platform$OS.type=="unix")
       {
         path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")
-        path_rocs=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta/rocs")}else{
+        path_rocs=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta/rocs")}
+      else{
         path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
         path_rocs=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta\\rocs")
         }
       
-     
-
-      
-rosres=rosResults(path, roc)
-
+rosres<-rosResults(path, roc)
 
 # ROC AUC
 dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC"),2])))
@@ -309,7 +342,6 @@ txt_files_df <- lapply(txt_files_ls, function(x) {read.table(file = x, fill=T)})
 combined_df=data.frame()
 
 for(k in 1:length(txt_files_df)){
-  
   combined_df=rbind(combined_df, data.frame(rep(k, dim(as.data.frame(txt_files_df[[k]])[,1:7])[1]),as.data.frame(txt_files_df[[k]])[,1:7]))
 }
 
@@ -325,59 +357,56 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
                       mean(dfRes_rocseMean), mean(dfRes_rocseMedian),mean(dfRes_rocseStdDev), mean(dfRes_rocseMin),
                       mean(dfRes_rocseMax))
     
-    colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max",
+    colnames(outRos)<-c("accuracyMean","accuracyMedian","accuracyStd","accuracyMin","accuracyMax",
                         "ROC.AUC","ROC.AUC.SE","ROC.AUC.MEAN","ROC.AUC.MEDIAN","ROC.AUC.STDEV","ROC.AUC.MIN","ROC.AUC.MAX",
                         "ROC.AUC.SE.MEAN","ROC.AUC.SE.MEDIAN","ROC.AUC.SE.STDEV","ROC.AUC.SE.MIN","ROC.AUC.SE.MAX")
     rownames(outRos)<-""
     
-  }else{ # just accuracy values
+  }else{ #ROC False
+      dfRes_accMean<-dfRes_accMedian<-dfRes_accStdDev<-
+      dfRes_accMin<-dfRes_accMax<-c()
+    
     for(i in 1:length(LFout)){
+      path<-ifelse(.Platform$OS.type=="unix", paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta"), paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta"))
       
-      if(.Platform$OS.type=="unix")
-      {
-        path=paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta")}else{
-          path=paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta")
-        }
       # ACCURACY
-      dfRes_accMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
-      dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
-      dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
-      dfRes_accMin[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
-      dfRes_accMax[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
-      #dfRes_mccMean[i]=as.numeric(as.matrix(unname(rosResults(path, roc)$Value[6])))
+      dfRes_accMean[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
+      dfRes_accMedian[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
+      dfRes_accStdDev[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
+      dfRes_accMin[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
+      dfRes_accMax[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
+      #dfRes_mccMean[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[6])))
     }
     
     #outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax), mean(dfRes_mccMean))
     outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax))
     
     #colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max","MCC.mean")
-    colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max")
+    colnames(outRos)<-c("accuracyMean","accuracyMedian","accuracyStd","accuracyMin","accuracyMax")
     rownames(outRos)<-""
   }
   
   # make mean accuracy for CV and undersampled files
-  dataset_merged=data.frame()
+  rules2<-data.frame()
   for(i in 1:length(LFout)){
     if(.Platform$OS.type=="unix")
     {
-      path2=paste0(tempDirNam,"/results/",LFout[i],"/outRosetta/rules")
-      file_list <- paste0(path2,"/",list.files(path=path2))}else{
-        path2=paste0(tempDirNam,"\\results\\",LFout[i],"\\outRosetta\\rules")
-        file_list <- paste0(path2,"\\",list.files(path=path2))
+      path2<-paste0(tempDirNam,"/results/",LFout[i],"/outRosetta/rules")
+      file_list <- paste0(path2,"/",list.files(path=path2))}
+    else{
+      path2<-paste0(tempDirNam,"\\results\\",LFout[i],"\\outRosetta\\rules")
+      file_list <- paste0(path2,"\\",list.files(path=path2))
       }
     
     for(file in file_list){
       temp_dataset <-read.table(file, header=TRUE, sep="\t")
-      dataset_merged<-rbind(dataset_merged, temp_dataset)
+      rules2<-rbind(rules2, temp_dataset)
       rm(temp_dataset)}
   }
-  
-  colnames(dataset_merged)<-"rules"
-  rules2=dataset_merged
+  colnames(rules2)<-"rules"
   
   # filter out comments
-  rl=rules2
-  rl2=as.matrix(rl[!grepl("%", rl, fixed = T)]) #deleting comments
+  rl2=as.matrix(rules2[!grepl("%", rules2, fixed = T)]) #deleting comments
   rl_r=which(grepl("=>", rl2, fixed = T)) #choosing rules
   rules=rl2[rl_r]
   
@@ -412,7 +441,7 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
   acc_rhs3n=unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric),which.max))
   
   if(is.null(acc_rhs3n)){
-    stop("Rules produced only for one class. No right-hand values found.")
+    stop("Oops, no rules produced.")
   }else{
     # COVERAGE RHS
     cov_rhs3=unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
@@ -427,70 +456,58 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
     dec_class=strsplit(as.character(unlist(lapply(strsplit(as.character(rules), " => ", fixed=TRUE), `[`, 2))), " OR ", fixed=TRUE)
     
     # choosing element according to accuracy
-    choose_nfl=rep(NA,length(acc_rhs3n))
+    choose_nfl0=character(length(acc_rhs3n))
+
+    choose_nfl<-sapply(1:max(as.numeric(acc_rhs3n)),
+           FUN = function(i) {
+             choose_nfl0[which(acc_rhs3n==i)]<-unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
+             return(choose_nfl0)
+           })
+    choose_nfl<-apply(choose_nfl,1,paste0, collapse="")
     
-    for(i in 1:max(as.numeric(acc_rhs3n))){
-      choose_nfl[which(acc_rhs3n==i)]=unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
-    }
-    
-    rl2=strsplit(rules2," AND ")
-    lst=lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
+    rl2<-strsplit(rules2," AND ")
+    lst<-lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
     
     ### each element separately ###
-    lst_feat=lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
-    features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
+    lst_feat<-lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
+    features2<-unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
     
     ### each element separately ###
     if(discrete==FALSE){
       # for non discrete data  
-      lst_cuts=lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
       
-      lstc=lapply(lst_cuts,function(x) gsub("[[() *]", "", x))
-      lstc2=lapply(lstc,function(x) (gsub(',$','', x)))
-      lstc3=lapply(lstc2,function(x) (gsub('^,','', x)))
-      lstc4=lapply(lstc3, function(x) unlist(strsplit(x, ",")))
-      
-      ## catch only numeric values
-      catchNumeric <- function(mylist){
-        newlist <- suppressWarnings(as.numeric(mylist))
-        mylist <- list(mylist)
-        mylist[!is.na(newlist)] <- newlist[!is.na(newlist)]
-        unlist(mylist)}
-      
-      lst_cuts2=lapply(lstc4, catchNumeric)
+      lst_cuts2<-lapply(cleanCuts(lst)[[2]], catchNumeric)
       #lst_cuts2=lapply(lapply(lst_cuts, function(x) as.numeric(unlist(regmatches(x,gregexpr("[[:digit:]]+\\.*[[:digit:]]*",x))))), unlist)
       #lst_cuts2[which(lapply(lst_cuts2,length)==0)]<-lapply(lst_cuts[which(lapply(lst_cuts2,length)==0)], function(x) gsub(")", "",x,fixed = T))
       
-      lst_cuts22=unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
+      lst_cuts22<-unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
       
       # remove brackets and change them into conditions
-      lst1=lapply(lst_cuts, function(x) gsub(".*\\*\\).*", "value>cut", x))
-      lst2=lapply(lst1, function(x) gsub(".*\\[\\*.*", "value<cut", x))
-      lst3=lapply(lst2, function(x) gsub(".*\\[.*\\).*", "cut<value<cut", x))
-      lst4=lapply(lst3, function(x) gsub(".*).*","discrete",x))
+      lst_cuts<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+      lst1<-lapply(lst_cuts, function(x) gsub(".*\\*\\).*", "value>cut", x))
+      lst2<-lapply(lst1, function(x) gsub(".*\\[\\*.*", "value<cut", x))
+      lst3<-lapply(lst2, function(x) gsub(".*\\[.*\\).*", "cut<value<cut", x))
+      lst4<-lapply(lst3, function(x) gsub(".*).*","discrete",x))
       
-      cuts2=unlist(lapply(lapply(lst4, function(x) paste(x, collapse = ",")), unlist))
+      cuts2<-unlist(lapply(lapply(lst4, function(x) paste(x, collapse = ",")), unlist))
       
       # calculate the sizes
-      df222=data.frame(word = do.call(c, lst_cuts2),
+      df222<-data.frame(word = do.call(c, lst_cuts2),
                        group = rep(1:length(lst_cuts2), 
                                    sapply(lst_cuts2, length)))
       
       # create constant size data frame for cuts
-      lst_cuts3=lapply(lst_cuts2, 'length<-', max(table(df222$group)))
-      df3=t(as.data.frame(lst_cuts3, stringsAsFactors=FALSE))
+      lst_cuts3<-lapply(lst_cuts2, 'length<-', max(table(df222$group)))
+      df3<-t(as.data.frame(lst_cuts3, stringsAsFactors=FALSE))
       
       ### retrieve discretization states ###
-      dataset_cuts=data.frame()
-      dataset_rules=data.frame()
+      dataset_cuts<-dataset_rules<-data.frame()
+      st3<-cutsToStates<-list()
       
-      st3=list()
-      st33=list()
       #loop on undersampling files
       for(l in 1:length(LFout)){
         
-        if(.Platform$OS.type=="unix")
-        {
+        if(.Platform$OS.type=="unix"){
           path_rules=paste0(tempDirNam,"/results/",LFout[l],"/outRosetta/rules")
           path_cuts=paste0(tempDirNam,"/results/",LFout[l],"/outRosetta/cuts")
           files_rules <- paste0(path_rules,"/",list.files(path=path_rules))
@@ -502,210 +519,151 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
             files_cuts <- paste0(path_cuts,"\\",list.files(path=path_cuts))
           }
         
-        #loop on CV files
+        # loop on CV files - retrieve discrete values from cuts
         for(k in 1:length(files_rules)){
-          temp_dataset <-read.table(files_rules[k], header=FALSE, sep="\t")
-          colnames(temp_dataset)<-"rules"
-          dataset_rules<-temp_dataset
-          rm(temp_dataset)
           
-          temp_dataset <-read.table(files_cuts[k], header=FALSE, sep="\t")
-          dataset_cuts<-temp_dataset
-          rm(temp_dataset)
+          # read rule file
+          dataset_rules <-read.table(files_rules[k], header=FALSE, sep="\t")
+          colnames(dataset_rules)<-"rules"
+
+          # read cut file
+          dataset_cuts <-read.table(files_cuts[k], header=FALSE, sep="\t")
+          colnames(dataset_cuts)<-c("group","cuts")
           
+          # replace groups for feature names
           key <- 0:(dim(dt)[2]-2)
-          #val <- colnames(dt)[-length(colnames(dt))]
           val <- colnames(dt)[c(unname(which(unlist(lapply(dt, is.numeric)) | unlist(lapply(dt, is.integer)))),unname(which(!unlist(lapply(dt, is.numeric)) & !unlist(lapply(dt, is.integer)))))]
-       
-          out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$V1 == key[i],1] <<- val[i]})
+          out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$group == key[i],1] <<- val[i]})
           
           # filter out comments
-          rl=dataset_rules
-          rl2=as.matrix(rl[!grepl("%", rl, fixed = T)]) #deleting comments
-          rl_r=which(grepl("=>", rl2, fixed = T)) #choosing rules
-          rules=rl2[rl_r]
+          rl2<-as.matrix(dataset_rules[!grepl("%", dataset_rules, fixed = T)]) #deleting comments
+          rl_r<-which(grepl("=>", rl2, fixed = T)) #choosing rules
           
-          rules2=unlist(lapply(strsplit(as.character(rules), " =>", fixed=TRUE), `[`, 1))
-          rl2=strsplit(rules2," AND ")
-          lst=lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
+          rules2<-unlist(lapply(strsplit(as.character(rl2[rl_r]), " =>", fixed=TRUE), `[`, 1))
+          lst<-lapply(lapply(strsplit(rules2," AND "), function(x) strsplit(x, "\\(")), unlist)
+          lst_cuts2<-lapply(cleanCuts(lst)[[2]], catchNumeric)
           
-          lst_cuts=lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
-          lstc=lapply(lst_cuts,function(x) gsub("[[() *]", "", x))
-          lstc2=lapply(lstc,function(x) (gsub(',$','', x)))
-          lstc3=lapply(lstc2,function(x) (gsub('^,','', x)))
-          lstc4=lapply(lstc3, function(x) unlist(strsplit(x, ",")))
+          # in case of 2 levels, right or left
+          lstCuts2<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+          lstCuts22<-lapply(lstCuts2, function(x) gsub(".*\\*\\).*", 2, x))
+          lstCuts222<-lapply(lstCuts22, function(x) gsub(".*\\[\\*.*", 1, x))
           
-          ## catch only numeric values
-          catchNumeric <- function(mylist){
-            newlist <- suppressWarnings(as.numeric(mylist))
-            mylist <- list(mylist)
-            mylist[!is.na(newlist)] <- newlist[!is.na(newlist)]
-            unlist(mylist)}
-          lst_cuts2=lapply(lstc4, catchNumeric)
-          
+          lstCuts3<-cleanCuts(lst)[[1]]
           ## list of the cuts - lstc3
           ## library - dataset_cuts
           ## list of the features
-          lst_feat=lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
+          lst_feat<-lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
           ##features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
           
           #dataset_cuts[,2]<-dataset_cuts[,2]/1e+06
-          
-          round2 = function(x, n) {
-            posneg = sign(x)
-            z = abs(x)*10^n
-            z = z + 0.5
-            z = trunc(z)
-            z = z/10^n
-            z*posneg
-          }
-          
-          epsil=0.0001
+          ##epsil=0.0001
           ##create states
-          st2=lapply(1:length(lst_feat),FUN = function(j){
-            st=c()
-            for(i in 1:length(lstc3[[j]]))
+          st2=list()
+          for(j in 1:length(lst_feat)){
+            
+            st<-c()
+            for(i in 1:length(lstCuts3[[j]]))
             {
               tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
               rownames(tempCuts)<-NULL
               
-              ##check if the feature is character
+              ##check if the feature is character or not
               if(dim(tempCuts)[1]==0){
-                st[i]<-lstc3[[j]][i]
-              }
-              else{
-               if(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))[1]%%1==0 & !grepl("\\.",unlist(strsplit(lstc3[[j]][i], ","))[1])){ #integers
-                  if(grepl(",",lstc3[[j]][i])) ##for ranges -> middle classes
+                st[i]<-lstCuts3[[j]][i]
+              }else{
+                if(as.numeric(unlist(strsplit(lstCuts3[[j]][i], ",")))[1]%%1==0 & !grepl("\\.",unlist(strsplit(lstCuts3[[j]][i], ","))[1])){ #integers
+                  if(grepl(",",lstCuts3[[j]][i])) ##for ranges -> middle classes
                   {
-                    st[i]<-which(round2(tempCuts$V2,0)==min(as.numeric(unlist(strsplit(lstc3[[j]][i], ",")))))+1 
+                    st[i]<-which(round2(tempCuts$cuts,0)==min(as.numeric(unlist(strsplit(lstCuts3[[j]][i], ",")))))+1 
                   }else{ ##for single -> extremes
                     #left
-                    if(which(round2(tempCuts$V2,0)==as.numeric(unlist(lstc3[[j]][i])))==1){
+                    if(which(round2(tempCuts$cuts,0)==as.numeric(unlist(lstCuts3[[j]][i])))==1){
                       st[i]<-1
                     }else #right
                     {
-                      st[i]<-which(round2(tempCuts$V2,0)==as.numeric(unlist(lstc3[[j]][i])))+1
+                      st[i]<-which(round2(tempCuts$cuts,0)==as.numeric(unlist(lstCuts3[[j]][i])))+1
                     }
                   }
                   
                   
                 }else{
                   
-                  tempCuts$V2<-tempCuts$V2/1e+06
+                  tempCuts$cuts<-tempCuts$cuts/1e+06
                   
-                  if(grepl(",",lstc3[[j]][i])) ##for ranges -> middle classes
+                  if(grepl(",",lstCuts3[[j]][i])) ##for ranges -> middle classes
                   {
-                    st[i]<-which(abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) < epsil & abs(tempCuts$V2-min(as.numeric(unlist(strsplit(lstc3[[j]][i], ","))))) >= 0)+1 
+                    st[i]<-which(abs(tempCuts$cuts-min(as.numeric(unlist(strsplit(lstCuts3[[j]][i], ",")))))==min(abs(tempCuts$cuts-min(as.numeric(unlist(strsplit(lstCuts3[[j]][i], ",")))))) & abs(tempCuts$cuts-min(as.numeric(unlist(strsplit(lstCuts3[[j]][i], ","))))) >= 0)+1 
                   }else{ ##for single -> extremes
                     #left
-                    if(which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)==1){
-                      st[i]<-1
+                    if(which(abs(tempCuts$cuts-as.numeric(lstCuts3[[j]][i]))==min(abs(tempCuts$cuts-as.numeric(lstCuts3[[j]][i]))) & abs(tempCuts$cuts-as.numeric(lstCuts3[[j]][i])) >= 0)==1){
+                      st[i]<-lstCuts222[[j]][i]
                     }else #right
                     {
-                      st[i]<-which(abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) < epsil & abs(tempCuts$V2-as.numeric(lstc3[[j]][i])) >= 0)+1
+                      st[i]<-which(abs(tempCuts$cuts-as.numeric(lstCuts3[[j]][i]))==min(abs(tempCuts$cuts-as.numeric(lstCuts3[[j]][i]))) & abs(tempCuts$cuts-as.numeric(lstCuts3[[j]][i])) >= 0)+1
                     }
+                  }
                   }
                 }#else from integer
               }#else from character
+            st2[[j]]<-st
             }#end for
-            return(st)
-          }) #end of function
-          
           st3[[k]]=unlist(lapply(lapply(st2, function(x) paste(x, collapse = ",")), unlist))
+          }
+          
+        cutsToStates[[l]]=unlist(st3)
         }
-        st33[[l]]=unlist(st3)
-      }
+        
+
       
       #######################################                           
       
-      decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
-      df_out=data.frame(features2,unlist(st33),decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
-      colnames(df_out)<-c("FEATURES","DISC_CLASSES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS","CUTS_COND",paste0("CUT_",seq(1:max(table(df222$group)))))
+      decsFinal <- unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
+      df_out=data.frame(features2,unlist(cutsToStates),decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
+      colnames(df_out)<-c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","coverageLHS","coverageRHS","stabilityLHS","stabilityRHS","cuts",paste0("cut",seq(1:max(table(df222$group)))))
       
-      df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND","DISC_CLASSES")])
-      allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND","DISC_CLASSES")])
+      df_outU=unique(df_out[c("features","levels", "decision")])
+      allMat=do.call(paste0, df_out[c("features","levels", "decision")])
       subMat=as.matrix(do.call(paste0, df_outU))
       
-      aggregate2 <- function(x){ 
-        df_out3=df_out[which(match(allMat, x) == 1),]
-        
-        meanOrCharacter <- function(x){
-          if(class(x) == "factor"){
-            # check if in factor columns are characters or the numbers
-            if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1]){
-              return(as.character(x)[1]) 
-            }else{
-              return(round(mean(as.numeric(as.character(x))),  digits = 5))}
-          }
-          if(class(x) == "numeric"){
-            out <- round(mean(as.numeric(x), na.rm = TRUE), digits = 5)
-            return(out)}
-        }
-        
-        indx <- sapply(df_out3, is.factor)
-        df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-        df_out4=aggregate(.~FEATURES+DECISION+CUTS_COND+DISC_CLASSES, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
-        return(df_out4)
-      }
       
-      df_out5=apply(subMat, 1, aggregate2)
+      df_out5=apply(subMat, 1, aggregate2, y=allMat)
       df_out2=do.call("rbind", df_out5)
-      df_out2$SUPP_LHS<-round(df_out2$SUPP_LHS)
-      df_out2$SUPP_RHS<-round(df_out2$SUPP_RHS)
-      #df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, mean, data = df_out, na.action = na.pass)
+      df_out2$supportLHS<-round(df_out2$supportLHS)
+      df_out2$supportRHS<-round(df_out2$supportRHS)
     }
     else{
       #for discrete data
-      lst_cuts=lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
-      #lst_cuts2=lapply(lapply(lst_cuts, function(x) as.numeric(unlist(regmatches(x,gregexpr("[[:digit:]]+\\.*[[:digit:]]*",x))))), unlist)
-      lst_cuts2=lapply(lapply(lst_cuts, function(x) gsub(")","",x)), unlist)
-      lst_cuts22=unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
+      lst_cuts<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+      lst_cuts2<-lapply(lapply(lst_cuts, function(x) gsub(")","",x)), unlist)
+      lst_cuts22<-unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
       
-      df222=data.frame(word = do.call("c", lst_cuts2),
+      df222<-data.frame(word = do.call("c", lst_cuts2),
                        group = rep(1:length(lst_cuts2), 
                                    sapply(lst_cuts2, length)))
       
-      lst_cuts3=lapply(lst_cuts2, 'length<-', max(table(df222$group)))
-      df3=t(as.data.frame(lst_cuts3))
-      decsFinal= unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
-      df_out=data.frame(features2,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, df3, lst_cuts22)
-      colnames(df_out)<-c("FEATURES","DECISION","SUPP_LHS","SUPP_RHS","ACC_RHS","COV_LHS","COV_RHS","STAB_LHS","STAB_RHS",paste0("CUT_",seq(1:max(table(df222$group)))),"CUTS_COND")
-      #df_out2=aggregate(.~FEATURES+DECISION+CUT_COND, mean, data = df_out, na.action = na.pass)
-      df_outU=unique(df_out[c("FEATURES", "DECISION", "CUTS_COND")])
-      allMat=do.call(paste0, df_out[c("FEATURES", "DECISION", "CUTS_COND")])
-      subMat=as.matrix(do.call(paste0, df_outU))
+      lst_cuts3<-lapply(lst_cuts2, 'length<-', max(table(df222$group)))
+      df3<-t(as.data.frame(lst_cuts3))
+      decsFinal<-unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
+      df_out<-data.frame(features2, lst_cuts22,decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3) #, df3
+      colnames(df_out)<-c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","coverageLHS","coverageRHS","stabilityLHS","stabilityRHS") #,paste0("Cut",seq(1:max(table(df222$group))))
+      df_outU<-unique(df_out[c("features", "levels", "decision")])
+      allMat<-do.call(paste0, df_out[c("features", "levels", "decision")])
+      subMat<-as.matrix(do.call(paste0, df_outU))
       
-      aggregate2 <- function(x){ 
-        df_out3=df_out[which(match(allMat, x) == 1),]
-        meanOrCharacter <- function(x){
-          if(class(x) == "factor"){
-            # check if in factor columns are characters or the numbers
-            if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1]){
-              return(as.character(x)[1]) 
-            }else{
-              return(round(mean(as.numeric(as.character(x))),  digits = 4))}
-          }
-          if(class(x) == "numeric"){
-            out <- round(mean(as.numeric(x), na.rm = TRUE), digits = 4)
-            return(out)}
-        }
-        
+      aggregate2 <- function(x, y){ 
+        df_out3=df_out[which(match(y, x) == 1),]
         indx <- sapply(df_out3, is.factor)
         df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-        df_out4=aggregate(.~FEATURES+DECISION+CUTS_COND, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+        df_out4=aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
         return(df_out4)
       }
       
-      df_out5=apply(subMat, 1, aggregate2)
-      df_out2=do.call("rbind", df_out5)
-      df_out2$SUPP_LHS<-round(df_out2$SUPP_LHS)
-      df_out2$SUPP_RHS<-round(df_out2$SUPP_RHS)
+      df_out5<-apply(subMat, 1, aggregate2, y=allMat)
+      df_out2<-do.call("rbind", df_out5)
+      df_out2$supportLHS<-round(df_out2$supportLHS)
+      df_out2$supportRHS<-round(df_out2$supportRHS)
     }
-    
-    #df_out2[paste0("CUTS_",seq(1:max(table(df222$group))))]<-round(df_out2[paste0("CUTS_",seq(1:max(table(df222$group))))])
-    #for(i in 1:length(levels(df_out$DECISION))){
-    #  df_out2$DECISION[which(df_out2$DECISION==i)]<-levels(df_out$DECISION)[i]
-    #}
+
     
     ## p-value for rules calculation ##
     PVAL <- c()
@@ -713,50 +671,57 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
     CONF_INT <- c()
     REL_RISK <- c()
     
-    for(i in 1:length(df_out2$SUPP_RHS)){
-      k <- round(df_out2$SUPP_RHS[i]*df_out2$ACC_RHS[i]) #total support adjusted by accuracy
-      R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(df_out2$DECISION[i])])
-      N <- dim(dt)[1] 
+    for(i in 1:length(df_out2$decision)){
+      # total support adjusted by accuracy
+      k <- round(df_out2$supportRHS[i]*df_out2$accuracyRHS[i])-1 # P(X > k-1) <-> P(X >= k)
+      # num of samples for current decision - total white balls
+      R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(df_out2$decision[i])])
+      # num of samples for the rest samples - total black balls
+      N <- dim(dt)[1]
       R2 <- N-R1
       # the number of decisions/objects/patients
-      C1 <- df_out2$SUPP_LHS[i]    # LHS Support
-      #C2=N-C1                  # total drawn
-      #R1=dim(dt)[2]            # total hits, number of features
-      #R2=N-R1                  # number of features - number of decisions
-      PVAL[i] <- phyper(k-1, m=R1, n=R2, C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
-      
+      C1 <- df_out2$supportLHS[i]   # exposed
+      C2 <- df_out2$supportLHS[i]-k # non-exposed
+        
+      PVAL[i] <- phyper(q=k, m=R1, n=R2, k=C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
+
       # risk ratio
-      invisible(capture.output(rr<-riskratio(k, C1, R1, N, conf.level=0.95)))
+      invisible(capture.output(rr<-riskratio(C1, C2, R1, R2)))
       
-      CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":")
-      RISK_PVAL[i] <- rr$p.value
-      REL_RISK[i] <- rr$estimate
+      CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":") #rr 95% confidence intervals
+      RISK_PVAL[i] <- rr$p.value #rr p-value
+      REL_RISK[i] <- rr$estimate #risk ratio estimate
     }
     
     if(pAdjust){
-      PVAL=p.adjust(PVAL, method=pAdjustMethod)}
+      PVAL<-p.adjust(PVAL, method=pAdjustMethod)
+      RISK_PVAL<-p.adjust(RISK_PVAL, method=pAdjustMethod)
+      }
     
-       numClass=rep(0,length(df_out2$DECISION))
+       numClass=rep(0,length(df_out2$decision))
+       
     for(i in 1:length(table(dt[,length(dt)]))){
-      numClass[which(df_out2$DECISION==names(table(dt[,length(dt)]))[i])]<-unname(table(dt[,length(dt)]))[i]
+      numClass[which(df_out2$decision==names(table(dt[,length(dt)]))[i])]<-unname(table(dt[,length(dt)]))[i]
     }
     
-    PERC_SUPP_LHS=round(df_out2$SUPP_LHS/numClass, digits=3)*100                          
-    PERC_SUPP_RHS=round( df_out2$SUPP_RHS/numClass, digits=3)*100
+    percSupportLHS=round(df_out2$supportLHS/numClass, digits=5)                         
+    percSupportRHS=round(df_out2$supportRHS/numClass, digits=5)
     
-    df_out3=data.frame(df_out2, PERC_SUPP_LHS, PERC_SUPP_RHS, PVAL, RISK_PVAL, REL_RISK, CONF_INT)
-                                
-    df_out4=df_out3[order(df_out3$PVAL,decreasing = F),]
+    df_out3 <- data.frame(df_out2, percSupportLHS, percSupportRHS, PVAL, REL_RISK, RISK_PVAL, CONF_INT)
+    colnames(df_out3) <- c(colnames(df_out2), "supportRatioLHS", "supportRatioRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio")
+    
+    #sort rows by p-value
+    df_out4 <- df_out3[order(df_out3$pValue,decreasing = F),]
+    
+    #sort columns by names
     rownames(df_out4) <- NULL
-    # clear all the created files and set the first driectory
+    
+    # clear the files in temporary directory
     unlink(tempDirNam, recursive = TRUE)
     
-    #output 
-    if(roc){
-    return(list(main=df_out4, quality=outRos, ROC.stats=combined_df2, rules=rules2, usn=underSampleNum))
-    }else{                      
-    return(list(main=df_out4, quality=outRos, rules=rules2, usn=underSampleNum))
-    }
+    # output results
+    ifelse(roc, return(list(main=df_out4, quality=outRos, ROC.stats=combined_df2, usn=underSampleNum)),
+    return(list(main=df_out4, quality=outRos, usn=underSampleNum)))
   }
   
 } #last parenthesis of function

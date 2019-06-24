@@ -1,10 +1,10 @@
 \name{recalculateRules}
 \alias{recalculateRules}
 \title{
-Recalculate the rule table.
+Recalculate rule table.
 }
 \description{
-Recalculates the values in the rule table according to the input decision table. Retrieves the rule support sets.
+Recalculates the values in the rule table according to the decision table. Retrieves the rule support sets.
 }
 \usage{
 recalculateRules(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni")
@@ -31,7 +31,7 @@ A character containing the name of the method: holm, hochberg, hommel, bonferron
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{output}{A data frame containing recaluclated rules with: feature names, accuracy, support, normalized support and support sets.
+  \item{output}{A data frame containing recaluclated rules with: feature names, accuracy, support, statistics and support sets.
 }
 }
 \references{
@@ -54,8 +54,8 @@ library(R.ROSETTA)
 
 out <- rosetta(autcon)
 rules <- out$main
-
 recRules <- recalculateRules(autcon, rules)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

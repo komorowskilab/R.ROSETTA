@@ -74,7 +74,7 @@ decisions <- predictClass(autcon, rules)
 decisions <- predictClass(autcon, rules, normalize = TRUE, normalizeMethod = "median")
 
 # with validation
-oldDecisions <- as.character(autism[,length(autism)])
+oldDecisions <- as.character(autcon[,length(autism)])
 decisions <- predictClass(autcon, rules, validate = TRUE, valiDec=oldDecisions)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

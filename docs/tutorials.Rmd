@@ -1,0 +1,251 @@
+---
+title: "R.ROSETTA tutorials"
+output:
+  html_document:
+      fig_caption: yes
+      theme: paper
+      highlight: pygments
+      toc: true
+      toc_float:
+        collapsed: true
+      toc_depth: 3
+---
+
+This is a collection of tutorials that show how to use the R.ROSETTA package.
+
+# Installation
+Installation from github requires devtools package:
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+install.packages("devtools")
+```
+Installation and loading R.ROSETTA package from github:
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+library(devtools)
+install_github("komorowskilab/R.ROSETTA")
+library(R.ROSETTA)
+```
+
+***
+
+# Input format
+The input is a decision table in a form of `data.frame`, where the columns represent features and rows represent objects. In the table last column shall contain the decision classes.
+```{r, echo = FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(knitr)
+library("kableExtra")
+
+r1=c("...", "...", "...", "...","case")
+r2=c("...", "...", "...", "...","control")
+r3=c("...", "...", "...", "...","case")
+r4=c("...", "...", "...", "...","...")
+r5=c("...", "...", "...", "...","case")
+tab1=rbind(r1, r2, r3, r4, r5)
+colnames(tab1)<-c("feature_1", "feature_2", "...","feature_n","outcome")
+rownames(tab1)<-c("object_1", "object_2", "object_3","...","object_n")
+kable(tab1, format="html",  caption = "Decision table format") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+To deal with complex decision tables we suggest to use feature selection methods.
+
+***
+
+# Sample data
+## Synthetic
+You can create a synthetic decision table with predefined correlation. Let's assume that we want to create a decision table with 100 objects and 20 features that level of correlation is 0.5. In the example the outcome is balanced and has two decision classes. To generate such data, type:
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=20, R=0.5, nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+```
+
+Now we add double correlated features at the level of 0.1 and 0.7, and triple correlated features at the level of 0.8 and 0.2. We set numeric vectors as the parameters, the order of `nFeatures` and `R` vectors must correspond to each other:
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+```
+
+## Gene expression
+The package contains gene expression dataset from case-control studies for autism prediction. Decision table exists as a `data.frame` named `autcon`.
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- autcon
+```
+
+***
+
+# Running data
+The main function to run a classifier is `rosetta()`. The default parameters of the function are set for the processing of the sample datasets. To display the parameters type the help function `?rosetta`.
+
+## Continuous
+To create rough set-based models from continuous data, type: 
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+# synthetic data
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+out_s <- rosetta(dt)
+
+# gene expression data
+out_ge <- rosetta(autcon)
+```
+As you may notice, the default parametrs are set towards processing of continuous data.
+
+## Discrete
+If your decision table contains all discrete features please use option `discrete=TRUE`.
+Here is an example of processing synthetic data with discrete values:
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+dt2 <- dt[,-length(dt)] # remove decision
+decision <- as.character(dt[,length(dt)]) # keep the decision
+dt2 <- sapply(dt2, function(x) cut(x,3, labels = F)) # simple discretization into 3 levels
+dt3 <- as.data.frame(cbind(dt2, decision))
+out <- rosetta(dt, discrete = T)
+```
+
+## Mixed
+For data containing a mixture of continuous and discrete features, please use option `discrete=FALSE` and assign following object type to the features:
+
+  + Continuous features that require discretization: `numeric`
+  + Discrete features: `character`, `factor`, `logical`
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+# change the pair of features with R=0.1 to discrete values
+dt$F1_G2_R0.1<-as.factor(cut(dt$F1_G2_R0.1,3, labels = c("low","medium","high"))) #or as.character
+dt$F2_G2_R0.1<-as.factor(cut(dt$F2_G2_R0.1,3, labels = c("low","medium","high"))) #or as.character
+out <- rosetta(dt, discrete = F)
+```
+
+***
+# Output
+The `rosetta()` function generates two main outputs. The rule table is stored as a `data.frame` structure under `$main`. The model quality is stored as a table structure under `$quality`.
+
+## Main
+The main output of the function contains a collection of rules in a table. The rule components and all statistics values are collected in separate columns. The individual values are comma separated.
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, 
+out <- rosetta(dt)
+out$main
+```
+```{r, echo = FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(knitr)
+library("kableExtra")
+
+r1=c("F1,F2", "1,2", "case", "43","0.97","0.174","...","...")
+r2=c("F2,F4,F5", "2,1,3", "control", "40","0.95","0.142","...","...")
+r3=c("F2", "3", "case", "36","0.89","0.097","...","...")
+r4=c("...", "...", "...", "...","...","...","...")
+r5=c("F7,F1", "3,1", "control", "10","0.64","0.014","...","...")
+tab1=rbind(r1, r2, r3, r4, r5)
+colnames(tab1)<-c("features", "levels", "decision","support","accuracy","coverage","cuts","statistics")
+rownames(tab1)<-c("rule_1", "rule_2", "rule_3","...","rule_n")
+kable(tab1, format="html",  caption = "Main output") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+  + features - attribute names from a rule
+  + levels - discretization levels corresponding to a features
+  + decision - decision class for a rule
+  + accuracy - rule accuracy, for RHS(Righ Hand Support)
+  + support - the number of objects supporting the rule, RHS(Righ Hand Support) or LHS(Left Hand Support)
+  + coverage - rule coverage, RHS(Righ Hand Support) or LHS(Left Hand Support)
+  + cuts - information about cuts (thresholds) used for discretization. This will not exist if we use `discrete=T` option.
+  + statistics - rule p-values, risk ratios and confidence intervals for a rule. 
+
+## Quality
+Estimated accuracy and AUC values are collected into table. The values are taken from n-fold Cross-Validation process.
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, 
+out <- rosetta(dt)
+out$quality
+```
+```{r, echo = FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(knitr)
+library("kableExtra")
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+out <- rosetta(dt)
+# out$quality
+kable(out$quality, format="html",  caption = "Model quality") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+If you need an information about AUC, please look at the code below:
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, 
+out <- rosetta(dt, roc = TRUE, clroc = "D1")
+out$quality
+```
+***
+
+# Print rules
+To print rules in a classic IF-THEN form, use `viewRules()`. The table display an information about RHS(Righ Hand Support) values.
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+out <- rosetta(autcon)
+rules <- out$main
+vRules <- viewRules(rules)
+head(vRules)
+```
+```{r, echo = FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(knitr)
+library("kableExtra")
+kable(head(vRules), format="html",  caption = "Print rules") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+```
+
+***
+
+# Recalculate model
+R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling and/or corss-validation.
+
+Let's consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in balancing process. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the whole decision table. To recalculate a model, run `recalculateRules()`:
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+dt <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+out <- rosetta(dt)
+rules <- out$main
+newRules <- recalculateRules(dt, rules)
+```
+
+Additionally model recalculation calculates support sets, which are added as the last columns in the `data.frame` object.
+***
+
+# Plot rule
+We can visualize a specific rule in a form of heatmap or boxplot. The plot is showing a distribution of values for three support groups. This visualization is done only after recalculating the model.
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=TRUE}
+out <- rosetta(autcon)
+rules <- out$main
+newRules <- recalculateRules(autcon, rules)
+#rule heatmap
+plotRule(autcon, newRules, type = "heatmap", ind = 1)
+
+#rule boxplot
+plotRule(autcon, newRules, type = "boxplot", ind = 1)
+```
+
+***
+
+# Predict unseen data
+To test your model on external data you may use the `predictClass()` function. The algorithm checks if the cuts or levels correspond to the external dataset. Make sure that feature names correspond to the names used in the model.
+
+```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
+###prepare two datasets
+##1. to create a model
+dt1 <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+##2. to validate our model (different seed, less objects)
+dt2 <- synData(nFeatures=c(20,2,2,3,3), R=c(0.5,0.1,0.7,0.8,0.2), nObjects=50, nOutcome=2, unbalanced=F, seed=2)
+#store decision
+dt2_decision <- dt2$decision
+#remove decision from table
+dt2 <- dt2[,-length(dt2)]
+
+out <- rosetta(dt1)
+rules <- out$main
+newRules <- recalculateRules(dt1, rules)
+
+# we can predict new classes if we don't have outcome
+predictClass(dt2, newRules)
+# if we know the decision, we can obtain the accuracy of prediction
+predictClass(dt2, newRules, validate = TRUE, valiDec = dt2_decision)
+```

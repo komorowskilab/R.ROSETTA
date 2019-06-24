@@ -1,0 +1,14 @@
+name: "R.ROSETTA"
+output_dir: "."
+navbar:
+  title: "R.ROSETTA"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Tutorials"
+      href: tutorials.html
+  right:
+    - icon: fa-github
+      href: https://github.com/komorowskilab/R.ROSETTA.git

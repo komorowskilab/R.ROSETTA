@@ -1,0 +1,46 @@
+---
+title: "About R.ROSETTA"
+output:
+  html_document:
+      fig_caption: yes
+      theme: paper
+      highlight: pygments
+      toc: true
+      toc_float:
+        collapsed: true
+      toc_depth: 3
+---
+
+***
+
+# Getting Started
+R.ROSETTA is freely available on [github repository](https://github.com/komorowskilab)
+
+***
+
+# Prerequisites
+R.ROSETTA works with UNIX and Windows OS.
+UNIX operating systems require wine.
+A [tutorial](https://www.davidbaumgold.com/tutorials/wine-mac/) by David Baumgold, how to install wine on macOS platforms.
+
+***
+
+# Available functions
+`rosetta()` generates rough set-based classification model<br>
+`recalculateRules()` recalculates rules using the input data. Retrieves support sets for rules<br>
+`predictClass()` predicts external classes from the model<br>
+`getFeatures()` extracts features from the rules<br>
+`saveLineByLine()` saves rules to LineByLine format<br>
+`plotRule()` creates a plot showing interactions for a single rule<br>
+`viewRules()` displays rules in the IF-THEN format<br>
+`synData()` generates synthetic decision table<br>
+
+***
+
+# Acknowledgments
+R.ROSETTA includes a sample dataset collected from GEO repository with the reference number [GSE25507](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25507).
+
+Built With:<br>
+[ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework<br>
+[R Core](https://www.r-project.org/) - R Core Team<br>
+
