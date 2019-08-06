@@ -135,60 +135,60 @@ rosetta <- function(dt,
     if(underSampleNum == 0)
     {
       #tab=df
-      n=min(unname(table(as.character(dt[,length(dt)])))) #min
-      k=max(unname(table(as.character(dt[,length(dt)])))) #max
-      rep=5000
-      out=integer(rep)
+      n <- min(unname(table(as.character(dt[,length(dt)])))) #min
+      k <- max(unname(table(as.character(dt[,length(dt)])))) #max
+      rep <- 5000
+      out <- integer(rep)
       for(j in 1:rep){
         vec=rep(0,k)
-        i=0
+        i <- 0
         while(length(which(vec==0))>0){
           vec[sample(k,n)]<-1
-          i=i+1
+          i <- i+1
         }
-        out[j]=i
+        out[j] <- i
       }
-      underSampleNum=round(mean(unlist(out)))
+      underSampleNum <- round(mean(unlist(out)))
     }
     
     # vector of the classes
-    clvec=as.character(dt[,length(dt)])
+    clvec <- as.character(dt[,length(dt)])
     # number of the classes
-    clnum=length(table(clvec))
+    clnum <- length(table(clvec))
     # names of the classes
-    clnames=names(table(clvec))
-    classL=list()
+    clnames <- names(table(clvec))
+    classL <- list()
     
     # choose the number of objects in undersampled groups
-    if(underSampleSize==0){
-      minC=min(table(clvec))}else###if you want the minimum class
+    if(underSampleSize == 0){
+      minC <- min(table(clvec))}else###if you want the minimum class
       {
-        minC=underSampleSize ###if you want to choose the number
+        minC <- underSampleSize ###if you want to choose the number
       }
     
     # choose class
     for(i in 1:clnum){
-      classL[[i]]=which(clvec%in%clnames[i]) #
+      classL[[i]] <- which(clvec%in%clnames[i]) #
     }
     
     # create files with balanced data
     for(j in 1:underSampleNum){
-      samp=list()
+      samp <- list()
       for(i in 1:clnum){
-        samp[[i]]=sample(classL[[i]], minC)
+        samp[[i]] <- sample(classL[[i]], minC)
       }
-      df2=dt[c(1,unlist(samp)),]
-      dfToCsv(df2, paste0(fname,"_",j), tempDirNam, disc=discrete)
+      df2 <- dt[c(1,unlist(samp)),]
+      dfToCsv(df2, paste0(fname,"_",j), tempDirNam, disc = discrete)
     }
     
     ## without undersampling
   }else{
-    dfToCsv(dt, fname, tempDirNam, disc=discrete)
+    dfToCsv(dt, fname, tempDirNam, disc = discrete)
   }
   
   ##############################
 
-  csvFileName <- ifelse(.Platform$OS.type=="unix", 
+  csvFileName <- ifelse(.Platform$OS.type == "unix", 
          list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$"),
          list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.csv$"))
 
@@ -196,7 +196,7 @@ rosetta <- function(dt,
   # loop by files, 1 = no undersampling
   for(i in 1:length(csvFileName)){
     
-    if(.Platform$OS.type=="unix")
+    if(.Platform$OS.type == "unix")
     {
       dir.create(paste0(tempDirNam,"/results/",csvFileName[i]))
       dir.create(paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep"))
@@ -212,14 +212,14 @@ rosetta <- function(dt,
     ###### convert CSV to ROS ######
     csvToRos(dirList)
     # check ROS filename
-    rosFileName <- list.files(path=dirList, pattern = "\\.ros$")
+    rosFileName <- list.files(path = dirList, pattern = "\\.ros$")
     
     # create directory for main results of ROSETTA
-    dirList2<-ifelse(.Platform$OS.type=="unix", paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta"), paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  )
+    dirList2<-ifelse(.Platform$OS.type == "unix", paste0(tempDirNam,"/results/",csvFileName[i],"/outRosetta"), paste(tempDirNam,"results",csvFileName[i],"outRosetta", sep="\\")  )
     dir.create(dirList2)
     
     # store pathway to ROSETTA exe
-    pathExe<-ifelse(.Platform$OS.type=="unix", paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/"), paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\"))
+    pathExe<-ifelse(.Platform$OS.type == "unix", paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/"), paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\"))
     
     ## masking the attributes
     IDGfnam<-maskAttribute(maskFeaturesNames, dirList2)
