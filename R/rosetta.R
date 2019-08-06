@@ -85,10 +85,10 @@ rosetta <- function(dt,
   }
   
   aggregate2 <- function(x, y){ 
-    df_out3=df_out[which(match(y, x) == 1),]
+    df_out3 <- df_out[which(match(y, x) == 1),]
     indx <- sapply(df_out3, is.factor)
     df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-    df_out4=aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+    df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
     return(df_out4)
   }
   ##### ##### ##### ##### ##### ##### #####
@@ -96,16 +96,16 @@ rosetta <- function(dt,
 
   
   # check if decision vector is factor and change if not
-  if(is.factor(dt[,length(dt)])==F){
-    dt[,length(dt)]<-as.factor(dt[,length(dt)])
+  if(is.factor(dt[,length(dt)]) == F){
+    dt[,length(dt)] <- as.factor(dt[,length(dt)])
   }
   
   # setting paths, creating temp directory where the analysis will go
-  firstPath<-tempdir()
-  fname<-"data"
+  firstPath <- tempdir()
+  fname <- "data"
   
   
-  if(.Platform$OS.type=="unix")
+  if(.Platform$OS.type == "unix")
   {
     tempDirNam=paste(firstPath,paste0(format(Sys.time(), "%b_%d_%Y_%H%M%S"),"_RROS"),sep="/")
     dir.create(tempDirNam)
@@ -120,17 +120,17 @@ rosetta <- function(dt,
   
   
   # training pipline length
-  if(discrete==FALSE)
+  if(discrete == FALSE)
   {
-    pipeLen<-5}else
+    pipeLen <- 5}else
     {
-      pipeLen<-4
+      pipeLen <- 4
     }
   
   ##############################
   ######## undersampling #######
   
-  if(underSample==TRUE)
+  if(underSample == TRUE)
   {
     if(underSampleNum == 0)
     {
@@ -140,7 +140,7 @@ rosetta <- function(dt,
       rep <- 5000
       out <- integer(rep)
       for(j in 1:rep){
-        vec=rep(0,k)
+        vec <- rep(0,k)
         i <- 0
         while(length(which(vec==0))>0){
           vec[sample(k,n)]<-1
@@ -161,7 +161,7 @@ rosetta <- function(dt,
     
     # choose the number of objects in undersampled groups
     if(underSampleSize == 0){
-      minC <- min(table(clvec))}else###if you want the minimum class
+      minC <- min(table(clvec))} else###if you want the minimum class
       {
         minC <- underSampleSize ###if you want to choose the number
       }
@@ -201,12 +201,12 @@ rosetta <- function(dt,
       dir.create(paste0(tempDirNam,"/results/",csvFileName[i]))
       dir.create(paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep"))
       file.copy(paste0(tempDirNam,"/data/",csvFileName[i]), paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep"))
-      dirList=paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep")
+      dirList <- paste0(tempDirNam,"/results/",csvFileName[i],"/outPrep")
     }else{
       dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i]))
       dir.create(paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep"))
       file.copy(paste0(tempDirNam,"\\data\\",csvFileName[i]), paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep"))
-      dirList=paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep")
+      dirList <- paste0(tempDirNam,"\\results\\",csvFileName[i],"\\outPrep")
     }
     
     ###### convert CSV to ROS ######
@@ -222,12 +222,12 @@ rosetta <- function(dt,
     pathExe<-ifelse(.Platform$OS.type == "unix", paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/"), paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\"))
     
     ## masking the attributes
-    IDGfnam<-maskAttribute(maskFeaturesNames, dirList2)
+    IDGfnam <- maskAttribute(maskFeaturesNames, dirList2)
     
     # copy .ros file to rosetta folder
     cpyData <- ifelse(.Platform$OS.type=="unix", file.copy(paste(dirList,"/",rosFileName,sep=""), dirList2), file.copy(paste(dirList,"\\",rosFileName,sep=""), dirList2))
 
-    FoldNam="objects"
+    FoldNam <- "objects"
     
     ## to mask the features set parameter IDGfn to TRUE
     ## transmite parameters to generate command files to rosetta
@@ -259,7 +259,7 @@ rosetta <- function(dt,
     
     # check the platform. Unix require wine.
     if(.Platform$OS.type=="unix"){
-      comm=sprintf('wine %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+      comm <- sprintf('wine %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
                    pathExe,
                    substr(as.character(invert),1,1),
                    cvNum,
@@ -272,7 +272,7 @@ rosetta <- function(dt,
       try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
       
     }else{
-      comm=sprintf('cmd /K %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+      comm <- sprintf('cmd /K %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
                    pathExe,
                    substr(as.character(invert),1,1),
                    cvNum,
@@ -284,13 +284,13 @@ rosetta <- function(dt,
       )
       
       # run ROSETTA exe
-      try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
+      try(system(command = comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
     }
     
   }
   
   # prepare all results
-  LFout<-ifelse(.Platform$OS.type=="unix", list.files(paste0(tempDirNam,"/results")), list.files(paste0(tempDirNam,"\\results")))
+  LFout<-ifelse(.Platform$OS.type == "unix", list.files(paste0(tempDirNam,"/results")), list.files(paste0(tempDirNam,"\\results")))
   
   #dfRes_mccMean=c()
   
@@ -313,20 +313,20 @@ rosetta <- function(dt,
 rosres<-rosResults(path, roc)
 
 # ROC AUC
-dfRes_rocAuc[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC"),2])))
-dfRes_rocAucSE[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE"),2])))
+dfRes_rocAuc[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC"),2])))
+dfRes_rocAucSE[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE"),2])))
 # ACCURACY
-dfRes_accMean[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Mean"),2])))
-dfRes_accMedian[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Median"),2])))
-dfRes_accStdDev[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.StdDev"),2])))
-dfRes_accMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Minimum"),2])))
-dfRes_accMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Maximum"),2])))
+dfRes_accMean[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Mean"),2])))
+dfRes_accMedian[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Median"),2])))
+dfRes_accStdDev[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.StdDev"),2])))
+dfRes_accMin[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Minimum"),2])))
+dfRes_accMax[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="Accuracy.Maximum"),2])))
 # ROC
-dfRes_rocMean[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Mean"),2])))
-dfRes_rocMedian[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Median"),2])))
-dfRes_rocStdDev[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.StdDev"),2])))
-dfRes_rocMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Minimum"),2])))
-dfRes_rocMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Maximum"),2])))
+dfRes_rocMean[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Mean"),2])))
+dfRes_rocMedian[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Median"),2])))
+dfRes_rocStdDev[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.StdDev"),2])))
+dfRes_rocMin[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Minimum"),2])))
+dfRes_rocMax[i] <- as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.Maximum"),2])))
 # ROC SE
 dfRes_rocseMean[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Mean"),2])))
 dfRes_rocseMedian[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Median"),2])))
