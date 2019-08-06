@@ -3,28 +3,28 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc, firstRow=T)
   
   if(disc==FALSE){
   
-  vecHead=unname(sapply(df, class))
+  vecHead <- unname(sapply(df, class))
   vecHead[vecHead=="numeric"]<-"Float(6)"
   vecHead[vecHead=="integer"]<-"Integer"
   vecHead[vecHead=="logical"]<-"String"
   vecHead[vecHead=="factor"]<-"String"
   vecHead[vecHead=="character"]<-"String"
-  fRow=vecHead
+  fRow <- vecHead
   
   }else
   {
-  vecHead=unname(sapply(df, class))
+  vecHead <- unname(sapply(df, class))
   vecHead[vecHead=="numeric"]<-"Integer"
   vecHead[vecHead=="integer"]<-"Integer"
   vecHead[vecHead=="logical"]<-"String"
   vecHead[vecHead=="factor"]<-"String"
   vecHead[vecHead=="character"]<-"String"
-  fRow=vecHead
+  fRow <- vecHead
   }
   
-  fRow=data.frame(t(fRow))
-  colnames(fRow)<-colnames(df)
-  dfc<-data.frame(trimws(as.matrix(format(df, digits=6))))
+  fRow <- data.frame(t(fRow))
+  colnames(fRow) <- colnames(df)
+  dfc <- data.frame(trimws(as.matrix(format(df, digits=6))))
   #OUTPUT_DT_TRAIN=rbind(dfc,fRow)
   #OUTPUT_DT_TRAIN=rbind(OUTPUT_DT_TRAIN[dim(OUTPUT_DT_TRAIN)[1],],OUTPUT_DT_TRAIN[-dim(OUTPUT_DT_TRAIN)[1],])
   
