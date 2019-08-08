@@ -33,7 +33,7 @@ rosetta <- function(dt,
                     seed=1,
                     invert=FALSE,
                     fraction=0.5,
-                    calibration=TRUE
+                    calibration=FALSE
 )
 {
   # set constant seed
