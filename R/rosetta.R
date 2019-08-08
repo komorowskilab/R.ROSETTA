@@ -31,7 +31,9 @@ rosetta <- function(dt,
                     pAdjust=TRUE,
                     pAdjustMethod="bonferroni",
                     seed=1,
-                    invert=FALSE
+                    invert=FALSE,
+                    fraction=0.5,
+                    calibration=TRUE
 )
 {
   # set constant seed
@@ -255,7 +257,10 @@ rosetta <- function(dt,
                        GeneticParam=GeneticParam,
                        ManualNames=ManualNames,
                        roc=roc,
-                       clroc=clroc)
+                       clroc=clroc,
+                       fraction=fraction,
+                       calibration=calibration
+                       )
     
     # check the platform. Unix require wine.
     if(.Platform$OS.type=="unix"){

@@ -14,7 +14,7 @@ underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ru
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
 JohnsonParam=list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
 GeneticParam=list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames=c(), pAdjust=TRUE, pAdjustMethod="bonferroni", seed=1, invert=FALSE)
+ManualNames=c(), pAdjust=TRUE, pAdjustMethod="bonferroni", seed=1, invert=FALSE, fraction=0.5, calibration=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
