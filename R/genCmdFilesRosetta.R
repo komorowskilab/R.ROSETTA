@@ -102,7 +102,7 @@ genCmdFilesRosetta <- function (dir_file3,
     
     if(discMethod=="BROrthogonalScaler"){
       listOut[2]=paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
-                        "/cuts/cuts_",file_name,"_#ITERATION#.txt; APPROXIMATE=",substr(as.character(discParam[[1]]),1,1),"; FRACTION=",discParam[[2]],";}")
+                        "/cuts/cuts_",file_name,"_#ITERATION#.txt; APPROXIMATE=",substr(as.character(discParam[[1]]),1,1),"; FRACTION=",discParam[[2]],"}")
     }
     
 
@@ -315,7 +315,7 @@ genCmdFilesRosetta <- function (dir_file3,
     if(discMethod=="BROrthogonalScaler")
     {
       listOut[2]=paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
-                        "\\cuts\\cuts_",file_name,"_#ITERATION#.txt; APPROXIMATE=",substr(as.character(discParam[[1]]),1,1),"; FRACTION=",discParam[[2]],";}")
+                        "\\cuts\\cuts_",file_name,"_#ITERATION#.txt; APPROXIMATE=",substr(as.character(discParam[[1]]),1,1),"; FRACTION=",discParam[[2]],"}")
     }
     
 
