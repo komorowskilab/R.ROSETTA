@@ -322,11 +322,11 @@ genCmdFilesRosetta <- function (dir_file3,
     #ifs for reducers
     listOut[3]=ruleMeth
       if(ruleMeth=="JohnsonReducer"){
-    listOut[4]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(JohnsonParam[[1]]),1,1),"; BRT=",substr(as.character(JohnsonParam[[2]]),1,1),"; BRT.PRECISION=",JohnsonParam[[3]],"; IDG=",IDGlog,"; IDG.FILENAME=",
+    listOut[4]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(JohnsonParam[[1]]),1,1),"; BRT=",substr(as.character(JohnsonParam[[2]]),1,1),"; BRT.PRECISION=",JohnsonParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
                      dir_file3,"\\",IDGfn,"; PRECOMPUTE=",substr(as.character(JohnsonParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(JohnsonParam[[5]]),1,1),"; FRACTION=",JohnsonParam[[6]],"}",sep="")
       }
      if(ruleMeth=="SAVGeneticReducer"){
-       listOut[4]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(GeneticParam[[1]]),1,1),"; BRT=",substr(as.character(GeneticParam[[2]]),1,1),"; BRT.PRECISION=",GeneticParam[[3]],"; IDG=",IDGlog,"; IDG.FILENAME=",
+       listOut[4]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(GeneticParam[[1]]),1,1),"; BRT=",substr(as.character(GeneticParam[[2]]),1,1),"; BRT.PRECISION=",GeneticParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
                         dir_file3,"\\",IDGfn,"; PRECOMPUTE=",substr(as.character(GeneticParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(GeneticParam[[5]]),1,1),"; FRACTION=",GeneticParam[[6]],"}",sep="")
      }
     if(ruleMeth=="Holte1RReducer"){
@@ -420,11 +420,11 @@ genCmdFilesRosetta <- function (dir_file3,
      listOut[1]=ruleMeth
      
      if(ruleMeth=="JohnsonReducer"){
-       listOut[2]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(JohnsonParam[[1]]),1,1),"; BRT=",substr(as.character(JohnsonParam[[2]]),1,1),"; BRT.PRECISION=",JohnsonParam[[3]],"; IDG=",IDGlog,"; IDG.FILENAME=",
+       listOut[2]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(JohnsonParam[[1]]),1,1),"; BRT=",substr(as.character(JohnsonParam[[2]]),1,1),"; BRT.PRECISION=",JohnsonParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
                         dir_file3,"\\",IDGfn,"; PRECOMPUTE=",substr(as.character(JohnsonParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(JohnsonParam[[5]]),1,1),"; FRACTION=",JohnsonParam[[6]],"}",sep="")
      }
      if(ruleMeth=="SAVGeneticReducer"){
-       listOut[2]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(GeneticParam[[1]]),1,1),"; BRT=",substr(as.character(GeneticParam[[2]]),1,1),"; BRT.PRECISION=",GeneticParam[[3]],"; IDG=",IDGlog,"; IDG.FILENAME=",
+       listOut[2]=paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(GeneticParam[[1]]),1,1),"; BRT=",substr(as.character(GeneticParam[[2]]),1,1),"; BRT.PRECISION=",GeneticParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
                         dir_file3,"\\",IDGfn,"; PRECOMPUTE=",substr(as.character(GeneticParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(GeneticParam[[5]]),1,1),"; FRACTION=",GeneticParam[[6]],"}",sep="")
      }
      if(ruleMeth=="Holte1RReducer"){
