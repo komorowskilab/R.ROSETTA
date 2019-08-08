@@ -33,6 +33,10 @@ genCmdFilesRosetta <- function (dir_file3,
   file_name=proNam
   fn=paste(file_name,"_cmdCV.txt", sep="")
   
+  if(fraction==0){
+    fraction <- "0.0"
+  }
+  
   ##mainFolderName
   maFoNam=paste("OUT_",proNam,sep="")
   if (file.exists(fn)) unlink(file.path(dir_file3, fn), recursive=TRUE)
