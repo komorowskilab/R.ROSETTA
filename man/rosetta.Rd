@@ -12,9 +12,9 @@ discreteParam=3, discreteMask=TRUE, reducer="Johnson", reducerDiscernibility="Ob
 roc=FALSE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
 underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ruleFiltrSupport=c(1,3),
 ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
-JohnsonParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
-GeneticParam=c(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames=c(), pAdjust=TRUE, pAdjustMethod="bonferroni", seed=1, invert=FALSE)
+JohnsonParam=list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
+GeneticParam=list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
+ManualNames=c(), pAdjust=TRUE, pAdjustMethod="bonferroni", seed=1, invert=FALSE, fraction=0.5, calibration=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -196,7 +196,7 @@ resultsRosSN <- rosetta(autcon, discrete=FALSE, discreteMethod="SemiNaive")
 resultsRosSN$quality$accuracyMean
 
 # BRO
-resultsRosBR <- rosetta(autcon, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=c(T,0.95))
+resultsRosBR <- rosetta(autcon, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=list(TRUE,0.95))
 resultsRosBR$quality$accuracyMean
 
 ###### for discrete data #######
