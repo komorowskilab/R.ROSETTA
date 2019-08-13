@@ -28,18 +28,17 @@ A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data
 \link[ROSETTA]{bioinf.icm.uu.se/rosetta}
 }
 \examples{
-  ## Load a sample dataset
-  ## you can find a sample dataset under "autcon"
-  ## create a model on the default parameters
+
+  ## The sample dataset exists as autcon variable
   resultsRos<-rosetta(autcon)
   
   ## print the accuracy of your model
   print(resultsRos$quality$accuracyMean)
   
-  ## assign the rule table for p-value < 0.05
-  rules<-resultsRos$main[which(resultsRos$main$pValue<0.05),]
+  ## save the rule table for rules with p-value < 0.05
+  rules <- resultsRos$main[which(resultsRos$main$pValue < 0.05),]
   
-  ## print the features distribution
-  print(getFeatures(autcon, rules))
+  ## print rules in IF-THEN format
+viewRules(rules, setDiscLabels = FALSE, newDiscLabels=c("down", "nochange",  "up"))
 
 }
