@@ -1,4 +1,4 @@
-predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec){
+predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, defClass){
   
   dec2 <- as.character(rules$decision)
   decs2 <- unique(dec2)
@@ -125,13 +125,13 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
   if(validate){ ### with validation
     
     newDecs <- colnames(ruleVotesDf)[apply(ruleVotesDf, 1, which.max)]
-    outListVotes <- data.frame(ruleVotesDf,as.character(valiDec),newDecs)
+    outListVotes <- data.frame(ruleVotesDf,as.character(defClass),newDecs)
     colnames(outListVotes) <- c(colnames(ruleVotesDf),"currentClass","predictedClass")
     rownames(outListVotes) <- rownames(dt)
     
     acc <- c()
     for(i in 1:length(newDecs)){
-      acc[i] <- c(grepl(as.character(valiDec[i]), newDecs[i]) | grepl(newDecs[i], as.character(valiDec[i])))
+      acc[i] <- c(grepl(as.character(defClass[i]), newDecs[i]) | grepl(newDecs[i], as.character(defClass[i])))
     }
     
     return(list(out=outListVotes, accuracy=length(which(acc))/length(acc)))
