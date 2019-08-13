@@ -1,109 +1,99 @@
 predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec){
   
-  dec2<-as.character(rules$decision)
-  decs2<-unique(dec2)
-  objs<-rownames(dt)
-  feats<-colnames(dt)
+  dec2 <- as.character(rules$decision)
+  decs2 <- unique(dec2)
+  objs <- rownames(dt)
+  feats <- colnames(dt)
+  ruleVotes <- list()
   
-  if(discrete){
-    cuts<-strsplit(as.character(rules$levels),",",fixed = T)
+  change_expr <- function(expr){
+    if(any(str_count(expr, "<")==2)){
+      vals <- unlist(str_split(expr[[which(str_count(expr, "<")==2)]], "<"))
+      expr[[which(str_count(expr, "<")==2)]] <- paste0(vals[1],"<",vals[2]," & ",vals[2],"<",vals[3])
+    }
+    return(expr)
+  }
+  
+  if(discrete){ #ONLY DISCRETE DATA
     
-    standardVoter <- function(object){
+    cuts <- strsplit(as.character(rules$levels),",",fixed = T)
+    
+    for(j in 1:dim(dt)[1]){
+      
+      str_l <- list()
+      object <- autcon[j,]
       ##values
       for(i in 1:length(cuts)){
         str <- paste0(as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))])),"==",cuts[[i]])
-        str <- eval(parse(text=str))
+        str_l[[i]] <- eval(parse(text=str))
       }
-      return(t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)]))))
+      ruleVotes[[j]] <- t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)])))
     }
     
   }else{
-    cuts<-rules[,grep('cut', colnames(rules), value=TRUE)][,-1]
+    
+    cuts <- rules[,grep('cut', colnames(rules), value=TRUE)][,-1]
     cuts_cond <- rules$cuts
-    standardVoter <- function(object){
+    
+    for(j in 1:dim(dt)[1]){
       
       str_l <- list()
+      object <- autcon[j,]
       
       for(i in 1:length(cuts_cond)){
         
-        if(str_detect(cuts_cond[i],"cut")){
+        if(str_detect(cuts_cond[i], "cut")){ # MIXED OR NON-DISCRETE RULES
+          
           ##cuts
           n_cuts <- str_count(cuts_cond[i], "cut")
-          str <- str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), as.character(unname(cuts[i,]))[1:n_cuts])  
-          str <- paste0(str,collapse="")
+          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), as.character(unname(cuts[i,]))[1:n_cuts]), collapse="")
           
           ##values
           n_vals <- str_count(cuts_cond[i], "value")
-          str <- str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))[1:n_vals])  
-          str <- paste0(str,collapse="")
+          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))[1:n_vals]), collapse="") 
           
           ##discrete
-          key_words <- c("discrete","cut")
+          key_words <- c("discrete", "cut")
           matches <- str_c(key_words, collapse ="|")
-          strs_n <- which(unlist(str_extract_all(cuts_cond[i], matches))=="discrete")
+          strs_n <- which(unlist(str_extract_all(cuts_cond[i], matches)) == "discrete")
           
-          if(length(strs_n)==0){
-            expr <- unlist(str_split(unlist(str),","))
+          if(length(strs_n) == 0){
             
-            change_expr <- function(expr){
-              if(any(str_count(expr, "<")==2)){
-                vals <- unlist(str_split(expr[[which(str_count(expr, "<")==2)]], "<"))
-                expr[[which(str_count(expr, "<")==2)]] <- paste0(vals[1],"<",vals[2]," & ",vals[2],"<",vals[3])
-                
-              }
-              return(expr)
-            }
-            
+            expr <- unlist(str_split(unlist(str), ","))
             str_l[[i]] <- eval(parse(text=unlist(lapply(expr, change_expr))))
+            
           }else{
             n_disc <- str_count(cuts_cond[i], "discrete")
-            disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
+            disc_val <- as.character(unname(object[1,which(colnames(object[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
             
-            str <- str_replace_all(unlist(strsplit(str, "(?<=discrete)", perl = TRUE)), rep("discrete", n_disc), paste0(disc_val,"==",as.character(unname(cuts[i,]))[strs_n]))
-            str <- paste0(str,collapse="")
+            str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=discrete)", perl = TRUE)), rep("discrete", n_disc), paste0(disc_val,"==",as.character(unname(cuts[i,]))[strs_n])),collapse="")
             expr <- unlist(str_split(unlist(str),","))
             
-            change_expr <- function(expr){
-              if(any(str_count(expr, "<")==2)){
-                vals <- unlist(str_split(expr[[which(str_count(expr, "<")==2)]], "<"))
-                expr[[which(str_count(expr, "<")==2)]] <- paste0(vals[1],"<",vals[2]," & ",vals[2],"<",vals[3])
-                
-              }
-              return(expr)
-            }
-            
-            str_l[[i]] <- eval(parse(text=unlist(lapply(expr, change_expr))))
+            str_l[[i]] <- eval(parse(text = unlist(lapply(expr, change_expr))))
           }
           
-        }else{
+        }else{ ## ONLY DISCRETE RULES
           n_cuts <- str_count(cuts_cond[i], "discrete")
-          disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
+          disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ",")) == "discrete")]
           
-          str <- str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=discrete)", perl = TRUE)), rep("discrete", n_cuts), paste0(disc_val,"==",as.character(unname(cuts[i,]))[1:n_cuts]))  
-          str <- paste0(str,collapse="")
+          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=discrete)", perl = TRUE)), rep("discrete", n_cuts), paste0(disc_val,"==",as.character(unname(cuts[i,]))[1:n_cuts])), collapse="")
           
           expr <- unlist(str_split(unlist(str),","))
-          
-          change_expr <- function(expr){
-            if(any(str_count(expr, "<")==2)){
-              vals <- unlist(str_split(expr[[which(str_count(expr, "<")==2)]], "<"))
-              expr[[which(str_count(expr, "<")==2)]] <- paste0(vals[1],"<",vals[2]," & ",vals[2],"<",vals[3])
-              
-            }
-            return(expr)
-          }
-          
-          str_l[[i]] <- eval(parse(text=unlist(lapply(expr, change_expr))))
+          str_l[[i]] <- eval(parse(text = unlist(lapply(expr, change_expr))))
         }
         
       }
-      return(t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)]))))
+      
+      ruleVotes[[j]] <- t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)])))
+      
     }
     
   }
   
-  dt_list<- split(dt, seq(nrow(dt)))
-  ruleVotes <- lapply(dt_list, standardVoter)
+  if(length(unlist(ruleVotes))==0){
+    stop("Not able to calculate votes. Values do not correspond to cuts. Empty vector produced.")
+  }
+  
   ruleVotesDf <- do.call(rbind, ruleVotes)
   
   ### VOTES NORMALZIATION PART ###
