@@ -1,3 +1,4 @@
 exportPattern("^[[:alpha:]]+")
 import(gplots)
 import(fmsb)
+import(stringr)

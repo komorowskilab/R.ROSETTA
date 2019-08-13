@@ -1,152 +1,147 @@
-predictClass<-function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec){
-
-dec2<-as.character(rules$decision)
-decs2<-unique(dec2)
-objs<-rownames(dt)
-feats<-colnames(dt)
-if(discrete){
-cuts<-strsplit(as.character(rules$levels),",",fixed = T)
-}else{
-cuts<-rules[,grep('cut', colnames(rules), value=TRUE)][,-1]
-}
-less2Vec<-function(x,y){ (x-y)<=0}
-more2Vec<-function(x,y){ (x-y)>=0}
-eqal2Vec<-function(x,y){ (x-y)==0}
-
-if(discrete){
-  calcClass<-function(x){
-    
-  outLst<-outLst2<-list()
-  outVotes<-c()
+predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, defClass){
   
-  rules<-x
-  rl2<-strsplit(as.character(rules$features),",",fixed = T)
-  cnd2<-strsplit(as.character(rules$levels),",",fixed = T)
+  dec2 <- as.character(rules$decision)
+  decs2 <- unique(dec2)
+  objs <- rownames(dt)
+  feats <- colnames(dt)
+  ruleVotes <- list()
+  
+  change_expr <- function(expr){
+    if(any(str_count(expr, "<")==2)){
+      vals <- unlist(str_split(expr[[which(str_count(expr, "<")==2)]], "<"))
+      expr[[which(str_count(expr, "<")==2)]] <- paste0(vals[1],"<",vals[2]," & ",vals[2],"<",vals[3])
+    }
+    return(expr)
+  }
+  
+  if(discrete){ #ONLY DISCRETE DATA
     
-    for(k in 1:dim(dt)[1]){
-
-      vecObj<-dt[k,]
-      for(j in 1:dim(rules)[1]){
-
-        cnds<-cnd2[[j]]
-        cndsLen<-length(cnds)
-        vec4<-c()
+    cuts <- strsplit(as.character(rules$levels),",",fixed = T)
+    
+    for(j in 1:dim(dt)[1]){
+      
+      str_l <- list()
+      object <- autcon[j,]
+      ##values
+      for(i in 1:length(cuts)){
+        str <- paste0(as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))])),"==",cuts[[i]])
+        str_l[[i]] <- eval(parse(text=str))
+      }
+      ruleVotes[[j]] <- t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)])))
+    }
+    
+  }else{
+    
+    cuts <- rules[,grep('cut', colnames(rules), value=TRUE)][,-1]
+    cuts_cond <- rules$cuts
+    
+    for(j in 1:dim(dt)[1]){
+      
+      str_l <- list()
+      object <- autcon[j,]
+      
+      for(i in 1:length(cuts_cond)){
         
-        for(i in 1:cndsLen){
-         vec3<-(as.data.frame(vecObj[which(feats %in% rl2[[j]])])[,i]==cuts[[j]][i])
-         ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
+        if(str_detect(cuts_cond[i], "cut")){ # MIXED OR NON-DISCRETE RULES
+          
+          ##cuts
+          n_cuts <- str_count(cuts_cond[i], "cut")
+          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), as.character(unname(cuts[i,]))[1:n_cuts]), collapse="")
+          
+          ##values
+          n_vals <- str_count(cuts_cond[i], "value")
+          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))[1:n_vals]), collapse="") 
+          
+          ##discrete
+          key_words <- c("discrete", "cut")
+          matches <- str_c(key_words, collapse ="|")
+          strs_n <- which(unlist(str_extract_all(cuts_cond[i], matches)) == "discrete")
+          
+          if(length(strs_n) == 0){
+            
+            expr <- unlist(str_split(unlist(str), ","))
+            str_l[[i]] <- eval(parse(text=unlist(lapply(expr, change_expr))))
+            
+          }else{
+            n_disc <- str_count(cuts_cond[i], "discrete")
+            disc_val <- as.character(unname(object[1,which(colnames(object[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
+            
+            str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=discrete)", perl = TRUE)), rep("discrete", n_disc), paste0(disc_val,"==",as.character(unname(cuts[i,]))[strs_n])),collapse="")
+            expr <- unlist(str_split(unlist(str),","))
+            
+            str_l[[i]] <- eval(parse(text = unlist(lapply(expr, change_expr))))
+          }
+          
+        }else{ ## ONLY DISCRETE RULES
+          n_cuts <- str_count(cuts_cond[i], "discrete")
+          disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ",")) == "discrete")]
+          
+          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=discrete)", perl = TRUE)), rep("discrete", n_cuts), paste0(disc_val,"==",as.character(unname(cuts[i,]))[1:n_cuts])), collapse="")
+          
+          expr <- unlist(str_split(unlist(str),","))
+          str_l[[i]] <- eval(parse(text = unlist(lapply(expr, change_expr))))
         }
-        outLst[[j]]<-length(which(vec4))
+        
       }
-      outVotes[k]<-sum(unlist(outLst))
+      
+      ruleVotes[[j]] <- t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)])))
+      
     }
-
-    return(outVotes)
+    
   }
   
-}else{
-
-  dtn<-dt
-  outVotes<-c()
-
-  calcClass<-function(x){
-    outLst<-outLst2<-list()
-    rules<-x
-    rl2<-strsplit(as.character(rules$features),",",fixed = T)
-    cnd2<-strsplit(as.character(rules$cuts),",",fixed = T)
-    
-  for(k in 1:dim(dt)[1]){
-  vecObj<-dt[k,]
-  for(j in 1:dim(rules)[1]){
-    cnds<-cnd2[[j]]
-    cnds[cnds == "value>cut"] <- 1
-    cnds[cnds == "value<cut"] <- 1
-    cnds[cnds == "cut<value<cut"] <- 2
-    cnds<-as.numeric(cnds)
-    cndsLen<-length(cnds)
-    cndsCS<-cumsum(cnds)
-    vec4<-c()
-
-    for(i in 1:cndsLen){
-      if(cnd2[[j]][i]=="value>cut")
-      {
-        vec3<-more2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
-        ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
-      }
-      if(cnd2[[j]][i]=="value<cut")
-      {
-        vec3<-less2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
-        ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
-      }
-      if(cnd2[[j]][i]=="cut<value<cut")
-      {
-        vec1<-less2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]]))
-        vec2<-more2Vec(vecObj[which(feats %in% rl2[[j]])][,i],as.numeric(cuts[j,][cndsCS[i]-1]))
-        vec3<-vec1==vec2
-        ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
-      }
-    }
-    outLst[[j]]<-length(which(vec4))
- }
-  outVotes[k]<-sum(unlist(outLst))
+  if(length(unlist(ruleVotes))==0){
+    stop("Not able to calculate votes. Values do not correspond to cuts. Empty vector produced.")
   }
-    return(outVotes)
-  } #end of fun
-
-}
-#common part
-outListVotes<-data.frame(rownames(dt))
-for(i in 1:length(decs2)){
-  rules3<-rules[which(as.character(rules$decision)==decs2[i]),]
-  outListVotes2<-data.frame(calcClass(rules3))
+  
+  ruleVotesDf <- do.call(rbind, ruleVotes)
+  
+  ### VOTES NORMALZIATION PART ###
   
   if(normalize){
-  if(normalizeMethod=="median"){
-  outListVotes=data.frame(outListVotes,outListVotes2/median(as.numeric(as.matrix(outListVotes2))))
+    if(normalizeMethod == "median"){
+      ruleVotesDf <- sweep(ruleVotesDf, 2, apply(ruleVotesDf, 2, median), "/")
+    }
+    
+    if(normalizeMethod=="mean"){
+      ruleVotesDf <- sweep(ruleVotesDf, 2, apply(ruleVotesDf, 2, mean), "/")
+    }
+    
+    if(normalizeMethod=="max"){
+      ruleVotesDf <- sweep(ruleVotesDf, 2, apply(ruleVotesDf, 2, max), "/")
+    }
+    
+    if(normalizeMethod=="rss"){ #root sum square
+      fun <- function(x){sqrt(sum(x)^2)}
+      ruleVotesDf <- sweep(ruleVotesDf, 2, apply(ruleVotesDf, 2, fun), "/")
+    }
+    
+    if(normalizeMethod=="rulnum"){
+      ruleVotesDf <- sweep(ruleVotesDf, 2, t(as.matrix(table(dec2))), "/")
+    }
   }
   
-  if(normalizeMethod=="mean"){
-    outListVotes=data.frame(outListVotes,outListVotes2/mean(as.numeric(as.matrix(outListVotes2))))
-  }
   
-  if(normalizeMethod=="max"){
-    outListVotes=data.frame(outListVotes,outListVotes2/max(as.numeric(as.matrix(outListVotes2))))
-  }
-  
-  if(normalizeMethod=="rss"){ #root sum square
-    outListVotes=data.frame(outListVotes,as.numeric(as.matrix(outListVotes2))/sqrt(sum(as.numeric(as.matrix(outListVotes2))^2)))
-  }
-  
-  if(normalizeMethod=="rulnum"){
-    outListVotes=data.frame(outListVotes,(as.numeric(as.matrix(outListVotes2)))/length(which(as.character(rules$decision)==decs2[i])))
-  }
+  if(validate){ ### with validation
+    
+    newDecs <- colnames(ruleVotesDf)[apply(ruleVotesDf, 1, which.max)]
+    outListVotes <- data.frame(ruleVotesDf,as.character(defClass),newDecs)
+    colnames(outListVotes) <- c(colnames(ruleVotesDf),"currentClass","predictedClass")
+    rownames(outListVotes) <- rownames(dt)
+    
+    acc <- c()
+    for(i in 1:length(newDecs)){
+      acc[i] <- c(grepl(as.character(defClass[i]), newDecs[i]) | grepl(newDecs[i], as.character(defClass[i])))
+    }
+    
+    return(list(out=outListVotes, accuracy=length(which(acc))/length(acc)))
+    
   }else{
-    outListVotes=data.frame(outListVotes,outListVotes2)
-  }
-
-}
-
-if(validate){ ### with validation
-
-  newDecs<-decs2[apply(outListVotes[,-1], 1, which.max)]
-  outListVotes<-data.frame(outListVotes,as.character(valiDec),newDecs)
-  colnames(outListVotes)<-c("object",decs2,"decision","newDecision")
-  acc<-c()
-  
-  for(i in 1:length(newDecs))
-  {
-    acc[i]<-c(grepl(as.character(valiDec[i]), newDecs[i]) | grepl(newDecs[i], as.character(valiDec[i])))
+    newDecs <- colnames(ruleVotesDf)[apply(ruleVotesDf, 1, which.max)]
+    outListVotes <- data.frame(ruleVotesDf,newDecs)
+    colnames(outListVotes) <- c(decs2,"predictedClass")
+    rownames(outListVotes) <- rownames(dt)
+    return(list(out=outListVotes))
   }
   
-  return(list(out=outListVotes, accuracy=length(which(acc))/length(acc)))
-  
-}else{
-  
-  newDecs<-decs2[apply(outListVotes[,-1], 1, which.max)]
-  outListVotes<-data.frame(outListVotes,newDecs)
-  colnames(outListVotes)<-c("object",decs2,"newDecision")
-  return(list(out=outListVotes))
-  
-}
-
 }

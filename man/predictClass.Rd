@@ -4,10 +4,10 @@
 Class prediction
 }
 \description{
-Use a rosetta model to validate independent dataset or reclassify the existing one.
+Use rosetta model to validate independent dataset or reclassify the data.
 }
 \usage{
-predictClass(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMethod="rss", validate=FALSE, valiDec)
+predictClass(dt, rules, discrete=FALSE, normalize = TRUE, normalizeMethod="rss", validate = FALSE, valiDec)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -74,8 +74,8 @@ decisions <- predictClass(autcon, rules)
 decisions <- predictClass(autcon, rules, normalize = TRUE, normalizeMethod = "median")
 
 # with validation
-oldDecisions <- as.character(autcon[,length(autism)])
-decisions <- predictClass(autcon, rules, validate = TRUE, valiDec=oldDecisions)
+defClass <- autcon$decision
+decisions <- predictClass(autcon, rules, validate = TRUE, valiDec = defClass)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
