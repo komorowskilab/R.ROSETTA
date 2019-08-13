@@ -33,7 +33,7 @@ A character containing votes normalization method: median, mean, max, rss (root 
 Logical. If TRUE, the accuracy is calculated. Default is FALSE.
 }
 
-  \item{valiDec}{
+  \item{defClass}{
 A character vector containing outcome. Required for accuracy calculation. Only if validate is TRUE. }
 }
 \details{
@@ -74,8 +74,8 @@ decisions <- predictClass(autcon, rules)
 decisions <- predictClass(autcon, rules, normalize = TRUE, normalizeMethod = "median")
 
 # with validation
-defClass <- autcon$decision
-decisions <- predictClass(autcon, rules, validate = TRUE, valiDec = defClass)
+autconClass <- autcon$decision
+decisions <- predictClass(autcon, rules, validate = TRUE, defClass = autconClass)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
