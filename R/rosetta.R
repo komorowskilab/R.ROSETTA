@@ -33,15 +33,17 @@ rosetta <- function(dt,
                     seed=1,
                     invert=FALSE,
                     fraction=0.5,
-                    calibration=FALSE
+                    calibration=FALSE,
+                    fillNA=FALSE,
+                    fillNAmethod="meanMode"
 )
 {
   # set constant seed
   set.seed(seed)
   
-  if(any(is.na(dt))){
-    stop("Your dataset contains NA values.")
-  }
+  #if(any(is.na(dt))){
+  #  stop("Your dataset contains NA values.")
+  #}
   
   # change integers to numeric
   indx <- sapply(dt, is.integer)
@@ -95,8 +97,6 @@ rosetta <- function(dt,
   }
   ##### ##### ##### ##### ##### ##### #####
   
-
-  
   # check if decision vector is factor and change if not
   if(is.factor(dt[,length(dt)]) == F){
     dt[,length(dt)] <- as.factor(dt[,length(dt)])
@@ -105,7 +105,6 @@ rosetta <- function(dt,
   # setting paths, creating temp directory where the analysis will go
   firstPath <- tempdir()
   fname <- "data"
-  
   
   if(.Platform$OS.type == "unix")
   {
@@ -124,9 +123,9 @@ rosetta <- function(dt,
   # training pipline length
   if(discrete == FALSE)
   {
-    pipeLen <- 5}else
+    pipeLen <- 6}else
     {
-      pipeLen <- 4
+      pipeLen <- 7
     }
   
   ##############################
@@ -259,7 +258,9 @@ rosetta <- function(dt,
                        roc=roc,
                        clroc=clroc,
                        fraction=fraction,
-                       calibration=calibration
+                       calibration=calibration,
+                       fillNA=fillNA,
+                       fillNAmethod=fillNAmethod
                        )
     
     # check the platform. Unix require wine.
@@ -295,7 +296,7 @@ rosetta <- function(dt,
   }
   
   # prepare all results
-  LFout<-ifelse(.Platform$OS.type == "unix", list.files(paste0(tempDirNam,"/results")), list.files(paste0(tempDirNam,"\\results")))
+  LFout <- ifelse(.Platform$OS.type == "unix", list.files(paste0(tempDirNam,"/results")), list.files(paste0(tempDirNam,"\\results")))
   
   #dfRes_mccMean=c()
   
@@ -347,7 +348,7 @@ txt_files_df <- lapply(txt_files_ls, function(x) {read.table(file = x, fill=T)})
 combined_df=data.frame()
 
 for(k in 1:length(txt_files_df)){
-  combined_df=rbind(combined_df, data.frame(rep(k, dim(as.data.frame(txt_files_df[[k]])[,1:7])[1]),as.data.frame(txt_files_df[[k]])[,1:7]))
+  combined_df <- rbind(combined_df, data.frame(rep(k, dim(as.data.frame(txt_files_df[[k]])[,1:7])[1]),as.data.frame(txt_files_df[[k]])[,1:7]))
 }
 
 
@@ -375,16 +376,16 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
       path<-ifelse(.Platform$OS.type=="unix", paste0(tempDirNam,"/results","/",LFout[i],"/outRosetta"), paste0(tempDirNam,"\\results","\\",LFout[i],"\\outRosetta"))
       
       # ACCURACY
-      dfRes_accMean[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
-      dfRes_accMedian[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
-      dfRes_accStdDev[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
-      dfRes_accMin[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
-      dfRes_accMax[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
+      dfRes_accMean[i] <- as.numeric(as.matrix(unname(rosResults(path, roc)$Value[1])))
+      dfRes_accMedian[i] <- as.numeric(as.matrix(unname(rosResults(path, roc)$Value[2])))
+      dfRes_accStdDev[i] <- as.numeric(as.matrix(unname(rosResults(path, roc)$Value[3])))
+      dfRes_accMin[i] <- as.numeric(as.matrix(unname(rosResults(path, roc)$Value[4])))
+      dfRes_accMax[i] <- as.numeric(as.matrix(unname(rosResults(path, roc)$Value[5])))
       #dfRes_mccMean[i]<-as.numeric(as.matrix(unname(rosResults(path, roc)$Value[6])))
     }
     
     #outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax), mean(dfRes_mccMean))
-    outRos=data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax))
+    outRos <- data.frame(mean(dfRes_accMean),mean(dfRes_accMedian),mean(dfRes_accStdDev),mean(dfRes_accMin),mean(dfRes_accMax))
     
     #colnames(outRos)<-c("Accuracy.Mean","Accuracy.Median","Accuracy.Std","Accuracy.Min","Accuracy.Max","MCC.mean")
     colnames(outRos)<-c("accuracyMean","accuracyMedian","accuracyStd","accuracyMin","accuracyMax")
@@ -408,84 +409,85 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
       rules2<-rbind(rules2, temp_dataset)
       rm(temp_dataset)}
   }
-  colnames(rules2)<-"rules"
+  colnames(rules2) <- "rules"
   
   # filter out comments
-  rl2=as.matrix(rules2[!grepl("%", rules2, fixed = T)]) #deleting comments
-  rl_r=which(grepl("=>", rl2, fixed = T)) #choosing rules
-  rules=rl2[rl_r]
+  rl2 <- as.matrix(rules2[!grepl("%", rules2, fixed = T)]) #deleting comments
+  rl_r <- which(grepl("=>", rl2, fixed = T)) #choosing rules
+  rules <- rl2[rl_r]
   
   # choose proper lines
-  supp_lhs=rl2[which(grepl("Supp. (LHS) =", rl2, fixed = T))]
-  supp_rhs=rl2[which(grepl("Supp. (RHS) =", rl2, fixed = T))]
-  acc_rhs=rl2[which(grepl("Acc.  (RHS) =", rl2, fixed = T))]
-  cov_lhs=rl2[which(grepl("Cov.  (LHS) =", rl2, fixed = T))]
-  cov_rhs=rl2[which(grepl("Cov.  (RHS) =", rl2, fixed = T))]
-  stab_lhs=rl2[which(grepl("Stab. (LHS) =", rl2, fixed = T))]
-  stab_rhs=rl2[which(grepl("Stab. (RHS) =", rl2, fixed = T))]
+  supp_lhs <- rl2[which(grepl("Supp. (LHS) =", rl2, fixed = T))]
+  supp_rhs <- rl2[which(grepl("Supp. (RHS) =", rl2, fixed = T))]
+  acc_rhs <- rl2[which(grepl("Acc.  (RHS) =", rl2, fixed = T))]
+  cov_lhs <- rl2[which(grepl("Cov.  (LHS) =", rl2, fixed = T))]
+  cov_rhs <- rl2[which(grepl("Cov.  (RHS) =", rl2, fixed = T))]
+  stab_lhs <- rl2[which(grepl("Stab. (LHS) =", rl2, fixed = T))]
+  stab_rhs <- rl2[which(grepl("Stab. (RHS) =", rl2, fixed = T))]
   
   # choose only values from lists
-  supp_lhs2=gsub(" object(s)","",unlist(regmatches(supp_lhs, gregexpr("\\[\\K[^\\]]+(?=\\])", supp_lhs, perl=TRUE))), fixed = T)
-  supp_rhs2=gsub(" object(s)","",unlist(regmatches(supp_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", supp_rhs, perl=TRUE))), fixed = T)
-  acc_rhs2=unlist(regmatches(acc_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", acc_rhs, perl=TRUE)))
-  cov_lhs2=unlist(regmatches(cov_lhs, gregexpr("\\[\\K[^\\]]+(?=\\])", cov_lhs, perl=TRUE)))
-  cov_rhs2=unlist(regmatches(cov_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", cov_rhs, perl=TRUE)))
-  stab_lhs2=unlist(regmatches(stab_lhs, gregexpr("\\[\\K[^\\]]+(?=\\])", stab_lhs, perl=TRUE)))
-  stab_rhs2=unlist(regmatches(stab_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", stab_rhs, perl=TRUE)))
+  supp_lhs2 <- gsub(" object(s)","",unlist(regmatches(supp_lhs, gregexpr("\\[\\K[^\\]]+(?=\\])", supp_lhs, perl=TRUE))), fixed = T)
+  supp_rhs2 <- gsub(" object(s)","",unlist(regmatches(supp_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", supp_rhs, perl=TRUE))), fixed = T)
+  acc_rhs2 <- unlist(regmatches(acc_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", acc_rhs, perl=TRUE)))
+  cov_lhs2 <- unlist(regmatches(cov_lhs, gregexpr("\\[\\K[^\\]]+(?=\\])", cov_lhs, perl=TRUE)))
+  cov_rhs2 <- unlist(regmatches(cov_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", cov_rhs, perl=TRUE)))
+  stab_lhs2 <- unlist(regmatches(stab_lhs, gregexpr("\\[\\K[^\\]]+(?=\\])", stab_lhs, perl=TRUE)))
+  stab_rhs2 <- unlist(regmatches(stab_rhs, gregexpr("\\[\\K[^\\]]+(?=\\])", stab_rhs, perl=TRUE)))
   
   ## convert everything to numeric values 
   ## and choosing max if there is two option
   
   # SUPPORT LHS
-  supp_lhs3=unlist(lapply(lapply(strsplit(supp_lhs2, ","),as.numeric),max))
+  supp_lhs3 <- unlist(lapply(lapply(strsplit(supp_lhs2, ","),as.numeric),max))
   # SUPPORT RHS
-  supp_rhs3=unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric),max))
-  supp_rhs3n=unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric),which.max))
+  supp_rhs3 <- unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric),max))
+  supp_rhs3n <- unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric),which.max))
   # ACCURACY RHS
-  acc_rhs3=unlist(lapply(lapply(strsplit(as.character(acc_rhs2), ","),as.double),max))
-  acc_rhs3n=unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric),which.max))
+  acc_rhs3 <- unlist(lapply(lapply(strsplit(as.character(acc_rhs2), ","),as.double),max))
+  acc_rhs3n <- unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric),which.max))
   
   if(is.null(acc_rhs3n)){
     stop("Oops, no rules produced.")
   }else{
     # COVERAGE RHS
-    cov_rhs3=unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
+    cov_rhs3 <- unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
     # COVERAGE LHS
-    cov_lhs3=as.double(cov_lhs2)
+    cov_lhs3 <- as.double(cov_lhs2)
     # STABL LHS
-    stab_lhs3=unlist(lapply(lapply(strsplit(as.character(stab_lhs2), ","),as.double),max))
+    stab_lhs3 <- unlist(lapply(lapply(strsplit(as.character(stab_lhs2), ","),as.double),max))
     # STAB RHS
-    stab_rhs3=unlist(lapply(lapply(strsplit(as.character(stab_rhs2), ","),as.double),max))
+    stab_rhs3 <- unlist(lapply(lapply(strsplit(as.character(stab_rhs2), ","),as.double),max))
     # RULES
-    rules2=unlist(lapply(strsplit(as.character(rules), " =>", fixed=TRUE), `[`, 1))
-    dec_class=strsplit(as.character(unlist(lapply(strsplit(as.character(rules), " => ", fixed=TRUE), `[`, 2))), " OR ", fixed=TRUE)
+    rules2 <- unlist(lapply(strsplit(as.character(rules), " =>", fixed=TRUE), `[`, 1))
+    dec_class <- strsplit(as.character(unlist(lapply(strsplit(as.character(rules), " => ", fixed=TRUE), `[`, 2))), " OR ", fixed=TRUE)
     
     # choosing element according to accuracy
-    choose_nfl0=character(length(acc_rhs3n))
+    choose_nfl0 <- character(length(acc_rhs3n))
 
-    choose_nfl<-sapply(1:max(as.numeric(acc_rhs3n)),
+    choose_nfl <- sapply(1:max(as.numeric(acc_rhs3n)),
            FUN = function(i) {
-             choose_nfl0[which(acc_rhs3n==i)]<-unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
+             choose_nfl0[which(acc_rhs3n==i)] <- unlist(lapply(dec_class, '[', i))[which(acc_rhs3n==i)]
              return(choose_nfl0)
            })
-    choose_nfl<-apply(choose_nfl,1,paste0, collapse="")
     
-    rl2<-strsplit(rules2," AND ")
-    lst<-lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
+    choose_nfl <- apply(choose_nfl,1,paste0, collapse="")
     
-    ### each element separately ###
-    lst_feat<-lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
-    features2<-unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
+    rl2 <- strsplit(rules2," AND ")
+    lst <- lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
     
     ### each element separately ###
-    if(discrete==FALSE){
+    lst_feat <- lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
+    features2 <- unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
+    
+    ### each element separately ###
+    if(discrete == FALSE){
       # for non discrete data  
       
-      lst_cuts2<-lapply(cleanCuts(lst)[[2]], catchNumeric)
+      lst_cuts2 <- lapply(cleanCuts(lst)[[2]], catchNumeric)
       #lst_cuts2=lapply(lapply(lst_cuts, function(x) as.numeric(unlist(regmatches(x,gregexpr("[[:digit:]]+\\.*[[:digit:]]*",x))))), unlist)
       #lst_cuts2[which(lapply(lst_cuts2,length)==0)]<-lapply(lst_cuts[which(lapply(lst_cuts2,length)==0)], function(x) gsub(")", "",x,fixed = T))
       
-      lst_cuts22<-unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
+      lst_cuts22 <- unlist(lapply(lapply(lst_cuts2, function(x) paste(x, collapse = ",")), unlist))
       
       # remove brackets and change them into conditions
       lst_cuts<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
@@ -497,17 +499,17 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
       cuts2<-unlist(lapply(lapply(lst4, function(x) paste(x, collapse = ",")), unlist))
       
       # calculate the sizes
-      df222<-data.frame(word = do.call(c, lst_cuts2),
+      df222 <- data.frame(word = do.call(c, lst_cuts2),
                        group = rep(1:length(lst_cuts2), 
                                    sapply(lst_cuts2, length)))
       
       # create constant size data frame for cuts
-      lst_cuts3<-lapply(lst_cuts2, 'length<-', max(table(df222$group)))
-      df3<-t(as.data.frame(lst_cuts3, stringsAsFactors=FALSE))
+      lst_cuts3 <- lapply(lst_cuts2, 'length<-', max(table(df222$group)))
+      df3 <- t(as.data.frame(lst_cuts3, stringsAsFactors=FALSE))
       
       ### retrieve discretization states ###
-      dataset_cuts<-dataset_rules<-data.frame()
-      st3<-cutsToStates<-list()
+      dataset_cuts <- dataset_rules <- data.frame()
+      st3 <- cutsToStates<-list()
       
       #loop on undersampling files
       for(l in 1:length(LFout)){
@@ -528,53 +530,53 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
         for(k in 1:length(files_rules)){
           
           # read rule file
-          dataset_rules <-read.table(files_rules[k], header=FALSE, sep="\t")
+          dataset_rules <- read.table(files_rules[k], header=FALSE, sep="\t")
           colnames(dataset_rules)<-"rules"
 
           # read cut file
-          dataset_cuts <-read.table(files_cuts[k], header=FALSE, sep="\t")
+          dataset_cuts <- read.table(files_cuts[k], header=FALSE, sep="\t")
           colnames(dataset_cuts)<-c("group","cuts")
           
           # replace groups for feature names
           key <- 0:(dim(dt)[2]-2)
           val <- colnames(dt)[c(unname(which(unlist(lapply(dt, is.numeric)) | unlist(lapply(dt, is.integer)))),unname(which(!unlist(lapply(dt, is.numeric)) & !unlist(lapply(dt, is.integer)))))]
-          out<-lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$group == key[i],1] <<- val[i]})
+          out <- lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$group == key[i],1] <<- val[i]})
           
           # filter out comments
-          rl2<-as.matrix(dataset_rules[!grepl("%", dataset_rules, fixed = T)]) #deleting comments
-          rl_r<-which(grepl("=>", rl2, fixed = T)) #choosing rules
+          rl2 <- as.matrix(dataset_rules[!grepl("%", dataset_rules, fixed = T)]) #deleting comments
+          rl_r <- which(grepl("=>", rl2, fixed = T)) #choosing rules
           
           rules2<-unlist(lapply(strsplit(as.character(rl2[rl_r]), " =>", fixed=TRUE), `[`, 1))
           lst<-lapply(lapply(strsplit(rules2," AND "), function(x) strsplit(x, "\\(")), unlist)
           lst_cuts2<-lapply(cleanCuts(lst)[[2]], catchNumeric)
           
           # in case of 2 levels, right or left
-          lstCuts2<-lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
-          lstCuts22<-lapply(lstCuts2, function(x) gsub(".*\\*\\).*", 2, x))
-          lstCuts222<-lapply(lstCuts22, function(x) gsub(".*\\[\\*.*", 1, x))
+          lstCuts2 <- lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
+          lstCuts22 <- lapply(lstCuts2, function(x) gsub(".*\\*\\).*", 2, x))
+          lstCuts222 <- lapply(lstCuts22, function(x) gsub(".*\\[\\*.*", 1, x))
           
-          lstCuts3<-cleanCuts(lst)[[1]]
+          lstCuts3 <- cleanCuts(lst)[[1]]
           ## list of the cuts - lstc3
           ## library - dataset_cuts
           ## list of the features
-          lst_feat<-lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
+          lst_feat <- lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
           ##features2=unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
           
           #dataset_cuts[,2]<-dataset_cuts[,2]/1e+06
           ##epsil=0.0001
           ##create states
-          st2=list()
+          st2 <- list()
           for(j in 1:length(lst_feat)){
             
-            st<-c()
+            st <- c()
             for(i in 1:length(lstCuts3[[j]]))
             {
-              tempCuts<-dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
-              rownames(tempCuts)<-NULL
+              tempCuts <- dataset_cuts[which(dataset_cuts[,1] %in% lst_feat[[j]][i]),]
+              rownames(tempCuts) <- NULL
               
               ##check if the feature is character or not
               if(dim(tempCuts)[1]==0){
-                st[i]<-lstCuts3[[j]][i]
+                st[i] <- lstCuts3[[j]][i]
               }else{
                 if(as.numeric(unlist(strsplit(lstCuts3[[j]][i], ",")))[1]%%1==0 & !grepl("\\.",unlist(strsplit(lstCuts3[[j]][i], ","))[1])){ #integers
                   if(grepl(",",lstCuts3[[j]][i])) ##for ranges -> middle classes
