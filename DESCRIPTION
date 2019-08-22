@@ -1,7 +1,7 @@
 Package: R.ROSETTA
-Version: 2.1.3
+Version: 2.1.4
 Imports: gplots, fmsb, stringr
-Date: 2019-08-13
+Date: 2019-08-22
 Title: R.ROSETTA - an R package for analysis of rule-based classification models
 Author: Mateusz Garbulowski [aut, cre],
   Karolina Smolinska [aut, cre],

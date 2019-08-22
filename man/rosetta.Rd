@@ -7,14 +7,14 @@ ROSETTA classifier
 Creates a rule-based classification model.
 }
 \usage{
-rosetta(dt, classifier="StandardVoter", cvNum=10, discrete=FALSE, discreteMethod="EqualFrequency",
-discreteParam=3, discreteMask=TRUE, reducer="Johnson", reducerDiscernibility="Object",
-roc=FALSE, clroc="autism", fallBack=TRUE, fallBackClass="autism", maskFeatures=FALSE, maskFeaturesNames=c(),
-underSample=FALSE, underSampleNum=0, underSampleSize=0, ruleFiltration=FALSE, ruleFiltrSupport=c(1,3),
-ruleFiltrAccuracy=c(0,0.5), ruleFiltrCoverage=c(0,0), ruleFiltrStability=c(0,0),
-JohnsonParam=list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
-GeneticParam=list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames=c(), pAdjust=TRUE, pAdjustMethod="bonferroni", seed=1, invert=FALSE, fraction=0.5, calibration=FALSE)
+rosetta(dt, classifier = "StandardVoter", cvNum = 10, discrete = FALSE, discreteMethod = "EqualFrequency",
+discreteParam = 3, discreteMask = TRUE, reducer = "Johnson", reducerDiscernibility = "Object",
+roc = FALSE, clroc = "autism", fallBack = TRUE, fallBackClass = "autism", maskFeatures = FALSE, maskFeaturesNames = c(),
+underSample = FALSE, underSampleNum = 0, underSampleSize = 0, ruleFiltration = FALSE, ruleFiltrSupport = c(1,3),
+ruleFiltrAccuracy = c(0,0.5), ruleFiltrCoverage = c(0,0), ruleFiltrStability = c(0,0),
+JohnsonParam = list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
+GeneticParam = list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
+ManualNames = c(), pAdjust = TRUE, pAdjustMethod = "bonferroni", seed = 1, invert = FALSE, fraction=0.5, calibration = FALSE, fillNA = FALSE, fillNAmethod = "meanOrMode")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -108,6 +108,23 @@ An integer. Seed to the random number generator. Default is 1.
       \item{invert}{
 Logical.  Set TRUE to swap training for test set. Default is FALSE. 
 }
+
+      \item{fraction}{
+Numeric.  Fraction value.
+}
+
+      \item{calibration}{
+Logical.  Set TRUE for calibration.
+}
+
+      \item{fillNA}{
+Logical.  Set TRUE to fill NA values.
+}
+
+      \item{fillNAmethod}{
+Character.  Set method of filling NA values. Choose between "meanOrMode" or "combinatorial". 
+}
+
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~

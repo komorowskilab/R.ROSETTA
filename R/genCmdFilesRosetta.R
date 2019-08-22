@@ -25,45 +25,47 @@ genCmdFilesRosetta <- function (dir_file3,
                                 roc,
                                 clroc,
                                 fraction,
-                                calibration
+                                calibration,
+                                fillNA,
+                                fillNAmethod
                                 )
   
   {
   
-  file_name=proNam
-  fn=paste(file_name,"_cmdCV.txt", sep="")
+  file_name <- proNam
+  fn <- paste(file_name,"_cmdCV.txt", sep="")
   
   if(fraction==0){
     fraction <- "0.0"
   }
   
   ##mainFolderName
-  maFoNam=paste("OUT_",proNam,sep="")
+  maFoNam <- paste("OUT_",proNam,sep="")
   if (file.exists(fn)) unlink(file.path(dir_file3, fn), recursive=TRUE)
 
   ######-----NON-DISCRETE DATA-----####################################
   ##########################################################################
   
   ## converting names of reducers
-  if(ruleMeth=="Johnson"){
+  if(ruleMeth == "Johnson"){
     ruleMeth <- "JohnsonReducer"
   }
   
-  if(ruleMeth=="Genetic"){
+  if(ruleMeth == "Genetic"){
     ruleMeth <- "SAVGeneticReducer"
   }
   
-  if(ruleMeth=="Holte1R"){
+  if(ruleMeth == "Holte1R"){
     ruleMeth <- "Holte1RReducer"
   }
   
-  if(ruleMeth=="Manual"){
+  if(ruleMeth == "Manual"){
     ruleMeth <- "ManualReducer"
   }
   ######### ######### ######### 
   
-  if(.Platform$OS.type=="unix"){
-  if(disc==FALSE){
+  if(.Platform$OS.type == "unix"){
+  if(disc == FALSE){
     
     dir.create(paste0(dir_file3,"/rules"))
     dir.create(paste0(dir_file3,"/logs"))
@@ -72,119 +74,158 @@ genCmdFilesRosetta <- function (dir_file3,
     
     listOut <- NULL
     
+    
+    ## completer
+    
     ## converting names of discretization methods
-    if(discMethod=="MDL"){
+    if(discMethod == "MDL"){
       discMethod <- "EntropyScaler"
     }
     
-    if(discMethod=="Naive"){
+    if(discMethod == "Naive"){
       discMethod <- "NaiveScaler"
     }
     
-    if(discMethod=="SemiNaive"){
+    if(discMethod == "SemiNaive"){
       discMethod <- "SemiNaiveScaler"
     }
     
-    if(discMethod=="EqualFrequency"){
+    if(discMethod == "EqualFrequency"){
       discMethod <- "EqualFrequencyScaler"
     }
     
-    if(discMethod=="BROrthogonal"){
+    if(discMethod == "BROrthogonal"){
       discMethod <- "BROrthogonalScaler"
     }
     
     ## discretization methods and parameters
-    listOut[1] <- discMethod
+    listOut <- c(listOut,discMethod)
+  
     
     if(discMethod == "EntropyScaler" | discMethod == "NaiveScaler" | discMethod == "SemiNaiveScaler"){
-    listOut[2] <- paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
-                      "/cuts/cuts_",file_name,"_#ITERATION#.txt;}")
+      listOut <- c(listOut,paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
+                      "/cuts/cuts_",file_name,"_#ITERATION#.txt;}"))
     }
     
     if(discMethod == "EqualFrequencyScaler"){
-      listOut[2]=paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
-                        "/cuts/cuts_",file_name,"_#ITERATION#.txt; INTERVALS=",discParam,";}")
+      listOut <- c(listOut, paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
+                        "/cuts/cuts_",file_name,"_#ITERATION#.txt; INTERVALS=",discParam,"}"))
     }
     
     if(discMethod=="BROrthogonalScaler"){
-      listOut[2]=paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
-                        "/cuts/cuts_",file_name,"_#ITERATION#.txt; APPROXIMATE=",substr(as.character(discParam[[1]]),1,1),"; FRACTION=",discParam[[2]],"}")
+      listOut <- c(listOut, paste0("{MODE=Save; MASK=",substr(as.character(discMask),1,1),"; FILENAME=",dir_file3,
+                        "/cuts/cuts_",file_name,"_#ITERATION#.txt; APPROXIMATE=",substr(as.character(discParam[[1]]),1,1),"; FRACTION=",discParam[[2]],"}"))
     }
+    
+    #### completers ####
+    if(fillNA == TRUE){
+      
+      if(fillNAmethod == "meanOrMode"){
+      listOut <- c(listOut, "ConditionedMeanCompleter")
+      listOut <- c(listOut, "{}")
+      }
+      
+      if(fillNAmethod == "combinatorial"){
+      listOut <- c(listOut, "ConditionedCombinatorialCompleter")
+      listOut <- c(listOut, "{}")
+      }  
+    
+    }
+
+    ####################
     
     #ifs for reducers
-    listOut[3] <- ruleMeth
+      listOut <- c(listOut, ruleMeth)
     
-      if(ruleMeth=="JohnsonReducer"){
-    listOut[4] <- paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(JohnsonParam[[1]]),1,1),"; BRT=",substr(as.character(JohnsonParam[[2]]),1,1),"; BRT.PRECISION=",JohnsonParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
-                     dir_file3,"/",IDGfn,"; PRECOMPUTE=",substr(as.character(JohnsonParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(JohnsonParam[[5]]),1,1),"; FRACTION=",JohnsonParam[[6]],"}",sep="")
+      if(ruleMeth == "JohnsonReducer"){
+      listOut <- c(listOut, paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(JohnsonParam[[1]]),1,1),"; BRT=",substr(as.character(JohnsonParam[[2]]),1,1),"; BRT.PRECISION=",JohnsonParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
+                     dir_file3,"/",IDGfn,"; PRECOMPUTE=",substr(as.character(JohnsonParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(JohnsonParam[[5]]),1,1),"; FRACTION=",JohnsonParam[[6]],"}",sep=""))
       }
-     if(ruleMeth=="SAVGeneticReducer"){
-       listOut[4] <- paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(GeneticParam[[1]]),1,1),"; BRT=",substr(as.character(GeneticParam[[2]]),1,1),"; BRT.PRECISION=",GeneticParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
-                        dir_file3,"/",IDGfn,"; PRECOMPUTE=",substr(as.character(GeneticParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(GeneticParam[[5]]),1,1),"; FRACTION=",GeneticParam[[6]],"}",sep="")
+     if(ruleMeth == "SAVGeneticReducer"){
+      listOut <- c(listOut, paste("{DISCERNIBILITY=",reducerDiscernibility,"; SELECTION=All; MODULO.DECISION=",substr(as.character(GeneticParam[[1]]),1,1),"; BRT=",substr(as.character(GeneticParam[[2]]),1,1),"; BRT.PRECISION=",GeneticParam[[3]],"; IDG=",substr(as.character(IDGlog),1,1),"; IDG.FILENAME=",
+                        dir_file3,"/",IDGfn,"; PRECOMPUTE=",substr(as.character(GeneticParam[[4]]),1,1),"; APPROXIMATE=",substr(as.character(GeneticParam[[5]]),1,1),"; FRACTION=",GeneticParam[[6]],"}",sep=""))
      }
-    if(ruleMeth=="Holte1RReducer"){
-      listOut[4] <- paste("{}",sep="")
+    if(ruleMeth == "Holte1RReducer"){
+      listOut <- c(listOut, paste("{}",sep=""))
     }
-    if(ruleMeth=="ManualReducer"){
-      listOut[4] <- paste("{ATTRIBUTES=",paste(ManualNames,collapse=","),"}",sep="")
+    if(ruleMeth == "ManualReducer"){
+      listOut <- c(listOut, paste("{ATTRIBUTES=",paste(ManualNames,collapse=","),"}",sep=""))
     }
-    listOut[5]="RuleGenerator"
-    listOut[6]="{}"
+    listOut <- c(listOut, "RuleGenerator")
+    listOut <- c(listOut, "{}")
     
-    if(ruleFiltration==T)
+    if(ruleFiltration == T)
     {
-    listOut[7]="MyRuleFilter"
-    listOut[8]=paste0("{FILTERING=1; SUPPORT.RHS.LOWER=",ruleFiltrSupport[1],"; SUPPORT.RHS.UPPER=",ruleFiltrSupport[2],
+    listOut <- c(listOut, "MyRuleFilter")
+    listOut <- c(listOut, paste0("{FILTERING=1; SUPPORT.RHS.LOWER=",ruleFiltrSupport[1],"; SUPPORT.RHS.UPPER=",ruleFiltrSupport[2],
                       "; ACCURACY.RHS.LOWER=",ruleFiltrAccuracy[1],"; ACCURACY.RHS.UPPER=",ruleFiltrAccuracy[2],
                       "; COVERAGE.RHS.LOWER=",ruleFiltrCoverage[1],"; COVERAGE.RHS.UPPER=",ruleFiltrCoverage[2],
-                      "; STABILITY.RHS.LOWER=",ruleFiltrStability[1],"; STABILITY.RHS.UPPER=",ruleFiltrStability[2],";}")
+                      "; STABILITY.RHS.LOWER=",ruleFiltrStability[1],"; STABILITY.RHS.UPPER=",ruleFiltrStability[2],";}"))
     }else
     {
-      listOut[7]="MyRuleFilter"
-      listOut[8]="{}"
+      listOut <- c(listOut, "MyRuleFilter")
+      listOut <- c(listOut, "{}")
     }
     
-    listOut[9]="MyRuleExporter"
-    listOut[10]=paste("{FILENAME=", dir_file3,"/rules/rules_",file_name,"_#ITERATION#.txt}", sep="")
-    listOut[11]="OrthogonalFileScaler"
-    listOut[12]=paste0("{MODE=Load; FILENAME=",paste0(dir_file3),"/cuts/cuts_",file_name,
-                       "_#ITERATION#.txt}")
-    listOut[13]="BatchClassifier"
+    listOut <- c(listOut, "MyRuleExporter")
+    listOut <- c(listOut, paste("{FILENAME=", dir_file3,"/rules/rules_",file_name,"_#ITERATION#.txt}", sep=""))
+    
+    listOut <- c(listOut, "OrthogonalFileScaler")
+    listOut <- c(listOut, paste0("{MODE=Load; FILENAME=",paste0(dir_file3),"/cuts/cuts_",file_name,
+                       "_#ITERATION#.txt}"))
+    
+    #### completers ####
+    if(fillNA == TRUE){
+      
+      if(fillNAmethod == "meanOrMode"){
+        listOut <- c(listOut, "MeanCompleter")
+        listOut <- c(listOut, "{}")
+      }
+      
+      if(fillNAmethod == "combinatorial"){
+        listOut <- c(listOut, "CombinatorialCompleter")
+        listOut <- c(listOut, "{}")
+      }  
+      
+    }
+    ####################
+    
+    listOut <- c(listOut, "BatchClassifier")
     
     ### IF for IDG masking ###
     if(IDGlog){
-      IDGpath=paste0("; IDG.FILENAME=",dir_file3,"/",IDGfn)
+      IDGpath <- paste0("; IDG.FILENAME=",dir_file3,"/",IDGfn)
     }else{
-      IDGpath=""
+      IDGpath <- ""
     }
     
     #######ifs for classifiers######
     
-    if(classifier=="ObjectTrackingVoter")
-    {
-    listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=",fraction,"; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
+    if(classifier == "ObjectTrackingVoter"){
+    listOut <- c(listOut, paste("{CLASSIFIER=",classifier,"; FRACTION=",fraction,"; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
                       ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                       dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                      substr(as.character(LogVerb),1,1),"; CALIBRATION=",substr(as.character(calibration),1,1),"; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep="")
+                      substr(as.character(LogVerb),1,1),"; CALIBRATION=",substr(as.character(calibration),1,1),"; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep=""))
     }
-    if(classifier=="StandardVoter")
-    {
-      listOut[14]=paste("{CLASSIFIER=",classifier,"; FRACTION=",fraction,"; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
+    
+    if(classifier == "StandardVoter"){
+      listOut <- c(listOut, paste("{CLASSIFIER=",classifier,"; FRACTION=",fraction,"; IDG=",substr(as.character(IDGlog),1,1),IDGpath,";"
                         ," SPECIFIC=F; VOTING=Support; NORMALIZATION=Firing; FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                         dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                        substr(as.character(LogVerb),1,1),"; CALIBRATION=",substr(as.character(calibration),1,1),"; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep="")
+                        substr(as.character(LogVerb),1,1),"; CALIBRATION=",substr(as.character(calibration),1,1),"; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep=""))
       
     }
-    if(classifier=="NaiveBayesClassifier")
+    
+    if(classifier == "NaiveBayesClassifier")
     {
-      listOut[14]=paste("{CLASSIFIER=",classifier,";"
+      listOut <- c(listOut, paste("{CLASSIFIER=",classifier,";"
                         ," FALLBACK=",substr(as.character(fallBack),1,1),"; FALLBACK.CLASS=",fallBackClass,"; MULTIPLE=Best; LOG=T; LOG.FILENAME=",
                         dir_file3,"/logs/log_",file_name,"_#ITERATION#.txt; LOG.VERBOSE=",
-                        substr(as.character(LogVerb),1,1),"; CALIBRATION=",substr(as.character(calibration),1,1),"; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep="")
+                        substr(as.character(LogVerb),1,1),"; CALIBRATION=",substr(as.character(calibration),1,1),"; ROC=",substr(as.character(roc),1,1),"; ROC.CLASS=",clroc,"; ROC.FILENAME=",dir_file3,"/rocs/roc_",file_name,"_#ITERATION#.txt}", sep=""))
       
     }
-     write.table(listOut,file=paste(dir_file3,"/","OUT_cmdCV",".txt", sep=""),
-              quote=F,col.names = F,row.names = F)
+     write.table(listOut, file = paste(dir_file3,"/","OUT_cmdCV",".txt", sep=""),
+              quote=F, col.names = F, row.names = F)
   }
   
   ######-----DISCRETE DATA-----########################################

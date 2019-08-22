@@ -32,8 +32,6 @@ A numeric value of index of the rule in the table.
 }
 \value{
   \item{heatmap}{A heatmap representing objects distribution in the model for the rule.}
-}
-\value{
   \item{boxplot}{A boxplots representing objects distribution in the model for the rule.}
 }
 \references{
@@ -58,7 +56,10 @@ out <- rosetta(autcon)
 rules <- out$main
 recRules <- recalculateRules(autcon, rules)
 
+# heatmap
 plotRule(autcon, recRules, type="heatmap", discrete=FALSE, ind=3)
+
+# boxplot
 plotRule(autcon, recRules, type="boxplot", discrete=FALSE, ind=3)
 
 }
