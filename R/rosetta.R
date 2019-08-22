@@ -121,12 +121,18 @@ rosetta <- function(dt,
   
   
   # training pipline length
-  if(discrete == FALSE)
-  {
-    pipeLen <- 6}else
-    {
-      pipeLen <- 7
-    }
+  if(discrete == FALSE & fillNA == TRUE){
+    pipeLen <- 6
+  }
+  
+  if(discrete == FALSE & fillNA == FALSE){
+    pipeLen <- 5}
+}
+
+ if(discrete == TRUE){
+  pipeLen <- 4
+ }
+
   
   ##############################
   ######## undersampling #######
