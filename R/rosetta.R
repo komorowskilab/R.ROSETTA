@@ -126,8 +126,8 @@ rosetta <- function(dt,
   }
   
   if(discrete == FALSE & fillNA == FALSE){
-    pipeLen <- 5}
-}
+    pipeLen <- 5
+    }
 
  if(discrete == TRUE){
   pipeLen <- 4
