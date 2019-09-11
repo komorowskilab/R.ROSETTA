@@ -1,13 +1,13 @@
 \name{synData}
 \alias{synData}
 \title{
-Decision table generator
+Decision table generator.
 }
 \description{
 Creates a decision table of correlated features.
 }
 \usage{
-  synData(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjects=120, nOutcome=2, unbalanced=F, pUnbalancedClass=0.8, seed=1)
+synData(nFeatures = c(10,5,3,2,2), R = c(0.01,0.05,0.3,0.5,0.65), nObjects = 120, nOutcome = 2, unbalanced = F, pUnbalancedClass = 0.8, seed=1, discrete = F, levels = 4, labels = c("A","C","G","T"))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,8 +29,17 @@ Logical. Set TRUE to generate unbalanced data. Default is FALSE.
   \item{pUnbalancedClass}{
 A numeric value of number of unbalanced proportion for the first class. The default is 0.8.
 }
-\item{pUnbalancedClass}{
+\item{seed}{
 A numeric value of seed. The default is 1.
+}
+\item{discrete}{
+Logical. Set TRUE to generate discrete data. Default is FALSE.
+}
+\item{levels}{
+A numeric value of discretization levels. The default is 4.
+}
+\item{labels}{
+A character vector of discretization labels for levels of discretization. 
 }
 }
 \details{
@@ -58,18 +67,18 @@ Mateusz Garbulowski
 library(R.ROSETTA)
   
 #weak correlation
-df1=synData(nFeatures=c(5,5,3,2,2), R=c(0.2,0.3,0.35,0.4,0.5))
-out1=rosetta(df1)
+df1 <- synData(nFeatures=c(5,5,3,2,2), R=c(0.2,0.3,0.35,0.4,0.5))
+out1 <- rosetta(df1)
 out1$quality
 
 #medium correlation
-df2=synData(nFeatures=c(5,5,3,2,2), R=c(0.2,0.4,0.6,0.5,0.7))
-out2=rosetta(df2)
+df2 <- synData(nFeatures=c(5,5,3,2,2), R=c(0.2,0.4,0.6,0.5,0.7))
+out2 <- rosetta(df2)
 out2$quality
 
 #strong correlation
-df3=synData(nFeatures=c(5,5,3,2,2), R=c(0.5,0.6,0.7,0.8,0.9))
-out3=rosetta(df3)
+df3 <- synData(nFeatures=c(5,5,3,2,2), R=c(0.5,0.6,0.7,0.8,0.9))
+out3 <- rosetta(df3)
 out3$quality
   
 }
