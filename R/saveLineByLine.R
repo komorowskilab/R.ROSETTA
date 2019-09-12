@@ -9,10 +9,10 @@ saveLineByLine <- function(rules, path, discrete=FALSE, filterByPval=FALSE, pval
     newLst<-mapply(paste,collapse=",",sep="=",lst1,lst2)
     lst5<-as.character(unname(newLst))
     if(filterByPval){
-      dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],row.names = NULL)[which(rules["pValue"]<pval),]
+      dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],rules["coverageRHS"],row.names = NULL)[which(rules["pValue"]<pval),]
     }else
     {
-      dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],row.names = NULL)
+      dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],rules["coverageRHS"],row.names = NULL)
     }
   }
   else{
@@ -25,10 +25,10 @@ newLst<-mapply(paste,collapse=",",sep="=",lst1,lst2)
 lst5<-as.character(unname(newLst))
             
       if(filterByPval){
-        dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],row.names = NULL)[which(rules["pValue"]<pval),]
+        dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],rules["coverageRHS"],row.names = NULL)[which(rules["pValue"]<pval),]
       }else
       {
-        dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],row.names = NULL)
+        dflbl<-cbind(lst5,rules["decision"],rules["accuracyRHS"],rules["supportRHS"],rules["coverageRHS"],row.names = NULL)
       }
   }
   write.table(dflbl, path, col.names = F, row.names = F, sep="\t", quote = F)
