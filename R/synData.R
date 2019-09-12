@@ -41,7 +41,7 @@ synData <- function(nFeatures=c(10,5,3,2,2), rf=c(0.2,0.2,0.2,0.2,0.2), rd=c(0.4
     
     # between-features correlation
     vecLen <- length(which(diag(props[i]+1)==0))/2
-    Rs <- c(rep(rd[i],props[i]), rep(rf[i], vecLen-props[i]))
+    Rs <- c(rep(rd[i], props[i]), rep(rf[i], vecLen-props[i]))
     class(Rs) <- 'dist'
     attr(Rs,'Size') <- props[i]+1
     Mr <- as.matrix(Rs) + diag(props[i]+1)
@@ -73,7 +73,7 @@ synData <- function(nFeatures=c(10,5,3,2,2), rf=c(0.2,0.2,0.2,0.2,0.2), rd=c(0.4
       }
     }
 
-    colnames(newX) <- paste0("F",1:props[i],"_G",i,"_RF=",rf[i],"_RD=",rd[i])
+    colnames(newX) <- paste0("f",i,".",1:props[i],"_rf",rf[i],"_rd",rd[i])
    
     
     adf <- data.frame(adf, newX)
