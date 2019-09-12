@@ -1,4 +1,4 @@
-synData <- function(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjects=120, nOutcome=2, unbalanced=F, pUnbalancedClass=0.8, discrete=F, levels=4, labels=c("A","C","G","T"), seed=1){
+synData <- function(nFeatures=c(10,5,3,2,2), rf=c(0.2,0.2,0.2,0.2,0.2), rd=c(0.4,0.5,0.6,0.7,0.8), nObjects=120, nOutcome=2, unbalanced=F, pUnbalancedClass=0.8, discrete=F, levels=4, labels=c("A","C","G","T"), seed=1){
   
   set.seed(seed)
   
@@ -38,12 +38,14 @@ synData <- function(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjec
   adf <- data.frame(decision)
   
   for(i in 1:length(props)){
+    
+    # between-features correlation
     vecLen <- length(which(diag(props[i]+1)==0))/2
-    Rs <- rep(R[i],vecLen)
+    Rs <- c(rep(rd[i],props[i]), rep(rf[i], vecLen-props[i]))
     class(Rs) <- 'dist'
     attr(Rs,'Size') <- props[i]+1
     Mr <- as.matrix(Rs) + diag(props[i]+1)
-    U  <-  t(chol(Mr))
+    U  <-  suppressWarnings(t(chol(Mr, pivot = TRUE)))
     
     if(discrete){
       rand_dt <- matrix(runif(props[i]*nobs,1,levels), nrow=props[i], ncol=nobs)
@@ -53,6 +55,7 @@ synData <- function(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjec
    
     rand_dt <- rbind(decision, rand_dt)
     X <- U %*% rand_dt
+    
     
     rescale <- function(x) (x-min(x))/(max(x) - min(x)) * (levels-1)+1
     
@@ -70,7 +73,7 @@ synData <- function(nFeatures=c(10,5,3,2,2), R=c(0.01,0.05,0.3,0.5,0.65), nObjec
       }
     }
 
-    colnames(newX) <- paste0("F",1:props[i],"_G",i,"_R",R[i])
+    colnames(newX) <- paste0("F",1:props[i],"_G",i,"_RF=",rf[i],"_RD=",rd[i])
    
     
     adf <- data.frame(adf, newX)
