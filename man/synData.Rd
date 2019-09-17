@@ -51,7 +51,7 @@ A character vector of discretization labels for levels of discretization.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{output}{A data frame containing a decision table.}
+  \item{output}{A data frame with a decision table.}
 }
 \references{
 %% ~put references to the literature/web site here ~

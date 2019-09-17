@@ -35,11 +35,17 @@ rosetta <- function(dt,
                     fraction=0.5,
                     calibration=FALSE,
                     fillNA=FALSE,
-                    fillNAmethod="meanMode"
+                    fillNAmethod="meanMode",
+                    remSpChars=FALSE
 )
 {
   # set constant seed
   set.seed(seed)
+  
+  if(remSpChars){
+    colnames(dt) <- gsub("[[:punct:]]", "", colnames(dt))
+  }
+
   
   #if(any(is.na(dt))){
   #  stop("Your dataset contains NA values.")
@@ -196,8 +202,8 @@ rosetta <- function(dt,
   ##############################
 
   csvFileName <- ifelse(.Platform$OS.type == "unix", 
-         list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$"),
-         list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.csv$"))
+         list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.txt$"),
+         list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.txt$"))
 
   
   # loop by files, 1 = no undersampling
@@ -601,7 +607,7 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
                   
                 }else{
                   
-                  tempCuts$cuts<-tempCuts$cuts/1e+06
+                  tempCuts$cuts<-tempCuts$cuts/1e+04
                   
                   if(grepl(",",lstCuts3[[j]][i])) ##for ranges -> middle classes
                   {
@@ -631,16 +637,15 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
       #######################################                           
       
       decsFinal <- unlist(lapply(as.character(choose_nfl), FUN=function(x) (regmatches(x, gregexpr("(?<=\\().*?(?=\\))", x, perl=T))[[1]])))
-      df_out=data.frame(features2,unlist(cutsToStates),decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
-      colnames(df_out)<-c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","coverageLHS","coverageRHS","stabilityLHS","stabilityRHS","cuts",paste0("cut",seq(1:max(table(df222$group)))))
+      df_out <- data.frame(features2,unlist(cutsToStates),decsFinal, supp_lhs3, supp_rhs3, acc_rhs3, cov_lhs3, cov_rhs3, stab_lhs3, stab_rhs3, cuts2, df3)
+      colnames(df_out) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","coverageLHS","coverageRHS","stabilityLHS","stabilityRHS","cuts",paste0("cut",seq(1:max(table(df222$group)))))
       
-      df_outU=unique(df_out[c("features","levels", "decision")])
-      allMat=do.call(paste0, df_out[c("features","levels", "decision")])
-      subMat=as.matrix(do.call(paste0, df_outU))
+      df_outU <- unique(df_out[c("features","levels", "decision")])
+      allMat <- do.call(paste0, df_out[c("features","levels", "decision")])
+      subMat <- as.matrix(do.call(paste0, df_outU))
       
-      
-      df_out5=apply(subMat, 1, aggregate2, y=allMat)
-      df_out2=do.call("rbind", df_out5)
+      df_out5 <- apply(subMat, 1, aggregate2, y=allMat)
+      df_out2 <- do.call("rbind", df_out5)
       df_out2$supportLHS<-round(df_out2$supportLHS)
       df_out2$supportRHS<-round(df_out2$supportRHS)
     }
@@ -667,7 +672,7 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
         df_out3=df_out[which(match(y, x) == 1),]
         indx <- sapply(df_out3, is.factor)
         df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-        df_out4=aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+        df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
         return(df_out4)
       }
       
@@ -711,14 +716,14 @@ colnames(combined_df2) <- c("CVNumber","OneMinusSpecificity","Sensitivity","Spec
       RISK_PVAL<-p.adjust(RISK_PVAL, method=pAdjustMethod)
       }
     
-       numClass=rep(0,length(df_out2$decision))
+       numClass <- rep(0,length(df_out2$decision))
        
     for(i in 1:length(table(dt[,length(dt)]))){
       numClass[which(df_out2$decision==names(table(dt[,length(dt)]))[i])]<-unname(table(dt[,length(dt)]))[i]
     }
     
-    percSupportLHS=round(df_out2$supportLHS/numClass, digits=5)                         
-    percSupportRHS=round(df_out2$supportRHS/numClass, digits=5)
+    percSupportLHS <- round(df_out2$supportLHS/numClass, digits=5)                         
+    percSupportRHS <- round(df_out2$supportRHS/numClass, digits=5)
     
     df_out3 <- data.frame(df_out2, percSupportLHS, percSupportRHS, PVAL, REL_RISK, RISK_PVAL, CONF_INT)
     colnames(df_out3) <- c(colnames(df_out2), "supportRatioLHS", "supportRatioRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio")
