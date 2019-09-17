@@ -7,12 +7,12 @@ csvToRos <- function(dirList){
 #file_name=gsub(paste0(dirList,"/"),"", list.files(dirList))}else{
 #file_name=gsub(paste0(dirList,"\\"),"", list.files(dirList)) 
 # }
-file_name=list.files(dirList)
-file_name=gsub(".csv","",file_name[grep('.csv',file_name)])
+file_name <- list.files(dirList)
+file_name <- gsub(".txt","",file_name[grep('.txt',file_name)])
 #storing name of found csv file 
   
 #creating output folder
-f_out_dir=genCmdFilesCSVtoROS(dirList,file_name)
+f_out_dir <- genCmdFilesCSVtoROS(dirList,file_name)
 
 #setwd(system.file(package="rROSETTA"))
 
@@ -21,12 +21,12 @@ f_out_dir=genCmdFilesCSVtoROS(dirList,file_name)
 if(.Platform$OS.type=="unix")
 {
 pathExe <- paste(system.file(package="R.ROSETTA"), "exec/clrosetta.exe", sep="/")
-comm=sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
+comm <- sprintf('wine %s SerialExecutor "FILENAME.COMMANDS=%s/%s; FILENAME.LOG=%s/log.txt"',pathExe,dirList,f_out_dir,dirList)
 try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
 }
 else{
   pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
-  comm=sprintf('cmd /K %s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
+  comm <- sprintf('cmd /K %s SerialExecutor "FILENAME.COMMANDS=%s\\%s; FILENAME.LOG=%s\\log.txt"',pathExe,dirList,f_out_dir,dirList)
   try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE)
 }
 

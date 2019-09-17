@@ -4,7 +4,7 @@
 ROSETTA classifier
 }
 \description{
-Creates a rule-based classification model.
+Performs a rule-based classification.
 }
 \usage{
 rosetta(dt, classifier = "StandardVoter", cvNum = 10, discrete = FALSE, discreteMethod = "EqualFrequency",
@@ -14,7 +14,8 @@ underSample = FALSE, underSampleNum = 0, underSampleSize = 0, ruleFiltration = F
 ruleFiltrAccuracy = c(0,0.5), ruleFiltrCoverage = c(0,0), ruleFiltrStability = c(0,0),
 JohnsonParam = list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
 GeneticParam = list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
-ManualNames = c(), pAdjust = TRUE, pAdjustMethod = "bonferroni", seed = 1, invert = FALSE, fraction=0.5, calibration = FALSE, fillNA = FALSE, fillNAmethod = "meanOrMode")
+ManualNames = c(), pAdjust = TRUE, pAdjustMethod = "bonferroni", seed = 1, invert = FALSE, fraction=0.5, calibration = FALSE,
+fillNA = FALSE, fillNAmethod = "meanOrMode", remSpChars = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -67,10 +68,10 @@ A character vector of the feature names to mask. Names shall correspond to the c
 Logical. Set TRUE to perform undersampling. Default is FALSE. 
 }
   \item{underSampleNum}{
-The number of subsamples. For 0, minimum number of subsets that cover all the objects is selected. Default is 0.
+The number of subset for undersampling. For 0, minimum number of subsets that cover all the objects is selected. Default is 0.
 }
   \item{underSampleSize}{
-The size of each subsample. For 0, the size is taken from the smallest decision class. Default is 0.
+The size of each subset for undersampling. For 0, the size is taken from the smallest decision class. Default is 0.
 }
   \item{ruleFiltration}{
 Logical. Set TRUE to filter out rules. Default is FALSE.
@@ -106,35 +107,34 @@ A character containing the name of the method: holm, hochberg, hommel, bonferron
 An integer. Seed to the random number generator. Default is 1.
 }
       \item{invert}{
-Logical.  Set TRUE to swap training for test set. Default is FALSE. 
+Logical. Set TRUE to swap training for test set. Default is FALSE. 
 }
-
       \item{fraction}{
-Numeric.  Fraction value.
+Numeric. Fraction value.
 }
-
       \item{calibration}{
-Logical.  Set TRUE for calibration.
+Logical. Set TRUE for calibration.
 }
 
       \item{fillNA}{
-Logical.  Set TRUE to fill NA values.
+Logical. Set TRUE to fill NA values.
 }
-
       \item{fillNAmethod}{
-Character.  Set method of filling NA values. Choose between "meanOrMode" or "combinatorial". 
+Character. Set method of filling NA values. Choose between "meanOrMode" or "combinatorial". 
 }
-
+      \item{remSpChars}{
+Logical. Removing special characters from feature names. Default is FALSE.
+}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame of rule table containing the information about: features, decision, accuracy, support, coverage, stability, p-value and other statistic. The table is decreasingly sorted according to the p-value.
+  \item{out$main}{A data frame of a rule table containing the information and statistics about: features, decision, accuracy, support, coverage, stability, p-value and other. The table is decreasingly sorted according to the p-value.
 }
     \item{out$quality}{A table of model quality: accuracy statistic, ROC and AUC measures.
 }
-    \item{out$usn}{An integer indicating the minimum number of required for subsets in undersampling.
+    \item{out$usn}{An integer indicating the minimum number of required subsets for undersampling.
 }
 }
 \references{
