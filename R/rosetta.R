@@ -72,12 +72,10 @@ rosetta <- function(dt,
   return(list(lstc3,lstc4))
   }
 
-  round2 = function(x, n) {
-    posneg = sign(x)
-    z = abs(x)*10^n
-    z = z + 0.5
-    z = trunc(z)
-    z = z/10^n
+  round2 <- function(x, n) {
+    posneg <- sign(x)
+    z <- trunc(abs(x)*10^n + 0.5)
+    z <- z/10^n
     z*posneg
   }
   
@@ -202,8 +200,8 @@ rosetta <- function(dt,
   ##############################
 
   csvFileName <- ifelse(.Platform$OS.type == "unix", 
-         list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.txt$"),
-         list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.txt$"))
+         list.files(path=paste0(tempDirNam,"/data"), pattern = "\\.csv$"),
+         list.files(path=paste0(tempDirNam,"\\data"), pattern = "\\.csv$"))
 
   
   # loop by files, 1 = no undersampling
@@ -353,7 +351,7 @@ dfRes_rocseMin[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.
 dfRes_rocseMax[i]=as.numeric(as.matrix(unname(rosres[which(rosres[,1]=="ROC.AUC.SE.Maximum"),2])))
       
 # Create list of text files
-txt_files_ls = list.files(path=path_rocs, pattern="*.txt", full.names = T) 
+txt_files_ls <- list.files(path=path_rocs, pattern="*.txt", full.names = T) 
 # Read the files in, assuming comma separator
 txt_files_df <- lapply(txt_files_ls, function(x) {read.table(file = x, fill=T)})
 # Combine them
