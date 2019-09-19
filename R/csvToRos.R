@@ -22,8 +22,9 @@ try(system(command=comm, ignore.stdout = TRUE), silent=TRUE)
 }
 else{ ## win
   pathExe <- paste(gsub("/","\\",system.file(package="R.ROSETTA"),fixed=T), "exec","clrosetta.exe", sep="\\")
-  comm <- cat(paste0('cmd /K \"\"', pathExe, '\" SerialExecutor \"FILENAME.COMMANDS=',dirList,'\\',f_out_dir,'; FILENAME.LOG=',dirList,'\\log.txt\"\"'))
-  try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE)
+  comm <- paste0('cmd /K ','"','"', pathExe,'"',' SerialExecutor ','"','FILENAME.COMMANDS=',dirList,'\\',f_out_dir,'; FILENAME.LOG=',dirList,'\\log.txt','"','"')
+  #try(system(command=comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE)
+  cout <- capture.output(system(command=comm, ignore.stdout = TRUE, intern=TRUE))
 }
 
 

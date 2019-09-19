@@ -298,7 +298,7 @@ rosetta <- function(dt,
       #             paste0(dirList2,"\\","logMain.txt"),
       #             paste0(dirList2,"\\",rosFileName)
       #)
-      comm <- cat(paste0('cmd /K \"\"', pathExe, '\" CVSerialExecutor \"INVERT = ',substr(as.character(invert),1,1),'; NUMBER = ',cvNum,'; SEED = ',seed,'; LENGTH = ',pipeLen,'; FILENAME.COMMANDS = ',paste0(dirList2,"\\","OUT_cmdCV.txt"),'; FILENAME.LOG =',paste0(dirList2,'\\','logMain.txt'),'\" ',paste0(dirList2,"\\",rosFileName),'\"'))
+      comm <- paste0('cmd /K \"\"', pathExe, '\" CVSerialExecutor \"INVERT = ',substr(as.character(invert),1,1),'; NUMBER = ',cvNum,'; SEED = ',seed,'; LENGTH = ',pipeLen,'; FILENAME.COMMANDS = ',paste0(dirList2,"\\","OUT_cmdCV.txt"),'; FILENAME.LOG =',paste0(dirList2,'\\','logMain.txt'),'\" ',paste0(dirList2,"\\",rosFileName),'\"')
       
       
       # run ROSETTA exe
