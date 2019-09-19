@@ -39,17 +39,17 @@ dfToCsv <- function(df, fname="data", tempDirNam, disc)
   #write.table(dfc,file=paste0(tempDirNam,"/data/",fname,".csv"), sep=",", row.names=F, col.names = F, quote=F, na="", append = TRUE)
   #write.csv(dfAll,file=paste0(tempDirNam,"/data/",fname,".csv"), row.names=F, quote=F, na="")
       
-      write.table(cn, paste0(tempDirNam,"/data/",fname,".csv"), na="Undefined", sep=",", row.names=F, append=FALSE, quote=FALSE, col.names=FALSE)
-      write.table(fRow, paste0(tempDirNam,"/data/",fname,".csv"), na="Undefined", sep=",", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
-      write.table(newDF, paste0(tempDirNam,"/data/",fname,".csv"), na="Undefined", sep=",", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
+      write.table(cn, paste0(tempDirNam,"/data/",fname,".csv"), na="Undefined", sep="\t", row.names=F, append=FALSE, quote=FALSE, col.names=FALSE)
+      write.table(fRow, paste0(tempDirNam,"/data/",fname,".csv"), na="Undefined", sep="\t", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
+      write.table(newDF, paste0(tempDirNam,"/data/",fname,".csv"), na="Undefined", sep="\t", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
       
       
   }else{
   #write.table(fRow,file=paste0(tempDirNam,"\\data\\",fname,".csv"),sep="\t",quote = F, row.names = F)
   #write.table(dfc,file=paste0(tempDirNam,"\\data\\",fname,".csv"),sep="\t",quote = F,col.names = F, row.names = F, append = TRUE)  
-      write.table(cn, paste0(tempDirNam,"\\data\\",fname,".csv"), na="Undefined", sep=",", row.names=F, append=FALSE, quote=FALSE, col.names=FALSE)
-      write.table(fRow, paste0(tempDirNam,"\\data\\",fname,".csv"), na="Undefined", sep=",", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
-      write.table(newDF, paste0(tempDirNam,"\\data\\",fname,".csv"), na="Undefined", sep=",", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
+      write.table(cn, paste0(tempDirNam,"\\data\\",fname,".csv"), na="Undefined", sep="\t", row.names=F, append=FALSE, quote=FALSE, col.names=FALSE)
+      write.table(fRow, paste0(tempDirNam,"\\data\\",fname,".csv"), na="Undefined", sep="\t", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
+      write.table(newDF, paste0(tempDirNam,"\\data\\",fname,".csv"), na="Undefined", sep="\t", row.names=F, append=TRUE, quote=FALSE, col.names=FALSE)
           
     
     }
