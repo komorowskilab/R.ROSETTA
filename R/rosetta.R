@@ -288,16 +288,18 @@ rosetta <- function(dt,
       try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
       
     }else{
-      comm <- sprintf('cmd /K %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
-                   pathExe,
-                   substr(as.character(invert),1,1),
-                   cvNum,
-                   seed,
-                   pipeLen,
-                   paste0(dirList2,"\\","OUT_cmdCV.txt"),
-                   paste0(dirList2,"\\","logMain.txt"),
-                   paste0(dirList2,"\\",rosFileName)
-      )
+      #comm <- sprintf('cmd /K %s CVSerialExecutor "INVERT = %s; NUMBER = %i; SEED = %i; LENGTH = %i; FILENAME.COMMANDS = %s; FILENAME.LOG = %s" %s',
+       #            pathExe,
+      #             substr(as.character(invert),1,1),
+      #             cvNum,
+      #             seed,
+      #             pipeLen,
+       #            paste0(dirList2,"\\","OUT_cmdCV.txt"),
+      #             paste0(dirList2,"\\","logMain.txt"),
+      #             paste0(dirList2,"\\",rosFileName)
+      #)
+      comm <- cat(paste0('cmd /K \"\"', pathExe, '\" CVSerialExecutor \"INVERT = ',substr(as.character(invert),1,1),'; NUMBER = ',cvNum,'; SEED = ',seed,'; LENGTH = ',pipeLen,'; FILENAME.COMMANDS = ',paste0(dirList2,"\\","OUT_cmdCV.txt"),'; FILENAME.LOG =',paste0(dirList2,'\\','logMain.txt'),'\" ',paste0(dirList2,"\\",rosFileName),'\"'))
+      
       
       # run ROSETTA exe
       try(system(command = comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
