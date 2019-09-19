@@ -8,15 +8,11 @@ csvToRos <- function(dirList){
 #file_name=gsub(paste0(dirList,"\\"),"", list.files(dirList)) 
 # }
 file_name <- list.files(dirList)
-file_name <- gsub(".txt","",file_name[grep('.txt',file_name)])
+file_name <- gsub(".csv","",file_name[grep('.csv',file_name)])
 #storing name of found csv file 
   
 #creating output folder
 f_out_dir <- genCmdFilesCSVtoROS(dirList,file_name)
-
-#setwd(system.file(package="rROSETTA"))
-
-#file.copy(pathExe, dirList)
 
 if(.Platform$OS.type=="unix")
 {
