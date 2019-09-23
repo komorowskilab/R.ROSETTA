@@ -32,6 +32,7 @@ library(R.ROSETTA)
 # Input format
 The input is a decision table in a form of `data.frame`, where the columns represent features and rows represent objects. In the table last column shall contain the decision classes.
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, results='asis'}
+library(R.ROSETTA)
 library(knitr)
 library("kableExtra")
 
@@ -119,7 +120,7 @@ The `rosetta()` function generates two main outputs. The rule table is stored as
 The main output of the function contains a collection of rules in a table. The rule components and all statistics values are collected in separate columns. The individual values are comma separated.
 
 ```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
-dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.2,0.2,0.3,0.5,0.5), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, 
+dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.2,0.2,0.3,0.5,0.5), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1) 
 out <- rosetta(dt)
 out$main
 ```
@@ -152,7 +153,7 @@ kable(tab1, format="html",  caption = "Main output") %>%
 Estimated accuracy and AUC values are collected into table. The values are taken from n-fold Cross-Validation process.
 
 ```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
-dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, 
+dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
 out <- rosetta(dt)
 out$quality
 ```
@@ -169,7 +170,7 @@ kable(out$quality, format="html",  caption = "Model quality") %>%
 If you need an information about AUC, please take look at the code below:
 
 ```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
-dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, 
+dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
 out <- rosetta(dt, roc = TRUE, clroc = "D1")
 out$quality
 ```
@@ -187,6 +188,9 @@ head(vRules)
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, results='asis'}
 library(knitr)
 library("kableExtra")
+out <- rosetta(autcon)
+rules <- out$main
+vRules <- viewRules(rules)
 kable(head(vRules), format="html",  caption = "Print rules") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
 ```
