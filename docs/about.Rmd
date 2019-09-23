@@ -30,10 +30,11 @@ A [tutorial](https://www.davidbaumgold.com/tutorials/wine-mac/) by David Baumgol
 `recalculateRules()` recalculates rules using the input data. Retrieves support sets for rules<br>
 `predictClass()` predicts external classes from the model<br>
 `getFeatures()` extracts features from the rules<br>
-`saveLineByLine()` saves rules to LineByLine format<br>
-`plotRule()` creates a plot showing interactions for a single rule<br>
 `viewRules()` displays rules in the IF-THEN format<br>
 `synData()` generates synthetic decision table<br>
+`saveLineByLine()` saves rules to LineByLine format<br>
+`plotRule()` creates a plot showing interactions for a single rule<br>
+`plotMeanROC()` creates a plot with a ROC curve<br>
 
 ***
 
