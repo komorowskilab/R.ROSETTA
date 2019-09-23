@@ -921,6 +921,153 @@ accuracyMax
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">roc =</span> <span class="ot">TRUE</span>, <span class="dt">clroc =</span> <span class="st">&quot;D1&quot;</span>)
 out<span class="op">$</span>quality</code></pre></div>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Model quality
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+accuracyMean
+</th>
+<th style="text-align:right;">
+accuracyMedian
+</th>
+<th style="text-align:right;">
+accuracyStd
+</th>
+<th style="text-align:right;">
+accuracyMin
+</th>
+<th style="text-align:right;">
+accuracyMax
+</th>
+<th style="text-align:right;">
+ROC.AUC
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+<td style="text-align:right;">
+0.12693
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.68
+</td>
+<td style="text-align:right;">
+0.176738
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ROC.AUC.MEAN
+</th>
+<th style="text-align:right;">
+ROC.AUC.MEDIAN
+</th>
+<th style="text-align:right;">
+ROC.AUC.STDEV
+</th>
+<th style="text-align:right;">
+ROC.AUC.MIN
+</th>
+<th style="text-align:right;">
+ROC.AUC.MAX
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MEAN
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.9055
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.146358
+</td>
+<td style="text-align:right;">
+0.625
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.060934
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MEDIAN
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.STDEV
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MIN
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MAX
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.082205
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.185339
+</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 </div>
@@ -1063,8 +1210,8 @@ IF NPR2(2) AND CAPS2(3) THEN control
 </div>
 <div id="recalculate-model" class="section level1">
 <h1>Recalculate model</h1>
-<p>R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling and/or corss-validation.</p>
-<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in balancing process. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the whole decision table. To recalculate a model, run <code>recalculateRules()</code>:</p>
+<p>R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling.</p>
+<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in the process of balancing the data. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the input decision table. To recalculate a model, run <code>recalculateRules()</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
@@ -1073,25 +1220,25 @@ newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(
 </div>
 <div id="plot-rule" class="section level1">
 <h1>Plot rule</h1>
-<p>We can visualize a specific rule in a form of heatmap or boxplot. The plot is showing a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
+<p>We can visualize a specific rule in a form of heatmap or boxplot. The plot presents a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(autcon, rules)
 <span class="co">#rule heatmap</span>
 <span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;heatmap&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="tutorials_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#rule boxplot</span>
 <span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="tutorials_files/figure-html/unnamed-chunk-18-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-19-2.png" width="672" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
 <div id="predict-unseen-data" class="section level1">
 <h1>Predict unseen data</h1>
-<p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm checks if the cuts or levels correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">###prepare two datasets
-##1. to create a model
+<p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm validates if the levels of discretization correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### prepare two datasets
+## 1. to create a model
 dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
-##2. to validate our model (different seed, less objects)
+## 2. to validate the model (less objects, different seed, the same outcome)
 dt2 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">50</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">2</span>)
 <span class="co">#store decision</span>
 dt2_decision &lt;-<span class="st"> </span>dt2<span class="op">$</span>decision
@@ -1102,9 +1249,9 @@ out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt1)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt1, rules)
 
-<span class="co"># we can predict new classes if we don&#39;t have outcome</span>
+<span class="co"># we can predict new classes if we don&#39;t have the outcome</span>
 <span class="kw">predictClass</span>(dt2, newRules)
-<span class="co"># if we know the decision, we can obtain the accuracy of prediction</span>
+<span class="co"># if the outcome is known, we can obtain the accuracy of external prediction</span>
 <span class="kw">predictClass</span>(dt2, newRules, <span class="dt">validate =</span> <span class="ot">TRUE</span>, <span class="dt">valiDec =</span> dt2_decision)</code></pre></div>
 </div>
 
