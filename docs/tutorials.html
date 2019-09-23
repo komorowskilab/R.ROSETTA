@@ -613,10 +613,10 @@ case
 <h1>Sample data</h1>
 <div id="synthetic" class="section level2">
 <h2>Synthetic</h2>
-<p>You can create a synthetic decision table with predefined correlation. Let’s assume that we want to create a decision table with 100 objects and 20 features that level of correlation is 0.5. In the example the outcome is balanced and has two decision classes. To generate such data, type:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="dv">20</span>, <span class="dt">R=</span><span class="fl">0.5</span>, <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
-<p>Now we add double correlated features at the level of 0.1 and 0.7, and triple correlated features at the level of 0.8 and 0.2. We set numeric vectors as the parameters, the order of <code>nFeatures</code> and <code>R</code> vectors must correspond to each other:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
+<p>You can create a synthetic decision table with predefined correlation. Let’s assume that we want to create a decision table with 100 objects and 20 features that level of feature-feature correlation is 0.4 and the level of feature-decision correlation is 0.6. In this example the outcome is balanced and has two decision classes. To generate such data, type:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="dv">20</span>, <span class="dt">rf=</span><span class="fl">0.4</span>, <span class="dt">rd=</span><span class="fl">0.6</span>, <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
+<p>Now we add double correlated features at the level of 0.1 and 0.7, and triple correlated features at the level of 0.8 and 0.2. We will set up feature-feature correlation as a constant number 0.5. We set numeric vectors as the parameters, the order of <code>nFeatures</code> and <code>R</code> vectors must correspond to each other:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)</code></pre></div>
 </div>
 <div id="gene-expression" class="section level2">
 <h2>Gene expression</h2>
@@ -630,9 +630,9 @@ case
 <p>The main function to run a classifier is <code>rosetta()</code>. The default parameters of the function are set for the processing of the sample datasets. To display the parameters type the help function <code>?rosetta</code>.</p>
 <div id="continuous" class="section level2">
 <h2>Continuous</h2>
-<p>To create rough set-based models from continuous data, type:</p>
+<p>To create rough set-based model from continuous data, type:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># synthetic data</span>
-dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.8</span>,<span class="fl">0.8</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out_s &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 
 <span class="co"># gene expression data</span>
@@ -642,12 +642,9 @@ out_ge &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)</co
 <div id="discrete" class="section level2">
 <h2>Discrete</h2>
 <p>If your decision table contains all discrete features please use option <code>discrete=TRUE</code>. Here is an example of processing synthetic data with discrete values:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
-dt2 &lt;-<span class="st"> </span>dt[,<span class="op">-</span><span class="kw">length</span>(dt)] <span class="co"># remove decision</span>
-decision &lt;-<span class="st"> </span><span class="kw">as.character</span>(dt[,<span class="kw">length</span>(dt)]) <span class="co"># keep the decision</span>
-dt2 &lt;-<span class="st"> </span><span class="kw">sapply</span>(dt2, <span class="cf">function</span>(x) <span class="kw">cut</span>(x,<span class="dv">3</span>, <span class="dt">labels =</span> F)) <span class="co"># simple discretization into 3 levels</span>
-dt3 &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(dt2, decision))
-out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">discrete =</span> T)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span>,<span class="fl">0.4</span>,<span class="fl">0.4</span>), 
+               <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0.6</span>), <span class="dt">discrete =</span> T, <span class="dt">levels =</span> <span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;high&quot;</span>))
+outd &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">discrete =</span> T)</code></pre></div>
 </div>
 <div id="mixed" class="section level2">
 <h2>Mixed</h2>
@@ -656,10 +653,11 @@ out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span clas
 <li>Continuous features that require discretization: <code>numeric</code></li>
 <li>Discrete features: <code>character</code>, <code>factor</code>, <code>logical</code></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
-<span class="co"># change the pair of features with R=0.1 to discrete values</span>
-dt<span class="op">$</span>F1_G2_R0.<span class="dv">1</span>&lt;-<span class="kw">as.factor</span>(<span class="kw">cut</span>(dt<span class="op">$</span>F1_G2_R0.<span class="dv">1</span>,<span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>,<span class="st">&quot;medium&quot;</span>,<span class="st">&quot;high&quot;</span>))) <span class="co">#or as.character</span>
-dt<span class="op">$</span>F2_G2_R0.<span class="dv">1</span>&lt;-<span class="kw">as.factor</span>(<span class="kw">cut</span>(dt<span class="op">$</span>F2_G2_R0.<span class="dv">1</span>,<span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>,<span class="st">&quot;medium&quot;</span>,<span class="st">&quot;high&quot;</span>))) <span class="co">#or as.character</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.8</span>,<span class="fl">0.8</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+
+<span class="co"># change two of the feature from the group 5 to discrete</span>
+dt<span class="op">$</span>f5.2_rf0.8_rd0.<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span class="kw">cut</span>(dt<span class="op">$</span>f5.2_rf0.8_rd0.<span class="dv">2</span>,<span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;high&quot;</span>))) <span class="co"># or as.character</span>
+dt<span class="op">$</span>f5.3_rf0.8_rd0.<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">as.factor</span>(<span class="kw">cut</span>(dt<span class="op">$</span>f5.3_rf0.8_rd0.<span class="dv">2</span>,<span class="dv">3</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;high&quot;</span>))) <span class="co"># or as.character</span>
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">discrete =</span> F)</code></pre></div>
 <hr />
 </div>
@@ -670,7 +668,7 @@ out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span clas
 <div id="main" class="section level2">
 <h2>Main</h2>
 <p>The main output of the function contains a collection of rules in a table. The rule components and all statistics values are collected in separate columns. The individual values are comma separated.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.2</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>) 
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 out<span class="op">$</span>main</code></pre></div>
 <table class="table table-striped" style="width: auto !important; ">
@@ -869,7 +867,7 @@ control
 <div id="quality" class="section level2">
 <h2>Quality</h2>
 <p>Estimated accuracy and AUC values are collected into table. The values are taken from n-fold Cross-Validation process.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 out<span class="op">$</span>quality</code></pre></div>
 <table class="table table-striped" style="width: auto !important; ">
@@ -902,27 +900,174 @@ accuracyMax
 <td style="text-align:left;">
 </td>
 <td style="text-align:right;">
-0.76
-</td>
-<td style="text-align:right;">
-0.8
-</td>
-<td style="text-align:right;">
-0.142984
-</td>
-<td style="text-align:right;">
-0.4
+0.85
 </td>
 <td style="text-align:right;">
 0.9
 </td>
+<td style="text-align:right;">
+0.12693
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
 </tbody>
 </table>
-<p>If you need an information about AUC, please look at the code below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, 
+<p>If you need an information about AUC, please take look at the code below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt, <span class="dt">roc =</span> <span class="ot">TRUE</span>, <span class="dt">clroc =</span> <span class="st">&quot;D1&quot;</span>)
 out<span class="op">$</span>quality</code></pre></div>
+<table class="table table-striped" style="width: auto !important; ">
+<caption>
+Model quality
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+accuracyMean
+</th>
+<th style="text-align:right;">
+accuracyMedian
+</th>
+<th style="text-align:right;">
+accuracyStd
+</th>
+<th style="text-align:right;">
+accuracyMin
+</th>
+<th style="text-align:right;">
+accuracyMax
+</th>
+<th style="text-align:right;">
+ROC.AUC
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.85
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+<td style="text-align:right;">
+0.12693
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.68
+</td>
+<td style="text-align:right;">
+0.176738
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ROC.AUC.MEAN
+</th>
+<th style="text-align:right;">
+ROC.AUC.MEDIAN
+</th>
+<th style="text-align:right;">
+ROC.AUC.STDEV
+</th>
+<th style="text-align:right;">
+ROC.AUC.MIN
+</th>
+<th style="text-align:right;">
+ROC.AUC.MAX
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MEAN
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0.9055
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.146358
+</td>
+<td style="text-align:right;">
+0.625
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.060934
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped" style="width: auto !important; ">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MEDIAN
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.STDEV
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MIN
+</th>
+<th style="text-align:right;">
+ROC.AUC.SE.MAX
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.082205
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.185339
+</td>
+</tr>
+</tbody>
+</table>
 <hr />
 </div>
 </div>
@@ -959,24 +1104,24 @@ pValue
 <tbody>
 <tr>
 <td style="text-align:left;">
-IF F1_G4_R0.8(1) THEN D1
+IF ZSCAN18(1) AND NPR2(2) THEN control
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
-0.91667
+0.98521
 </td>
 <td style="text-align:right;">
-28
+19
 </td>
 <td style="text-align:right;">
-0.0001194
+5.20e-06
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-IF F11_G1_R0.5(3) AND F14_G1_R0.5(3) THEN D2
+IF CAPS2(3) AND CLDN17(2) THEN control
 </td>
 <td style="text-align:right;">
 2
@@ -985,15 +1130,15 @@ IF F11_G1_R0.5(3) AND F14_G1_R0.5(3) THEN D2
 1.00000
 </td>
 <td style="text-align:right;">
-15
+19
 </td>
 <td style="text-align:right;">
-0.0010306
+5.20e-06
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-IF F2_G3_R0.7(3) AND F1_G4_R0.8(3) THEN D2
+IF PPOX(1) AND LOC400655(2) THEN control
 </td>
 <td style="text-align:right;">
 2
@@ -1002,15 +1147,32 @@ IF F2_G3_R0.7(3) AND F1_G4_R0.8(3) THEN D2
 1.00000
 </td>
 <td style="text-align:right;">
-15
+18
 </td>
 <td style="text-align:right;">
-0.0010306
+1.46e-05
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-IF F9_G1_R0.5(3) AND F14_G1_R0.5(3) THEN D2
+IF NCKAP5L(1) AND 234817_at(1) THEN control
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.97368
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+1.46e-05
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+IF MAP7(3) AND ATXN8OS(1) THEN control
 </td>
 <td style="text-align:right;">
 2
@@ -1019,15 +1181,15 @@ IF F9_G1_R0.5(3) AND F14_G1_R0.5(3) THEN D2
 1.00000
 </td>
 <td style="text-align:right;">
-14
+18
 </td>
 <td style="text-align:right;">
-0.0024620
+1.46e-05
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-IF F5_G1_R0.5(3) AND F2_G3_R0.7(3) THEN D2
+IF NPR2(2) AND CAPS2(3) THEN control
 </td>
 <td style="text-align:right;">
 2
@@ -1036,27 +1198,10 @@ IF F5_G1_R0.5(3) AND F2_G3_R0.7(3) THEN D2
 1.00000
 </td>
 <td style="text-align:right;">
-13
+17
 </td>
 <td style="text-align:right;">
-0.0057891
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-IF F7_G1_R0.5(3) AND F1_G4_R0.8(3) THEN D2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1.00000
-</td>
-<td style="text-align:right;">
-13
-</td>
-<td style="text-align:right;">
-0.0057891
+4.01e-05
 </td>
 </tr>
 </tbody>
@@ -1065,9 +1210,9 @@ IF F7_G1_R0.5(3) AND F1_G4_R0.8(3) THEN D2
 </div>
 <div id="recalculate-model" class="section level1">
 <h1>Recalculate model</h1>
-<p>R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling and/or corss-validation.</p>
-<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in balancing process. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the whole decision table. To recalculate a model, run <code>recalculateRules()</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+<p>R.ROSETTA allows to recalculate a model according to the input decision table. This step may be used to retrieve a statistics in case of performing undersampling.</p>
+<p>Let’s consider that one of our rules has support 24 and accuracy 0.92. These values come from a model that was divided into smaller training sets in the process of balancing the data. Thanks to the model recalculation we obtain support 32 and accuracy 0.95, which now are the values corresponding to the input decision table. To recalculate a model, run <code>recalculateRules()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt, rules)</code></pre></div>
@@ -1075,26 +1220,26 @@ newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(
 </div>
 <div id="plot-rule" class="section level1">
 <h1>Plot rule</h1>
-<p>We can visualize a specific rule in a form of heatmap or boxplot. The plot is showing a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
+<p>We can visualize a specific rule in a form of heatmap or boxplot. The plot presents a distribution of values for three support groups. This visualization is done only after recalculating the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(autcon)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(autcon, rules)
 <span class="co">#rule heatmap</span>
 <span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;heatmap&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="tutorials_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#rule boxplot</span>
 <span class="kw">plotRule</span>(autcon, newRules, <span class="dt">type =</span> <span class="st">&quot;boxplot&quot;</span>, <span class="dt">ind =</span> <span class="dv">1</span>)</code></pre></div>
-<p><img src="tutorials_files/figure-html/unnamed-chunk-18-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="tutorials_files/figure-html/unnamed-chunk-19-2.png" width="672" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
 <div id="predict-unseen-data" class="section level1">
 <h1>Predict unseen data</h1>
-<p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm checks if the cuts or levels correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">###prepare two datasets
-##1. to create a model
-dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
-##2. to validate our model (different seed, less objects)
-dt2 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">R=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">50</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">2</span>)
+<p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm validates if the levels of discretization correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### prepare two datasets
+## 1. to create a model
+dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
+## 2. to validate the model (less objects, different seed, the same outcome)
+dt2 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">50</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">2</span>)
 <span class="co">#store decision</span>
 dt2_decision &lt;-<span class="st"> </span>dt2<span class="op">$</span>decision
 <span class="co">#remove decision from table</span>
@@ -1104,9 +1249,9 @@ out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt1)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
 newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt1, rules)
 
-<span class="co"># we can predict new classes if we don&#39;t have outcome</span>
+<span class="co"># we can predict new classes if we don&#39;t have the outcome</span>
 <span class="kw">predictClass</span>(dt2, newRules)
-<span class="co"># if we know the decision, we can obtain the accuracy of prediction</span>
+<span class="co"># if the outcome is known, we can obtain the accuracy of external prediction</span>
 <span class="kw">predictClass</span>(dt2, newRules, <span class="dt">validate =</span> <span class="ot">TRUE</span>, <span class="dt">valiDec =</span> dt2_decision)</code></pre></div>
 </div>
 
