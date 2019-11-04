@@ -7,17 +7,17 @@ View rules in IF-THEN form.
 Display rules in the IF-THEN form. Prints the basic rule statistics.
 }
 \usage{
-viewRules(rules, setDiscLabels=FALSE, newDiscLabels=c("down","nochange", "up"))
+viewRules(rules, setLabels=FALSE, labels=c("down","nochange", "up"))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{rules}{
 A data frame of rule table in a form of rosetta $main output.
 }
-  \item{setDiscLabels}{
+  \item{setLabels}{
 Logical. If TRUE the new discretization labels can be applied. Default is FALSE.
 }
-    \item{pAdjust}{
+    \item{labels}{
 A character vector. New label names for replacing discretization states.
 }
 }
@@ -52,7 +52,7 @@ rules <- out$main
 IfThenRules <- viewRules(rules)
 
 #change 1,2,3 gene levels into down,nochange,up
-IfThenRulesDNU <- viewRules(rules, setDiscLabels=TRUE, newDiscLabels=c("down","nochange", "up"))
+IfThenRulesDNU <- viewRules(rules, setLabels=TRUE, labels=c("down","nochange", "up"))
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
