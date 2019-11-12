@@ -21,13 +21,19 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
     for(j in 1:dim(dt)[1]){
       
       str_l <- list()
-      object <- autcon[j,]
+      object <- dt[j,]
       ##values
       for(i in 1:length(cuts)){
-        str <- paste0(as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))])),"==",cuts[[i]])
-        str_l[[i]] <- eval(parse(text=str))
+        if(length(as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))])))==0){
+          str_l[[i]] <- NA
+        }else{
+          str <- paste0("'",as.character(as.matrix(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))),"'","==","'",cuts[[i]],"'")
+          str_l[[i]] <- eval(parse(text=str))
+        }
+        
       }
-      ruleVotes[[j]] <- t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)])))
+      ruleVotes[[j]] <- t(as.matrix(table(factor(rules$decision[which(unlist(str_l)==TRUE)], levels = unique(rules$decision)))))
+      
     }
     
   }else{
@@ -38,7 +44,7 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
     for(j in 1:dim(dt)[1]){
       
       str_l <- list()
-      object <- autcon[j,]
+      object <- dt[j,]
       
       for(i in 1:length(cuts_cond)){
         
@@ -46,11 +52,11 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
           
           ##cuts
           n_cuts <- str_count(cuts_cond[i], "cut")
-          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), as.character(unname(cuts[i,]))[1:n_cuts]), collapse="")
+          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), paste0("(",as.character(unname(cuts[i,]))[1:n_cuts],")")), collapse="")
           
           ##values
           n_vals <- str_count(cuts_cond[i], "value")
-          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))[1:n_vals]), collapse="") 
+          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), paste0("(",as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))[1:n_vals],")")), collapse="") 
           
           ##discrete
           key_words <- c("discrete", "cut")
@@ -84,8 +90,8 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
         
       }
       
-      ruleVotes[[j]] <- t(as.matrix(table(rules$decision[which(unlist(str_l)==TRUE)])))
-      
+      ruleVotes[[j]] <- t(as.matrix(table(factor(rules$decision[which(unlist(str_l)==TRUE)], levels = unique(rules$decision)))))
+
     }
     
   }

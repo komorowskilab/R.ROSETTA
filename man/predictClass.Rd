@@ -4,10 +4,10 @@
 Class prediction
 }
 \description{
-Use rosetta model to validate independent dataset or reclassify the data.
+Use rosetta model to validate external dataset or reclassify the current dataset.
 }
 \usage{
-predictClass(dt, rules, discrete=FALSE, normalize = TRUE, normalizeMethod="rss", validate = FALSE, valiDec)
+predictClass(dt, rules, discrete=FALSE, normalize = TRUE, normalizeMethod="rss", validate = FALSE, defClass)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,21 +20,17 @@ A data frame of rule table in a form of main rosetta output.
   \item{discrete}{
 Logical. If TRUE the dataset is discrete. Default is FALSE. 
 }
-
   \item{normalize}{
 Logical. If FALSE normalization of votes is not performed. Default is TRUE.
 }
-
   \item{normalizeMethod}{
 A character containing votes normalization method: median, mean, max, rss (root sum square), rulnum (rule number). Default is rss.
 }
-
   \item{validate}{
 Logical. If TRUE, the accuracy is calculated. Default is FALSE.
 }
-
   \item{defClass}{
-A character vector containing outcome. Required for accuracy calculation. Only if validate is TRUE. }
+A character vector containing known outcome. Required for accuracy calculation. Only if validate is TRUE. }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -42,7 +38,7 @@ A character vector containing outcome. Required for accuracy calculation. Only i
 \value{
   \item{decisions$out}{A data frame containing names of the objects, votes for each decision and predicted outcome.
 }
-  \item{decisions$accuracy}{A numeric value containing an accuracy of the model. Only if validate is TRUE.
+  \item{decisions$accuracy}{A numeric value containing the model accuracy. Only if validate is TRUE.
 }
 
 }

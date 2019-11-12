@@ -1235,7 +1235,8 @@ newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(
 <div id="predict-unseen-data" class="section level1">
 <h1>Predict unseen data</h1>
 <p>To test your model on external data you may use the <code>predictClass()</code> function. The algorithm validates if the levels of discretization correspond to the external dataset. Make sure that feature names correspond to the names used in the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### prepare two datasets
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### continuous data
+
 ## 1. to create a model
 dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">seed=</span><span class="dv">1</span>)
 ## 2. to validate the model (less objects, different seed, the same outcome)
@@ -1247,12 +1248,28 @@ dt2 &lt;-<span class="st"> </span>dt2[,<span class="op">-</span><span class="kw"
 
 out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt1)
 rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
-newRules &lt;-<span class="st"> </span><span class="kw">recalculateRules</span>(dt1, rules)
 
 <span class="co"># we can predict new classes if we don&#39;t have the outcome</span>
-<span class="kw">predictClass</span>(dt2, newRules)
+<span class="kw">predictClass</span>(dt2, rules)
 <span class="co"># if the outcome is known, we can obtain the accuracy of external prediction</span>
-<span class="kw">predictClass</span>(dt2, newRules, <span class="dt">validate =</span> <span class="ot">TRUE</span>, <span class="dt">valiDec =</span> dt2_decision)</code></pre></div>
+<span class="kw">predictClass</span>(dt2, rules, <span class="dt">validate =</span> <span class="ot">TRUE</span>, <span class="dt">defClass =</span> dt2_decision)
+
+### discrete data
+dt1 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">100</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">discrete=</span>T, <span class="dt">levels=</span><span class="dv">3</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;LOW&quot;</span>,<span class="st">&quot;MEDIUM&quot;</span>,<span class="st">&quot;HIGH&quot;</span>), <span class="dt">seed=</span><span class="dv">1</span>)
+## 2. to validate the model (less objects, different seed, the same outcome)
+dt2 &lt;-<span class="st"> </span><span class="kw">synData</span>(<span class="dt">nFeatures=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>), <span class="dt">rf=</span><span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>,<span class="fl">0.7</span>), <span class="dt">rd=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.1</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.2</span>), <span class="dt">nObjects=</span><span class="dv">50</span>, <span class="dt">nOutcome=</span><span class="dv">2</span>, <span class="dt">unbalanced=</span>F, <span class="dt">discrete=</span>T, <span class="dt">levels=</span><span class="dv">3</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;LOW&quot;</span>,<span class="st">&quot;MEDIUM&quot;</span>,<span class="st">&quot;HIGH&quot;</span>), <span class="dt">seed=</span><span class="dv">2</span>)
+<span class="co">#store decision</span>
+dt2_decision &lt;-<span class="st"> </span>dt2<span class="op">$</span>decision
+<span class="co">#remove decision from table</span>
+dt2 &lt;-<span class="st"> </span>dt2[,<span class="op">-</span><span class="kw">length</span>(dt2)]
+
+out &lt;-<span class="st"> </span><span class="kw">rosetta</span>(dt1, <span class="dt">discrete =</span> T)
+rules &lt;-<span class="st"> </span>out<span class="op">$</span>main
+
+<span class="co"># we can predict new classes if we don&#39;t have the outcome</span>
+<span class="kw">predictClass</span>(dt2, rules, <span class="dt">discrete =</span> T)
+<span class="co"># if the outcome is known, we can obtain the accuracy of external prediction</span>
+<span class="kw">predictClass</span>(dt2, rules, <span class="dt">discrete =</span> T, <span class="dt">validate =</span> <span class="ot">TRUE</span>, <span class="dt">defClass =</span> dt2_decision)</code></pre></div>
 </div>
 
 

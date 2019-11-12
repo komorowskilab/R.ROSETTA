@@ -246,7 +246,8 @@ plotRule(autcon, newRules, type = "boxplot", ind = 1)
 To test your model on external data you may use the `predictClass()` function. The algorithm validates if the levels of discretization correspond to the external dataset. Make sure that feature names correspond to the names used in the model.
 
 ```{r, echo = TRUE, fig.align='center', warning=FALSE, eval=FALSE}
-### prepare two datasets
+### continuous data
+
 ## 1. to create a model
 dt1 <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
 ## 2. to validate the model (less objects, different seed, the same outcome)
@@ -258,10 +259,27 @@ dt2 <- dt2[,-length(dt2)]
 
 out <- rosetta(dt1)
 rules <- out$main
-newRules <- recalculateRules(dt1, rules)
 
 # we can predict new classes if we don't have the outcome
-predictClass(dt2, newRules)
+predictClass(dt2, rules)
 # if the outcome is known, we can obtain the accuracy of external prediction
-predictClass(dt2, newRules, validate = TRUE, valiDec = dt2_decision)
+predictClass(dt2, rules, validate = TRUE, defClass = dt2_decision)
+
+### discrete data
+dt1 <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, discrete=T, levels=3, labels=c("LOW","MEDIUM","HIGH"), seed=1)
+## 2. to validate the model (less objects, different seed, the same outcome)
+dt2 <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.7,0.7,0.7), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=50, nOutcome=2, unbalanced=F, discrete=T, levels=3, labels=c("LOW","MEDIUM","HIGH"), seed=2)
+#store decision
+dt2_decision <- dt2$decision
+#remove decision from table
+dt2 <- dt2[,-length(dt2)]
+
+out <- rosetta(dt1, discrete = T)
+rules <- out$main
+
+# we can predict new classes if we don't have the outcome
+predictClass(dt2, rules, discrete = T)
+# if the outcome is known, we can obtain the accuracy of external prediction
+predictClass(dt2, rules, discrete = T, validate = TRUE, defClass = dt2_decision)
+
 ```
