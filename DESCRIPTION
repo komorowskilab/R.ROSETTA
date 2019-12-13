@@ -1,13 +1,13 @@
 Package: R.ROSETTA
-Version: 2.2.1
+Version: 2.2.3
 Imports: gplots, fmsb, stringr
-Date: 2019-08-22
-Title: R.ROSETTA - an R package for analysis of rule-based classification models
+Date: 2019-12-13
+Title: R.ROSETTA - an R package for rule-based classification modelling and analysis
 Author: Mateusz Garbulowski [aut, cre],
   Karolina Smolinska [aut, cre],
   Jan Komorowski [aut]
 Maintainer: Jan Komorowski <jan.komorowski@icm.uu.se>, Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
-Description: R.ROSETTA is a package for creating and analyzing rule-based classification models.  The package is a more accessible and extended version of ROSETTA system.
+Description: R.ROSETTA is a package for constructing and analyzing rule-based classification models. The package is a more accessible and extended version of ROSETTA system.
 License: GPL (>= 2)
 LazyData: true
 URL: https://www.r-project.org, http://www.another.url
