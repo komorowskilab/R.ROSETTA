@@ -755,8 +755,13 @@ rosetta <- function(dt,
     unlink(tempDirNam, recursive = TRUE)
     
     # output results
-    ifelse(roc, return(list(main=df_out4, quality=outRos, ROC.stats=combined_df2, usMeanAccs=dfRes_accMean, usn=underSampleNum)),
-           return(list(main=df_out4, quality=outRos, usn=underSampleNum)))
+    if(underSample == TRUE){
+      ifelse(roc, return(list(main=df_out4, quality=outRos, ROC.stats=combined_df2, usMeanAccs=dfRes_accMean, usn=underSampleNum)),
+           return(list(main=df_out4, quality=outRos, usMeanAccs=dfRes_accMean, usn=underSampleNum)))}else{
+             ifelse(roc, return(list(main=df_out4, quality=outRos, ROCstats=combined_df2)),
+                    return(list(main=df_out4, quality=outRos)))  
+           }
+    
   }
   
 } #last parenthesis of function
