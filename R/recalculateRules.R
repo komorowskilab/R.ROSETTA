@@ -93,7 +93,7 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
   
   for(i in 1:length(newSupportLHS)){
     # total support adjusted by accuracy
-    k <- round(newSupportRHS[i]*newAccuracy[i])-1 # P(X > k-1) <-> P(X >= k)
+    k <- round(newSupportLHS[i]*newAccuracy[i])-1 # P(X > k-1) <-> P(X >= k)
     # num of samples for current decision - total white balls
     R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(rules$decision[i])])
     # num of samples for the rest samples - total black balls
@@ -106,9 +106,21 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
     PVAL[i] <- phyper(q=k, m=R1, n=R2, k=C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
     
     # risk ratio
-    invisible(capture.output(rr<-riskratio(C1, C2, R1, R2)))
+    ge1 <- df_out2$supportRHS[i]
+    #The number of disease occurence among exposed cohort.
+    ge2 <- df_out2$supportLHS[i] - df_out2$supportRHS[i] ## LHS > RHS
+    #The number of disease occurence among non-exposed cohort.
+    gt1 <- R1
+    #The number of individuals in exposed cohort group.
+    gt2 <- R2
+    #The number of individuals in non-exposed cohort group.
     
-    CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":") #rr 95% confidence intervals
+    invisible(capture.output(rr <- fmsb::riskratio(ge1, ge2, gt1, gt2)))
+    
+    ints <- rr$conf.int[1:2]
+    ints[is.na(ints)] <- -Inf
+    
+    CONF_INT[i] <- paste(as.character(round(ints, digits=3)), collapse =":") #rr 95% confidence intervals
     RISK_PVAL[i] <- rr$p.value #rr p-value
     REL_RISK[i] <- rr$estimate #risk ratio estimate
   }
