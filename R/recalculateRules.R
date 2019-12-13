@@ -106,9 +106,9 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
     PVAL[i] <- phyper(q=k, m=R1, n=R2, k=C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
     
     # risk ratio
-    ge1 <- df_out2$supportRHS[i]
+    ge1 <- newSupportRHS[i]
     #The number of disease occurence among exposed cohort.
-    ge2 <- df_out2$supportLHS[i] - df_out2$supportRHS[i] ## LHS > RHS
+    ge2 <- newSupportLHS[i] - newSupportRHS[i] ## LHS > RHS
     #The number of disease occurence among non-exposed cohort.
     gt1 <- R1
     #The number of individuals in exposed cohort group.
