@@ -1,7 +1,7 @@
 \name{rosetta}
 \alias{rosetta}
 \title{
-ROSETTA classifier
+ROSETTA classifier.
 }
 \description{
 Performs a rule-based classification.
@@ -98,7 +98,7 @@ A vector containing Genetic reducer parameters.
 A vector containing manual names for manual reducer.
 }
   \item{pAdjust}{
-Logical. Set TRUE to apply p-value adjustment. Default is TRUE.
+Logical. Set TRUE to apply rule p-value and relative risk p-value adjustment. Default is TRUE.
 }
   \item{pAdjustMethod}{
 A character containing the name of the method: holm, hochberg, hommel, bonferroni, BH, BY, fdr or none. Default is bonferroni.
@@ -110,7 +110,7 @@ An integer. Seed to the random number generator. Default is 1.
 Logical. Set TRUE to swap training for test set. Default is FALSE. 
 }
       \item{fraction}{
-Numeric. Fraction value.
+Numeric. Hitting fraction for classifier.
 }
       \item{calibration}{
 Logical. Set TRUE for calibration.
@@ -130,7 +130,7 @@ Logical. Removing special characters from feature names. Default is FALSE.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame of a rule table containing the information and statistics about: features, decision, accuracy, support, coverage, stability, p-value and other. The table is decreasingly sorted according to the p-value.
+  \item{out$main}{A data frame of a rule table containing the information and statistics about: features, decision, accuracy, support, coverage, stability, p-value and other statistic. The table is decreasingly sorted according to the p-value.
 }
     \item{out$quality}{A table of model quality: accuracy statistic, ROC and AUC measures.
 }
