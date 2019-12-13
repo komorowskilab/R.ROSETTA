@@ -717,9 +717,13 @@ rosetta <- function(dt,
       gt2 <- R2
       #The number of individuals in non-exposed cohort group.
       
+      
       invisible(capture.output(rr <- fmsb::riskratio(ge1, ge2, gt1, gt2)))
       
-      CONF_INT[i] <- paste(as.character(round(rr$conf.int[1:2], digits=3)), collapse =":") #rr 95% confidence intervals
+      ints <- rr$conf.int[1:2]
+      ints[is.na(ints)] <- -Inf
+      
+      CONF_INT[i] <- paste(as.character(round(ints, digits=3)), collapse =":") #rr 95% confidence intervals
       RISK_PVAL[i] <- rr$p.value #rr p-value
       REL_RISK[i] <- rr$estimate #risk ratio estimate
     }
