@@ -703,6 +703,7 @@ rosetta <- function(dt,
       N <- dim(dt)[1] # total number
       R2 <- N-R1 # num of samples for the rest samples - total black balls
       # the number of decisions/objects/patients
+      C1 <- df_out2$supportLHS[i] #number of balls drawn 
       PVAL[i] <- phyper(q=k, m=R1, n=R2, k=C1, lower.tail = FALSE)  # calculate pvalue from phypergeometric
       
       ## risk ratio
