@@ -8,8 +8,8 @@ Creates a decision table of correlated features.
 }
 \usage{
 synData(nFeatures=c(10,5,3,2,2), rf=c(0.2,0.2,0.2,0.2,0.2), rd=c(0.4,0.5,0.6,0.7,0.8),
-nObjects=120, nOutcome=2, unbalanced=F, pUnbalancedClass=0.8, 
-discrete=F, levels=4, labels=c("A","C","G","T"), seed=1)
+nObjects=120, nOutcome=2,distribution="uniform", unbalanced=F, pUnbalancedClass=0.8, 
+discrete=F, levels=4, labels=c("A","C","G","T"), binProb=0.5, seed=1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,14 +28,14 @@ A numeric value of objects number. The default is 120.
   \item{nOutcome}{
 A numeric value of number of decision classes. The default is 2.
 }
+  \item{distribution}{
+A character value of the name of the distribution. For discrete data choose betwen "uniform" and "binomial". For non-discrete data choose between "uniform" or "normal". The default is "uniform".
+}
   \item{unbalanced}{
 Logical. Set TRUE to generate unbalanced data. Default is FALSE.
 }
   \item{pUnbalancedClass}{
 A numeric value of number of unbalanced proportion for the first class. The default is 0.8.
-}
-\item{seed}{
-A numeric value of seed. The default is 1.
 }
 \item{discrete}{
 Logical. Set TRUE to generate discrete data. Default is FALSE.
@@ -45,6 +45,12 @@ A numeric value of discretization levels. The default is 4.
 }
 \item{labels}{
 A character vector of discretization labels for levels of discretization. 
+}
+\item{binProb}{
+A numeric value of probability for binomial distribution. The default is 0.5.
+}
+\item{seed}{
+A numeric value of seed. The default is 1.
 }
 }
 \details{
