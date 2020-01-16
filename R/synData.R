@@ -45,7 +45,7 @@ synData <- function(nFeatures=c(10,5,3,2,2), rf=c(0.2,0.2,0.2,0.2,0.2), rd=c(0.4
     class(Rs) <- 'dist'
     attr(Rs,'Size') <- props[i]+1
     Mr <- as.matrix(Rs) + diag(props[i]+1)
-    U  <-  suppressWarnings(t(chol(Mr, pivot = TRUE)))
+    U  <-  t(chol(as.matrix(nearPD(Mr)$mat)))
     
     rescale <- function(x) (x-min(x))/(max(x) - min(x)) * (levels-1)+1
     
