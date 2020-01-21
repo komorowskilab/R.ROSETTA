@@ -46,7 +46,7 @@ rosetta <- function(dt,
     colnames(dt) <- gsub("[[:punct:]]", "", colnames(dt))
   }
   
-  if(dim(autcon)[2]-1==1){
+  if(dim(autcon)[2]-1 == 1){
     stop("Only one feature has been provided. Please, add more features.")
   }else{
     
@@ -699,7 +699,21 @@ rosetta <- function(dt,
       ## p-value 
       # total support adjusted by accuracy
       k <- round(df_out2$supportLHS[i]*df_out2$accuracyRHS[i])-1 # P(X > k-1) <-> P(X >= k) ### 
-      R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(df_out2$decision[i])]) # num of samples for current decision - total white balls
+    
+      if(underSample == TRUE)
+      {
+        if(underSampleSize == 0)
+        {
+          #tab=df
+          R1 <- min(unname(table(as.character(dt[,length(dt)])))) #min
+        }else{
+          R1 <- underSampleSize
+        }
+        }else{
+          R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(df_out2$decision[i])]) # num of samples for current decision - total white balls
+        }
+      
+      
       N <- dim(dt)[1] # total number
       R2 <- N-R1 # num of samples for the rest samples - total black balls
       # the number of decisions/objects/patients
