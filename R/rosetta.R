@@ -698,7 +698,7 @@ rosetta <- function(dt,
       
       ## p-value 
       # total support adjusted by accuracy
-      k <- round(df_out2$supportLHS[i]*df_out2$accuracyRHS[i])-1 # P(X > k-1) <-> P(X >= k) ### 
+      k <- round(df_out2$supportRHS[i])-1 # P(X > k-1) <-> P(X >= k) ### 
     
       if(underSample == TRUE)
       {
