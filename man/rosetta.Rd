@@ -10,10 +10,10 @@ Performs a rule-based classification.
 rosetta(dt, classifier = "StandardVoter", cvNum = 10, discrete = FALSE, discreteMethod = "EqualFrequency",
 discreteParam = 3, discreteMask = TRUE, reducer = "Johnson", reducerDiscernibility = "Object",
 roc = FALSE, clroc = "autism", fallBack = TRUE, fallBackClass = "autism", maskFeatures = FALSE, maskFeaturesNames = c(),
-underSample = FALSE, underSampleNum = 0, underSampleSize = 0, ruleFiltration = FALSE, ruleFiltrSupport = c(1,3),
-ruleFiltrAccuracy = c(0,0.5), ruleFiltrCoverage = c(0,0), ruleFiltrStability = c(0,0),
-JohnsonParam = list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95),
-GeneticParam = list(Modulo=TRUE,BRT=FALSE,BRTprec=0.9,Precompute=FALSE,Approximate=TRUE,Fraction=0.95,Algorithm="Simple"),
+underSample = FALSE, underSampleNum = 0, underSampleSize = 0, ruleFiltration = FALSE, ruleFiltrSupport = c(1, 3),
+ruleFiltrAccuracy = c(0, 0.5), ruleFiltrCoverage = c(0, 0), ruleFiltrStability = c(0, 0),
+JohnsonParam = list(Modulo=TRUE, BRT=FALSE, BRTprec=0.9, Precompute=FALSE, Approximate=TRUE, Fraction=0.95),
+GeneticParam = list(Modulo=TRUE, BRT=FALSE, BRTprec=0.9, Precompute=FALSE, Approximate=TRUE, Fraction=0.95, Algorithm="Simple"),
 ManualNames = c(), pAdjust = TRUE, pAdjustMethod = "bonferroni", seed = 1, invert = FALSE, fraction=0.5, calibration = FALSE,
 fillNA = FALSE, fillNAmethod = "meanOrMode", remSpChars = FALSE)
 }
@@ -41,7 +41,7 @@ A vector containing discretization parameters. May be of different length and va
 Logical. Set FALSE to disable discretization mask. Default is TRUE.
 }
   \item{reducer}{
-A character containing name of reducer method: Johnson, Genetic, Holte1R or Manual. Default is Johnson.
+A character containing name of reducer method: Johnson or Genetic. Default is Johnson.
 }
   \item{reducerDiscernibility}{
 A character containing reducer discernibility option: Full or Object. Default is Object.
@@ -115,27 +115,31 @@ Numeric. Hitting fraction for classifier.
       \item{calibration}{
 Logical. Set TRUE for calibration.
 }
-
       \item{fillNA}{
 Logical. Set TRUE to fill NA values.
 }
       \item{fillNAmethod}{
-Character. Set method of filling NA values. Choose between "meanOrMode" or "combinatorial". 
+Character. Set method of filling NA values: meanOrMode or combinatorial. 
 }
       \item{remSpChars}{
-Logical. Removing special characters from feature names. Default is FALSE.
+Logical. Remove special characters from feature names. Default is FALSE.
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-  \item{out$main}{A data frame of a rule table containing the information and statistics about: features, decision, accuracy, support, coverage, stability, p-value and other statistic. The table is decreasingly sorted according to the p-value.
+  \item{main}{A data frame containing rule information about: features, discretization levels, decision, accuracy, support, coverage, stability, p-value and other statistic. The table is decreasingly sorted according to the p-value.
 }
-    \item{out$quality}{A table of model quality: accuracy statistic, ROC and AUC measures.
+    \item{quality}{A table of model quality: accuracy statistic, ROC and AUC measures.
 }
-    \item{out$usn}{An integer indicating the minimum number of required subsets for undersampling.
+    \item{usMeanAccs}{A vector containing accuracies of the models from undersampling. Only if underSample = TRUE.
 }
+    \item{usn}{An integer indicating the minimum number of required subsets for undersampling. Only if underSample = TRUE.
+}
+    \item{ROCstats}{A data frame containing statistic of the model: 1 - specificity, sensitivity, specificity, PPV, NPV, accuracy and threshold. Only if roc = TRUE.
+}
+
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -156,124 +160,137 @@ Mateusz Garbulowski, Karolina Smolinska
   
 library(R.ROSETTA)
 
-###### default settings ######
-resultsRos <- rosetta(autcon)
-resultsRos$quality$accuracyMean
+### default settings ###
+ruleModel <- rosetta(autcon)
+ruleModel$quality$accuracyMean
 
-###### undersampling ######
-resultsRosU <- rosetta(autcon, underSample=TRUE, underSampleNum=20, underSampleSize=10)
-resultsRosU$quality$accuracyMean
+### undersampling ###
+ruleModelUS <- rosetta(autcon, underSample=TRUE, underSampleNum=10, underSampleSize=50)
+ruleModelUS$quality$accuracyMean
 
-###### classifiers ######
+### classifiers ###
 # StandardVoter
-resultsRosSV <- rosetta(autcon, classifier="StandardVoter")
-resultsRosSV$quality$accuracyMean
+ruleModelSV <- rosetta(autcon, classifier="StandardVoter")
+ruleModelSV$quality$accuracyMean
 
 # ObjectTrackingVoter
-resultsRosOTV <- rosetta(autcon, classifier="ObjectTrackingVoter")
-resultsRosOTV$quality$accuracyMean
+ruleModelOTV <- rosetta(autcon, classifier="ObjectTrackingVoter")
+ruleModelOTV$quality$accuracyMean
 
 # NaiveBayesClassifier
-resultsRosNB <- rosetta(autcon, classifier="NaiveBayesClassifier")
-resultsRosNB$quality$accuracyMean
+ruleModelNBC <- rosetta(autcon, classifier="NaiveBayesClassifier")
+ruleModelNBC$quality$accuracyMean
 
-###### reducers ######
+### reducers ###
 # Johnson
-resultsRosJR <- rosetta(autcon, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE,BRTprec=0.1,Precompute=FALSE,Approximate=TRUE,Fraction=0.9))
-resultsRosJR$quality$accuracyMean
+ruleModelJohnson <- rosetta(autcon, reducer="Johnson", JohnsonParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.8))
+ruleModelJohnson$quality$accuracyMean
 
 # Genetic
-resultsRosGR <- rosetta(autcon, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.9, Algorithm="Simple"))
-resultsRosGR$quality$accuracyMean
+ruleModelGenetic <- rosetta(autcon, reducer="Genetic", GeneticParam=c(Modulo=TRUE, BRT=TRUE, BRTprec=0.1, Precompute=FALSE, Approximate=TRUE, Fraction=0.8, Algorithm="Simple"))
+ruleModelGenetic$quality$accuracyMean
 
-###### discernibility ######
+### discernibility ###
 # Full
-resultsRosF <- rosetta(autcon, reducerDiscernibility="Full")
-resultsRosF$quality$accuracyMean
+ruleModelFull <- rosetta(autcon, reducerDiscernibility="Full")
+ruleModelFull$quality$accuracyMean
 
 # Object
-resultsRosO <- rosetta(autcon, reducerDiscernibilit="Object")
-resultsRosO$quality$accuracyMean
+ruleModelObject <- rosetta(autcon, reducerDiscernibilit="Object")
+ruleModelObject$quality$accuracyMean
 
-###### discretization ######
+### discretization ###
 # EqualFrequencyScaler
-resultsRosEF <- rosetta(autcon, discrete=FALSE, discreteMethod="EqualFrequency", discreteParam=3)
-resultsRosEF$quality$accuracyMean
+ruleModelEF <- rosetta(autcon, discrete=FALSE, discreteMethod="EqualFrequency", discreteParam=3)
+ruleModelEF$quality$accuracyMean
 
 # MDL
-resultsRosMDL <- rosetta(autcon, discrete=FALSE, discreteMethod="MDL")
-resultsRosMDL$quality$accuracyMean
+ruleModelMDL <- rosetta(autcon, discrete=FALSE, discreteMethod="MDL")
+ruleModelMDL$quality$accuracyMean
 
 # Naive
-resultsRosNaive <- rosetta(autcon, discrete=FALSE, discreteMethod="Naive")
-resultsRosNaive$quality$accuracyMean
+ruleModelNaive <- rosetta(autcon, discrete=FALSE, discreteMethod="Naive")
+ruleModelNaive$quality$accuracyMean
 
 # SemiNaive
-resultsRosSN <- rosetta(autcon, discrete=FALSE, discreteMethod="SemiNaive")
-resultsRosSN$quality$accuracyMean
+ruleModelSemiNaive <- rosetta(autcon, discrete=FALSE, discreteMethod="SemiNaive")
+ruleModelSemiNaive$quality$accuracyMean
 
 # BRO
-resultsRosBR <- rosetta(autcon, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=list(TRUE,0.95))
-resultsRosBR$quality$accuracyMean
+ruleModelBRO <- rosetta(autcon, discrete=FALSE, discreteMethod="BROrthogonal", discreteParam=list(TRUE, 0.95))
+ruleModelBRO$quality$accuracyMean
 
-###### for discrete data #######
-# discretization is turned off
-resultsRosNoD <- rosetta(autcon, discrete=TRUE)
-resultsRosNoD$quality$accuracyMean
-  
-###### for mixed data: discrete and non-discrete #######
-# data.frame should contain specific structures:
-# discrete values: logical, character or factor
-# non-discrete values: float, numeric or integer
-resultsRosDM <- rosetta(autcon, discrete=FALSE)
-resultsRosDM$quality$accuracyMean
-  
-###### calculate AUC #########  
+### for discrete data ###
+# generate discrete synthetic data
+dt <- synData(nFeatures=c(5,5,3,2,2), rf=c(0.2,0.3,0.2,0.4,0.4), 
+              rd=c(0.2,0.3,0.4,0.5,0.6), discrete = TRUE, levels = 3, labels = c("low", "medium", "high"))
+ruleModelDiscrete <- rosetta(dt, discrete = TRUE)
+ruleModelDiscrete$quality$accuracyMean
+
+### for mixed data(discrete and non-discrete) data frame should contain specific structures: ###
+# for discrete values: logical, character or factor
+# for non-discrete values: float, numeric or integer
+
+# generate continouous synthetic data
+dt <- synData(nFeatures=c(20,2,2,3,3), rf=c(0.1,0.1,0.1,0.8,0.8), rd=c(0.5,0.1,0.7,0.8,0.2), nObjects=100, nOutcome=2, unbalanced=F, seed=1)
+# change two of the features from the group 5 to discrete
+dt$f5.2_rf0.8_rd0.2 <- as.factor(cut(dt$f5.2_rf0.8_rd0.2, 3, labels = c("low", "medium", "high")))
+dt$f5.3_rf0.8_rd0.2 <- as.factor(cut(dt$f5.3_rf0.8_rd0.2, 3, labels = c("low", "medium", "high")))
+ruleModelMixed <- rosetta(dt, discrete=F)
+ruleModelMixed$quality$accuracyMean
+
+### calculate AUC ###
 # for class: autism
-resultsRosAUCa <- rosetta(autcon, roc=TRUE, clroc="autism")
-resultsRosAUCa$quality
+ruleModelAUCa <- rosetta(autcon, roc=TRUE, clroc="autism")
+ruleModelAUCa$quality
 
 # for class: control
-resultsRosAUCc <- rosetta(autcon, roc=TRUE, clroc="control")
-resultsRosAUCc$quality
-  
-# without ROC.AUC
-resultsRosAUCa <- rosetta(autcon, roc= FALSE)
-resultsRosAUCa$quality
+ruleModelAUCc <- rosetta(autcon, roc=TRUE, clroc="control")
+ruleModelAUCc$quality
 
-###### set fallback class ######
+### set fallback class ###
 #for class: autism
-resultsRosFBa <- rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
-resultsRosFBa$quality$accuracyMean
+ruleModelFBa <- rosetta(autcon, fallBack=TRUE, fallBackClass="autism")
+ruleModelFBa$quality$accuracyMean
 
 #for class: control
-resultsRosFBc <- rosetta(autcon, fallBack=TRUE, fallBackClass="control")
-resultsRosFBc$quality$accuracyMean
+ruleModelFBc <- rosetta(autcon, fallBack=TRUE, fallBackClass="control")
+ruleModelFBc$quality$accuracyMean
 
-###### rules filtration ######
+### rules filtration ###
 # accuracy
-resultsRosFA <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0,0.75))
-resultsRosFA$quality$accuracyMean
+ruleModelFiltAcc <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrAccuracy=c(0, 0.85))
+ruleModelFiltAcc$quality$accuracyMean
 
-# support
-resultsRosFS <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrSupport=c(1,10))
-resultsRosF2$quality$accuracyMean
+# support 
+ruleModelFiltSupp <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrSupport=c(1, 10))
+ruleModelFiltSupp$quality$accuracyMean
 
-# coverage
-resultsRosFC <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrCoverage=c(1,5))
-resultsRosFC$quality$accuracyMean
+# coverage 
+ruleModelFiltCov <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrCoverage=c(0, 0.1))
+ruleModelFiltCov$quality$accuracyMean
 
 # stability
-resultsRosFST <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrStability=c(1,5))
-resultsRosFST$quality$accuracyMean
+ruleModelFiltStab <- rosetta(autcon, ruleFiltration=TRUE, ruleFiltrStability=c(1, 5))
+dim(ruleModelFiltStab$main)[1]
 
-###### mask features ######
-resultsRosMF1 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=c("COX2"))
-resultsRosMF1$quality$accuracyMean
+### mask features ###
+ruleModelMaskFs2 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=c("MAP7", "COX2"))
+ruleModelMaskFs2$quality$accuracyMean
 
-# remove first 10 features
-resultsRosMF2 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=colnames(autcon)[1:10])
-resultsRosMF2$quality$accuracyMean
+# remove first 10 features from decision table
+ruleModelMaskFs10 <- rosetta(autcon, maskFeatures=TRUE, maskFeaturesNames=colnames(autcon)[1:10])
+ruleModelMaskFs10$quality$accuracyMean
+
+### fill NA values ###
+autcon2 <- autcon
+#introduce 3 NA values
+autcon2[2,2] <- NA
+autcon2[3,3] <- NA
+autcon2[4,4] <- NA
+ruleModelFillNA <- rosetta(autcon2, fillNA=TRUE, fillNAmethod="meanOrMode")
+ruleModelFillNA$quality$accuracyMean
+
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

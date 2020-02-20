@@ -93,7 +93,7 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
   
   for(i in 1:length(newSupportLHS)){
     # total support adjusted by accuracy
-    k <- round(newSupportLHS[i]*newAccuracy[i])-1 # P(X > k-1) <-> P(X >= k)
+    k <- round(newSupportRHS[i])-1 # P(X > k-1) <-> P(X >= k)
     # num of samples for current decision - total white balls
     R1 <- unname(table(dt[,length(dt)])[names(table(dt[,length(dt)]))==as.character(rules$decision[i])])
     # num of samples for the rest samples - total black balls
