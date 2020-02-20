@@ -3,13 +3,15 @@ Title: R.ROSETTA - an R package for rule-based classification modelling and anal
 Version: 2.2.5
 Imports: gplots, fmsb, stringr, Matrix
 Date: 2020-02-20
-Author: Mateusz Garbulowski [aut, cre],
-  Karolina Smolinska [aut, cre],
-  Klev Diamanti [ctb],
-  Patricia Stoll [ctb], 
-  Susanne Bornelöv [ctb],
-  Jan Komorowski [aut, cph],
-  Aleksander Ohrn [aut, cph]
+Authors@R: c(
+    person("Mateusz", "Garbulowski", email = "mateusz.garbulowski@icm.uu.se", role = c("aut", "cre")),
+    person("Karolina", "Smolinska", email = "karolina.smolinska@icm.uu.se", role = c("aut", "ctb")),
+    person("Klev", "Diamanti", role = c("ctb")),
+    person("Patricia", "Stoll", role = c("ctb")),
+    person("Susanne", "Bornelov", role = c("ctb")),
+    person("Aleksander", "Ohrn", role = c("aut", "cph")),
+    person("Jan", "Komorowski", email = "jan.komorowski@icm.uu.se", role = c("aut", "cph"))
+    )
 Maintainer: Jan Komorowski <jan.komorowski@icm.uu.se>, Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
 Description: R.ROSETTA is a package for constructing and analyzing rule-based classification models. The package is a more accessible and extended version of ROSETTA system.
 Depends: R (>= 3.6.2)
