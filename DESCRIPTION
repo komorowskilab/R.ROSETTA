@@ -10,8 +10,7 @@ Authors@R: c(
     person("Patricia", "Stoll", role = c("ctb")),
     person("Susanne", "Bornelov", role = c("ctb")),
     person("Aleksander", "Ohrn", role = c("aut", "cph")),
-    person("Jan", "Komorowski", email = "jan.komorowski@icm.uu.se", role = c("aut", "cph"))
-    )
+    person("Jan", "Komorowski", email = "jan.komorowski@icm.uu.se", role = c("aut", "cph")))
 Maintainer: Jan Komorowski <jan.komorowski@icm.uu.se>, Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
 Description: R.ROSETTA is a package for constructing and analyzing rule-based classification models. The package is a more accessible and extended version of ROSETTA system.
 Depends: R (>= 3.6.2)
