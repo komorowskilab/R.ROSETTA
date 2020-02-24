@@ -1,7 +1,11 @@
-plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15){
+plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c()){
   
   ftrs <- unlist(strsplit(as.character(rules$features)[ind], ","))
-  dicl <- unlist(strsplit(as.character(rules$levels)[ind], ","))
+  if(length(label)!=0){
+    dicl <- label
+  }else{
+    dicl <- unlist(strsplit(as.character(rules$levels)[ind], ","))
+  }
   perc <- unlist(strsplit(as.character(rules$supportRatioRHS)[ind], ","))
   decs <- unlist(as.character(rules$decision))[ind]
   pval <- unlist(as.numeric(rules$pValue))[ind]
@@ -87,12 +91,13 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15){
   }else{
     
     dt2 <- scale(dt2)
-    par(mfrow = c(1, 3))
-    boxplot(dt2[rf3,], col = rainbow(length(ftrs)), ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects supporting the rule")
-    boxplot(dt2[rf1,], col = rainbow(length(ftrs)), ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects not supporting the rule")
-    boxplot(dt2[rf2,], col = rainbow(length(ftrs)), ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects for the remaining classes")
-    mtext(paste0(pvalw, " IF ",paste(paste0(ftrs, paste("(",dicl,")",sep="")), collapse =" AND "), " THEN ", decs), line = -2, side = 1, outer = TRUE, cex = 1)
-    par(mfrow = c(1, 1))
+    par(mfrow = c(1, 3), cex.lab=1.5, cex.axis=1.5)
+    cols <- c("cornflowerblue", "lightcoral", "darkorchid1", "gold", "chartreuse3", "tan4", "gray60") #new colours
+    boxplot(dt2[rf3,], col = cols[1:length(ftrs)], ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects supporting the rule")
+    boxplot(dt2[rf1,], col = cols[1:length(ftrs)], ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects not supporting the rule")
+    boxplot(dt2[rf2,], col = cols[1:length(ftrs)], ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects for the remaining classes")
+    mtext(paste0(pvalw, " IF ",paste(paste0(ftrs, paste("=",dicl,sep="")), collapse =" AND "), " THEN ", decs), line = -2, side = 1, outer = TRUE, cex = 1.2)
+    par(mfrow = c(1, 1), cex.lab=1.5, cex.axis=1.5)
   }
   
   
