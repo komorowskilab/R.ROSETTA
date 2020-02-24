@@ -92,7 +92,7 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
     
     dt2 <- scale(dt2)
     par(mfrow = c(1, 3), cex.lab=1.5, cex.axis=1.5)
-    cols <- c("cornflowerblue", "lightcoral", "darkorchid1", "gold", "chartreuse3", "tan4", "gray60")
+    cols <- c("cornflowerblue", "lightcoral", "darkorchid1", "gold", "chartreuse3", "tan4", "gray60") #new colours
     boxplot(dt2[rf3,], col = cols[1:length(ftrs)], ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects supporting the rule")
     boxplot(dt2[rf1,], col = cols[1:length(ftrs)], ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects not supporting the rule")
     boxplot(dt2[rf2,], col = cols[1:length(ftrs)], ylim = c(min(as.numeric(as.matrix(dt2))), max(as.numeric(as.matrix(dt2)))), main="Objects for the remaining classes")
