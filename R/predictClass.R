@@ -52,11 +52,11 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
           
           ##cuts
           n_cuts <- str_count(cuts_cond[i], "cut")
-          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), paste0("(",as.character(unname(cuts[i,]))[1:n_cuts],")")), collapse="")
+          str <- paste0(str_replace_all(unlist(strsplit(as.character(cuts_cond[i]), "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), paste0("(",as.character(unname(cuts[i,]))[1:n_cuts],")")), collapse="")
           
           ##values
           n_vals <- str_count(cuts_cond[i], "value")
-          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), paste0("(",as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))[1:n_vals],")")), collapse="") 
+          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), paste0("(",as.character(unname(object[which(colnames(object) %in% unlist(strsplit(as.character(rules[i,]$features),",")))]))[1:n_vals],")")), collapse="") 
           
           ##discrete
           key_words <- c("discrete", "cut")
@@ -70,7 +70,7 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
             
           }else{
             n_disc <- str_count(cuts_cond[i], "discrete")
-            disc_val <- as.character(unname(object[1,which(colnames(object[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
+            disc_val <- as.character(unname(object[1,which(colnames(object[1,]) %in% unlist(strsplit(as.character(rules[i,]$features),",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
             
             str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=discrete)", perl = TRUE)), rep("discrete", n_disc), paste0(disc_val,"==",as.character(unname(cuts[i,]))[strs_n])),collapse="")
             expr <- unlist(str_split(unlist(str),","))
@@ -80,7 +80,7 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
           
         }else{ ## ONLY DISCRETE RULES
           n_cuts <- str_count(cuts_cond[i], "discrete")
-          disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(rules[i,]$features,",")))]))[which(unlist(str_split(cuts_cond[i], ",")) == "discrete")]
+          disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(as.character(rules[i,]$features),",")))]))[which(unlist(str_split(cuts_cond[i], ",")) == "discrete")]
           
           str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=discrete)", perl = TRUE)), rep("discrete", n_cuts), paste0(disc_val,"==",as.character(unname(cuts[i,]))[1:n_cuts])), collapse="")
           
@@ -91,7 +91,7 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
       }
       
       ruleVotes[[j]] <- t(as.matrix(table(factor(rules$decision[which(unlist(str_l)==TRUE)], levels = unique(rules$decision)))))
-
+      
     }
     
   }
