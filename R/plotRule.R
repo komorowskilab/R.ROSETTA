@@ -52,17 +52,16 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
 
   
   if(type == "heatmap"){
-    par(mar=c(7,4,4,2)+0.1)
   heatmap.2(dt3,
             Rowv=F,
             #Colv=FALSE,
             #margins = c(7,10),
             xlab=paste0(pvalw, " IF ",paste(paste0(ftrs,paste("(",dicl,")",sep="")), collapse =" AND ")," THEN ",decs),
-            keysize = 2,
+            keysize = 1.5,
             srtCol=0,
             scale="column",
             #lwid=c(0.5,4),
-            #lhei=c(1,4),
+            lhei=c(0.4,0.8),
             cexCol=1.2,
             adjCol=c(0.5,0.5),
             cexRow=0.3,
@@ -77,12 +76,12 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
             labRow= "",
             rowsep=c(length(objs_tp), length(objs_tp)+length(objs_fp)),
             colsep=1:(length(ftrs)-1),
-            RowSideColors = c(rep("orangered", length(objs_tp)), rep("orangered4", length(objs_fp)),rep("chartreuse3", length(objs_tn))))
+            RowSideColors = c(rep("firebrick1", length(objs_tp)), rep("lightpink2", length(objs_fp)),rep("ivory3", length(objs_tn))))
   
   #list('x'=-0.1,'y'=1.2)
-  legend(list('x'=0.2,'y'=1),      # location of the legend on the heatmap plot
+  legend(list('x'=0.2,'y'=1.2),      # location of the legend on the heatmap plot
          legend = c(paste0("Objects supporting the rule"), paste0("Objects not supporting the rule"), "Objects for the remaining classes"), # category labels
-         col = c("deeppink", "deeppink4", "chartreuse3"),  # color key
+         col = c("firebrick1", "lightpink2", "ivory3"),  # color key
          lty= 0,             # line style
          lwd = 5,
          pt.cex=1.5,
