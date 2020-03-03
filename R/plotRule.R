@@ -56,7 +56,7 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
             Rowv=F,
             #Colv=FALSE,
             #margins = c(7,10),
-            xlab=paste0(pvalw, " IF ",paste(paste0(ftrs,paste("(",dicl,")",sep="")), collapse =" AND ")," THEN ",decs),
+            xlab=paste0(pvalw, " IF ",paste(paste0(ftrs,paste("=", dicl, sep="")), collapse =" AND ")," THEN ",decs),
             keysize = 1.5,
             srtCol=0,
             scale="column",
