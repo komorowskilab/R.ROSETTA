@@ -6,6 +6,7 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
   }else{
     dicl <- unlist(strsplit(as.character(rules$levels)[ind], ","))
   }
+  
   perc <- unlist(strsplit(as.character(rules$supportRatioRHS)[ind], ","))
   decs <- unlist(as.character(rules$decision))[ind]
   pval <- unlist(as.numeric(rules$pValue))[ind]
@@ -39,13 +40,13 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
   cols <- colorRampPalette(c("#56B4E9","ghostwhite","#E69F00"))(n=50)
   
   rf1 <- (length(objs_tp)+1):(length(objs_tp)+length(objs_fp))
-  dt2_2 <- dt2[order(rowSums(dt2[rf1,])),]
+  dt2_2 <- dt2[order(rowMeans(dt2[rf1,])),]
   
   rf2 <- (length(objs_tp)+length(objs_fp)+1):(length(objs_tp)+length(objs_fp)+length(objs_tn))
-  dt2_3 <- dt2[order(rowSums(dt2[rf2,])),]
+  dt2_3 <- dt2[order(rowMeans(dt2[rf2,])),]
   
   rf3 <- 1:length(objs_tp)
-  dt2_1 <- dt2[order(rowSums(dt2[rf3,])),]
+  dt2_1 <- dt2[order(rowMeans(dt2[rf3,])),]
     
   dt3 <- rbind(dt2_1,dt2_2,dt2_3)
 
@@ -56,10 +57,11 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
             #Colv=FALSE,
             #margins = c(7,10),
             xlab=paste0(pvalw, " IF ",paste(paste0(ftrs,paste("(",dicl,")",sep="")), collapse =" AND ")," THEN ",decs),
+            keysize = 1.5,
             srtCol=0,
             scale="column",
             #lwid=c(0.5,4),
-            #lhei=c(1,4),
+            lhei=c(0.4,0.8),
             cexCol=1.2,
             adjCol=c(0.5,0.5),
             cexRow=0.3,
@@ -74,20 +76,19 @@ plotRule <- function(dt, rules, type="heatmap", discrete=FALSE, ind=15, label=c(
             labRow= "",
             rowsep=c(length(objs_tp), length(objs_tp)+length(objs_fp)),
             colsep=1:(length(ftrs)-1),
-            RowSideColors = c(rep("deeppink", length(objs_tp)), rep("deeppink4", length(objs_fp)),rep("chartreuse3", length(objs_tn))))
+            RowSideColors = c(rep("firebrick1", length(objs_tp)), rep("lightpink2", length(objs_fp)),rep("ivory3", length(objs_tn))))
   
   #list('x'=-0.1,'y'=1.2)
-  legend(list('x'=1,'y'=4),      # location of the legend on the heatmap plot
+  legend(list('x'=0.2,'y'=1.2),      # location of the legend on the heatmap plot
          legend = c(paste0("Objects supporting the rule"), paste0("Objects not supporting the rule"), "Objects for the remaining classes"), # category labels
-         col = c("deeppink", "deeppink4", "chartreuse3"),  # color key
+         col = c("firebrick1", "lightpink2", "ivory3"),  # color key
          lty= 0,             # line style
          lwd = 5,
          pt.cex=1.5,
          cex=.75,
          pch=15,
          bty = "n",
-         xpd=TRUE
-  )
+         xpd=TRUE)
   }else{
     
     dt2 <- scale(dt2)
