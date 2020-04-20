@@ -18,23 +18,21 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
     
     cuts <- strsplit(as.character(rules$levels),",",fixed = T)
     
-    for(j in 1:dim(dt)[1]){
-      
-      str_l <- list()
-      object <- dt[j,]
-      ##values
-      for(i in 1:length(cuts)){
-        if(length(as.character(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))])))==0){
-          str_l[[i]] <- NA
-        }else{
-          str <- paste0("'",as.character(as.matrix(unname(object[which(colnames(object) %in% unlist(strsplit(rules[i,]$features,",")))]))),"'","==","'",cuts[[i]],"'")
-          str_l[[i]] <- eval(parse(text=str))
-        }
-        
-      }
-      ruleVotes[[j]] <- t(as.matrix(table(factor(rules$decision[which(unlist(str_l)==TRUE)], levels = unique(rules$decision)))))
-      
+ for (j in 1:dim(dt)[1]) {
+  str_l <- list()
+  object <- dt[j, ]
+  for (i in 1:length(cuts)) {
+    if (length(as.character(unname(object[match(unlist(strsplit(rules[i, ]$features, ",")), colnames(object))]))) == 0) {
+      str_l[[i]] <- NA
     }
+    else {
+      str <- paste0("'", as.character(as.matrix(unname(object[match(unlist(strsplit(rules[i, ]$features, ",")), colnames(object))]))), 
+                    "'", "==", "'", cuts[[i]], "'")
+      str_l[[i]] <- eval(parse(text = str))
+    }
+  }
+  ruleVotes[[j]] <- t(as.matrix(table(factor(rules$decision[which(unlist(str_l) == TRUE)], levels = unique(rules$decision)))))
+}
     
   }else{
     
