@@ -7,7 +7,7 @@ Plot values for a rule.
 Represent rule as a heatmap or boxplot.
 }
 \usage{
-plotRule(dt, rules, type="heatmap", discrete=FALSE, ind=15)
+plotRule(dt, rules, type="heatmap", discrete=FALSE, ind=1, label=c())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,6 +26,10 @@ A character indciating plot type. Heatmap or boxplot.
   \item{ind}{
 A numeric value of index of the rule in the table.
 }
+  \item{label}{
+A character vector indciating new labels for the rule discrete levels.
+}
+
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -57,10 +61,14 @@ rules <- out$main
 recRules <- recalculateRules(autcon, rules)
 
 # heatmap
-plotRule(autcon, recRules, type="heatmap", discrete=FALSE, ind=3)
+plotRule(autcon, recRules, type="heatmap", discrete=FALSE, ind=1, label = c("high","low"))
+plotRule(autcon, recRules, type="heatmap", discrete=FALSE, ind=7, label = c("high","high"))
+
 
 # boxplot
-plotRule(autcon, recRules, type="boxplot", discrete=FALSE, ind=3)
+plotRule(autcon, recRules, type="boxplot", discrete=FALSE, ind=1, label = c("high","low"))
+plotRule(autcon, recRules, type="boxplot", discrete=FALSE, ind=7, label = c("high","high"))
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
