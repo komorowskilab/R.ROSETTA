@@ -26,8 +26,8 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
       str_l[[i]] <- NA
     }
     else {
-      str <- paste0("'", as.character(as.matrix(unname(object[match(unlist(strsplit(rules[i, ]$features, ",")), colnames(object))]))), 
-                    "'", "==", "'", cuts[[i]], "'")
+      str <- paste0("'", paste0(as.character(as.matrix(unname(object[match(unlist(strsplit(rules[i, ]$features, ",")), colnames(object))]))), collapse = ","), 
+                    "'", "==", "'", paste0(cuts[[i]], collapse = ","), "'")
       str_l[[i]] <- eval(parse(text = str))
     }
   }
