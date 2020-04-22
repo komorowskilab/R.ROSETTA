@@ -159,6 +159,7 @@ Mateusz Garbulowski, Karolina Smolinska
 \examples{
   
 library(R.ROSETTA)
+set.seed(1)
 
 ### default settings ###
 ruleModel <- rosetta(autcon)

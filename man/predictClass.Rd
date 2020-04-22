@@ -12,7 +12,7 @@ predictClass(dt, rules, discrete=FALSE, normalize = TRUE, normalizeMethod="rss",
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dt}{
-A data frame of decision table. The last column is decision.
+A data frame of table where columns are features and rows are samples. Table should contain the same set of features as rules.
 }
   \item{rules}{
 A data frame of rule table in a form of main rosetta output.
@@ -59,6 +59,7 @@ Mateusz Garbulowski
 }
 \examples{
 library(R.ROSETTA)
+set.seed(1)
 
 out <- rosetta(autcon)
 rules <- out$main
@@ -69,7 +70,7 @@ decisions <- predictClass(autcon, rules)
 # change normalization method
 decisions <- predictClass(autcon, rules, normalize = TRUE, normalizeMethod = "median")
 
-# with validation
+# calculate accuracy if the decision is known
 autconClass <- autcon$decision
 decisions <- predictClass(autcon, rules, validate = TRUE, defClass = autconClass)
 }
