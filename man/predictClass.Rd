@@ -59,6 +59,7 @@ Mateusz Garbulowski
 }
 \examples{
 library(R.ROSETTA)
+set.seed(1)
 
 out <- rosetta(autcon)
 rules <- out$main
@@ -69,7 +70,7 @@ decisions <- predictClass(autcon, rules)
 # change normalization method
 decisions <- predictClass(autcon, rules, normalize = TRUE, normalizeMethod = "median")
 
-# with validation
+# calculate accuracy if the decision is known
 autconClass <- autcon$decision
 decisions <- predictClass(autcon, rules, validate = TRUE, defClass = autconClass)
 }

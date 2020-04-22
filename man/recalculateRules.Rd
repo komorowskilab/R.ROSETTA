@@ -51,6 +51,7 @@ Mateusz Garbulowski
 }
 \examples{
 library(R.ROSETTA)
+set.seed(1)
 
 out <- rosetta(autcon)
 rules <- out$main
