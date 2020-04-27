@@ -8,7 +8,7 @@ mergeRBMs <- function(rbms, defClass=autcon$decision, fun="mean", pAdjust = TRUE
   newLevels <- strsplit(mergSeleFrame$levels, ",")
   
   #reorder features and levels
-  for(i in length(nOrder)){
+  for(i in 1:length(nOrder)){
   newFeatures[[i]] <- newFeatures[[i]][nOrder[[i]]]
   newLevels[[i]] <- newLevels[[i]][nOrder[[i]]]
   }
