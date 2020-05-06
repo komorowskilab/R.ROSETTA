@@ -146,6 +146,7 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
     newDT2 <- newDT[order(newDT$pValue),]
     rownames(newDT2) <- NULL
   }
-  
+  i <- sapply(newDT2, is.factor)
+  newDT2[i] <- lapply(newDT2[i], as.character)
   return(newDT2)
 }
