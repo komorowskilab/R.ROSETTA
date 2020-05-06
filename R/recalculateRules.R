@@ -132,7 +132,7 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
     numClass[which(rules$decision == names(table(dt[,length(dt)]))[i])] <- unname(table(dt[,length(dt)]))[i]
   }
   
-  percSuppLHS <- round(newSupportLHS/numClass, digits=5)                         
+  percSuppLHS <- round(newSupportLHS/length(as.character(dt[,length(dt)])), digits=5)                         
   percSuppRHS <- round(newSupportRHS/numClass, digits=5)                         
   
   if(discrete){

@@ -442,7 +442,7 @@ acc_rhs3n <- unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric), which.max
 # COVERAGE RHS
 cov_rhs3 <- unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
 # COVERAGE LHS
-cov_lhs3 <- as.double(cov_lhs2)
+cov_lhs3 <- unlist(lapply(lapply(strsplit(as.character(cov_lhs2), ","),as.double),max)) #as.double(cov_lhs2)
 # STABIL LHS
 stab_lhs3 <- unlist(lapply(lapply(strsplit(as.character(stab_lhs2), ","),as.double),max))
 # STABIL RHS
