@@ -1,4 +1,4 @@
-recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni"){
+recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni"){
 
   rl2 <- strsplit(as.character(rules$features), ",", fixed = T)
   
@@ -19,31 +19,26 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
   eqal2Vec <- function(x,y){(x-y) == 0}
   ### ### ### ### ###
   
-  if(discrete)
-  {
+  if(discrete){
     ####discretized
-    outLst <- outLst2 <- list()
-    
     for(j in 1:dim(rules)[1]){
       
       cnds <- cnd2[[j]]
       cndsLen <- length(cnds)
-      vec4 <- c()
+      vec3 <- list()
       
       for(i in 1:cndsLen){
-        vec3 <- (as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i] == cnd2[[j]][i])
-        ifelse(length(vec4)==0, vec4<-vec3, vec4<-vec3 & vec4)
+        vec3[[i]] <- as.numeric(as.data.frame(dt[,match(rl2[[j]], feats)])[,i] == cnd2[[j]][i])
+        #ifelse(length(vec4) == 0, vec4 <- vec3, vec4 <- vec3 & vec4)
       }
-      
-      outLst[[j]] <- rownames(dt)[which(vec4)] ##LHS
+      outLst[[j]] <- rownames(dt)[which(rowSums(do.call(cbind, vec3)) == cndsLen)] ##LHS
       dt2 <- dt[which(grepl(dec2[j], dt[,length(dt)])),]
-      outLst2[[j]] <- intersect(rownames(dt2), outLst[[j]])
+      outLst2[[j]] <- intersect(rownames(dt2), outLst[[j]]) ##RHS
     } 
   }else{
     outLst <- outLst2 <- list()
     
     for(j in 1:dim(rules)[1]){
-      
       cnds <- cnd2[[j]]
       cnds[cnds == "value>cut"] <- 1
       cnds[cnds == "value<cut"] <- 1
@@ -56,18 +51,18 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
       for(i in 1:cndsLen){
         
         if(cnd2[[j]][i] == "value>cut"){
-          vec3 <- more2Vec(as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i], as.numeric(cuts[j,][cndsCS[i]]))
+          vec3 <- more2Vec(as.data.frame(dt[,match(rl2[[j]], feats)])[,i], as.numeric(cuts[j,][cndsCS[i]]))
           ifelse(length(vec4) == 0, vec4 <- vec3, vec4 <- vec3 & vec4)
         }
         
         if(cnd2[[j]][i] == "value<cut"){
-          vec3 <- less2Vec(as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
+          vec3 <- less2Vec(as.data.frame(dt[,match(rl2[[j]], feats)])[,i], as.numeric(cuts[j,][cndsCS[i]]))
           ifelse(length(vec4) == 0, vec4 <- vec3, vec4 <- vec3 & vec4)
         }
         
         if(cnd2[[j]][i] == "cut<value<cut"){
-          vec1 <- less2Vec(as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]]))
-          vec2 <- more2Vec(as.data.frame(dt[,which(feats %in% rl2[[j]])])[,i],as.numeric(cuts[j,][cndsCS[i]-1]))
+          vec1 <- less2Vec(as.data.frame(dt[,match(rl2[[j]], feats)])[,i], as.numeric(cuts[j,][cndsCS[i]]))
+          vec2 <- more2Vec(as.data.frame(dt[,match(rl2[[j]], feats)])[,i], as.numeric(cuts[j,][cndsCS[i]-1]))
           vec3 <- vec1 == vec2
           ifelse(length(vec4) == 0, vec4 <- vec3, vec4 <- vec3 & vec4)
         }
@@ -134,23 +129,24 @@ recalculateRules<-function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMetho
   
   numClass <- rep(0,length(rules$decision))
   for(i in 1:length(table(dt[,length(dt)]))){
-    numClass[which(rules$decision == names(table(dt[,length(dt)]))[i])]<-unname(table(dt[,length(dt)]))[i]
+    numClass[which(rules$decision == names(table(dt[,length(dt)]))[i])] <- unname(table(dt[,length(dt)]))[i]
   }
   
-  percSuppLHS <- round(newSupportLHS/numClass, digits=5)                         
+  percSuppLHS <- round(newSupportLHS/length(as.character(dt[,length(dt)])), digits=5)                         
   percSuppRHS <- round(newSupportRHS/numClass, digits=5)                         
   
   if(discrete){
-    newDT <- data.frame(rules$features,rules$levels,rules$decision,newSupportLHS,newSupportRHS,newAccuracy,percSuppLHS,percSuppRHS,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
-    colnames(newDT) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","supportRatioLHS", "supportRatioRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
+    newDT <- data.frame(as.character(rules$features),as.character(rules$levels),as.character(rules$decision),newSupportLHS,newSupportRHS,newAccuracy,percSuppLHS,percSuppRHS,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
+    colnames(newDT) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","coverageLHS", "coverageRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
     newDT2 <- newDT[order(newDT$pValue),]
     rownames(newDT2) <- NULL
   }else{
-    newDT <- data.frame(rules$features,rules$levels,rules$decision,newSupportLHS,newSupportRHS,newAccuracy,rules$cuts,cuts,percSuppLHS,percSuppRHS,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
-    colnames(newDT) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","cuts",colnames(cuts), "supportRatioLHS", "supportRatioRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
+    newDT <- data.frame(as.character(rules$features),as.character(rules$levels),as.character(rules$decision),newSupportLHS,newSupportRHS,newAccuracy,percSuppLHS,percSuppRHS,rules$cuts,cuts,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
+    colnames(newDT) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS", "coverageLHS", "coverageRHS", "cuts",colnames(cuts), "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
     newDT2 <- newDT[order(newDT$pValue),]
     rownames(newDT2) <- NULL
   }
-  
+  i <- sapply(newDT2, is.factor)
+  newDT2[i] <- lapply(newDT2[i], as.character)
   return(newDT2)
 }
