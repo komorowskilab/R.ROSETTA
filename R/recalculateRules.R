@@ -141,8 +141,8 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
     newDT2 <- newDT[order(newDT$pValue),]
     rownames(newDT2) <- NULL
   }else{
-    newDT <- data.frame(as.character(rules$features),as.character(rules$levels),as.character(rules$decision),newSupportLHS,newSupportRHS,newAccuracy,rules$cuts,cuts,percSuppLHS,percSuppRHS,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
-    colnames(newDT) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS","cuts",colnames(cuts), "coverageLHS", "coverageRHS", "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
+    newDT <- data.frame(as.character(rules$features),as.character(rules$levels),as.character(rules$decision),newSupportLHS,newSupportRHS,newAccuracy,percSuppLHS,percSuppRHS,rules$cuts,cuts,PVAL,  REL_RISK,RISK_PVAL, CONF_INT, objectsPerRuleLHS,objectsPerRuleRHS)
+    colnames(newDT) <- c("features","levels","decision","supportLHS","supportRHS","accuracyRHS", "coverageLHS", "coverageRHS", "cuts",colnames(cuts), "pValue", "riskRatio", "pValueRiskRatio", "confIntRiskRatio", "supportSetLHS", "supportSetRHS")
     newDT2 <- newDT[order(newDT$pValue),]
     rownames(newDT2) <- NULL
   }
