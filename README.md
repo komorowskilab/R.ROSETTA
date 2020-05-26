@@ -12,7 +12,7 @@ For more information and tutorials, please visit the [official R.ROSETTA website
 
 
 ### Prerequisites
-R.ROSETTA works with UNIX and Windows OS. However, UNIX operating systems (like MAC or Linux) require 32-bit [Wine](https://www.winehq.org/) - a free and open-source compatibility layer. Please, notice that latest version of macOS (Catalina) no longer supports 32-bit apps. Thus, we suggest to use [VirtualBox](https://www.virtualbox.org/) or [Docker](https://www.docker.com/why-docker).
+R.ROSETTA works with UNIX and Windows OS. However, UNIX operating systems (like MAC or Linux) require 32-bit [Wine](https://www.winehq.org/) - a free and open-source compatibility layer. Please notice that latest version of macOS (Catalina) no longer supports 32-bit apps. Thus, we suggest to use [VirtualBox](https://www.virtualbox.org/) or [Docker](https://www.docker.com/why-docker).
 
 ### Installation
 
