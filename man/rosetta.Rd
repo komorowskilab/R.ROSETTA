@@ -291,6 +291,27 @@ autcon2[3,3] <- NA
 autcon2[4,4] <- NA
 ruleModelFillNA <- rosetta(autcon2, fillNA=TRUE, fillNAmethod="meanOrMode")
 ruleModelFillNA$quality$accuracyMean
+  
+### perform permutation test ###
+
+# original data
+out <- rosetta(autcon)
+acc0 <- out$quality$accuracyMean
+
+# permuted data
+n_perm <- 20 # number of iterations
+autcon_perm <- autcon
+acc <- c()
+
+for(i in 1:n_perm){
+autcon_perm$decision <- sample(autcon_perm$decision)
+out_perm <- rosetta(autcon_perm)
+acc[i] <- out_perm$quality$accuracyMean
+}
+
+# visualization
+hist(acc, col="lightpink", xlim=c(0,1), main="permutation test", xlab="accuracy")
+abline(v = acc0, col="mediumslateblue", lwd=3, lty=2)
 
 }
 
