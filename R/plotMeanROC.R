@@ -1,8 +1,8 @@
 plotMeanROC <- function(out){
   
-  ROC.stats <- out$ROC.stats
-  OMSpec <- rowMeans(unstack(ROC.stats, form = OneMinusSpecificity ~ CVNumber))
-  Sens <- rowMeans(unstack(ROC.stats, form = Sensitivity ~ CVNumber))
+  ROC.stats <- out$ROCstats
+  OMSpec <- rowMeans(unstack(ROCstats, form = OneMinusSpecificity ~ CVNumber))
+  Sens <- rowMeans(unstack(ROCstats, form = Sensitivity ~ CVNumber))
   
   ## plotting with new colours
   plot(OMSpec, Sens, type = "l", lwd=3, col="orangered3", xlab="1 - specificity (FPR)", ylab="sensitivity (TPR)", axes=F, cex.lab=1.5)
