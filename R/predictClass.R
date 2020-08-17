@@ -135,7 +135,7 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
     
     acc <- c()
     for(i in 1:length(newDecs)){
-      acc[i] <- c(grepl(as.character(defClass[i]), newDecs[i]) | grepl(newDecs[i], as.character(defClass[i])))
+      acc[i] <- c((as.character(defClass[i]) == newDecs[i]) | (newDecs[i] == as.character(defClass[i])))
     }
     
     return(list(out=outListVotes, accuracy=length(which(acc))/length(acc)))
