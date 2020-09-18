@@ -408,6 +408,7 @@ rules2 <- data.frame()
 colnames(rules2) <- "rules"
     
 # filtration
+rules2 <- as.matrix(rules2)
 rl2 <- as.matrix(rules2[!grepl("%", rules2, fixed = T)]) # delete comments
 rl_r <- which(grepl("=>", rl2, fixed = T)) # select rules
 rules <- rl2[rl_r]
