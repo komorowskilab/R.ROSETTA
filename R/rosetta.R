@@ -462,7 +462,7 @@ choose_nfl <- sapply(1:max(as.numeric(acc_rhs3n)),
   )
     
 choose_nfl <- apply(choose_nfl, 1, paste0, collapse="")
-rl2 <- strsplit(rules2, " AND ")
+rl2 <- strsplit(as.character(rules2), " AND ")
 lst <- lapply(lapply(rl2, function(x) strsplit(x, "\\(")), unlist)
 lst_feat <- lapply(lapply(lst, function(x) x[seq(1,length(x),2)]), unlist)
 features2 <- unlist(lapply(lapply(lst_feat, function(x) paste(x, collapse = ",")), unlist))
@@ -520,7 +520,7 @@ out <- lapply(1:(dim(dt)[2]-1),FUN = function(i){dataset_cuts[dataset_cuts$group
 rl2 <- as.matrix(dataset_rules[!grepl("%", dataset_rules, fixed = T)]) #deleting comments
 rl_r <- which(grepl("=>", rl2, fixed = T)) #choosing rules
 rules2 <- unlist(lapply(strsplit(as.character(rl2[rl_r]), " =>", fixed=TRUE), `[`, 1))
-lst <- lapply(lapply(strsplit(rules2," AND "), function(x) strsplit(x, "\\(")), unlist)
+lst <- lapply(lapply(strsplit(as.character(rules2)," AND "), function(x) strsplit(x, "\\(")), unlist)
 lst_cuts2 <- lapply(cleanCuts(lst)[[2]], catchNumeric)
           
 # in case of 2 levels, right or left
