@@ -87,7 +87,7 @@ round2 <- function(x, n){
 
 # check if in factor columns are characters or the numbers
 meanOrCharacter <- function(x){
-  if(class(x) == "factor"){
+  if(class(x) == "factor" | class(x) == "character"){
     if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1]){
       return(as.character(x)[1]) 
     }else{
@@ -103,8 +103,8 @@ meanOrCharacter <- function(x){
 # second version of aggregate 
 aggregate2 <- function(x, y){ 
   df_out3 <- df_out[which(match(y, x) == 1),]
-  indx <- sapply(df_out3, is.factor)
-  df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+  #indx <- sapply(df_out3, is.factor)
+  #df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
   df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
   return(df_out4)
 }
