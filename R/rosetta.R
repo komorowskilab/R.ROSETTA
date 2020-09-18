@@ -588,8 +588,8 @@ allMat <- do.call(paste0, df_out[c("features","levels", "decision")])
 subMat <- as.matrix(do.call(paste0, df_outU))
 df_out5 <- apply(subMat, 1, aggregate2, y=allMat)
 df_out2 <- do.call("rbind", df_out5)
-df_out2$supportLHS <- round(df_out2$supportLHS)
-df_out2$supportRHS <- round(df_out2$supportRHS)
+df_out2$supportLHS <- round(as.numeric(df_out2$supportLHS))
+df_out2$supportRHS <- round(as.numeric(df_out2$supportRHS))
   }else{ #for discrete data
   lst_cuts <- lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
   lst_cuts2 <- lapply(lapply(lst_cuts, function(x) gsub(")","",x)), unlist)
@@ -615,8 +615,8 @@ df_out2$supportRHS <- round(df_out2$supportRHS)
 #}
   df_out5 <- apply(subMat, 1, aggregate2, y=allMat)
   df_out2 <- do.call("rbind", df_out5)
-  df_out2$supportLHS <- round(df_out2$supportLHS)
-  df_out2$supportRHS <- round(df_out2$supportRHS)
+  df_out2$supportLHS <- round(as.numeric(df_out2$supportLHS))
+  df_out2$supportRHS <- round(as.numeric(df_out2$supportRHS))
   }
     
 # rule statistics #
