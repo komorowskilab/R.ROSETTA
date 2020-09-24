@@ -12,7 +12,7 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
   objs <- rownames(dt)
   feats <- colnames(dt)
   cuts <- rules[,grep('cut', colnames(rules), value=TRUE)][,-1]
-  
+  cuts <- as.data.frame(cuts)
   ### functions ###
   less2Vec <- function(x,y){(x-y) <= 0}
   more2Vec <- function(x,y){(x-y) >= 0}
