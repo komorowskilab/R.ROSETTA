@@ -105,7 +105,7 @@ aggregate2 <- function(x, y){
   df_out3 <- df_out[which(match(y, x) == 1),]
   #indx <- sapply(df_out3, is.factor)
   #df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-  df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+  df_out4 <- aggregate(.~features+levels+decision+cuts, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
   return(df_out4)
 }
 
