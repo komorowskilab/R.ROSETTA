@@ -20,6 +20,7 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
   ### ### ### ### ###
   
   if(discrete){
+    outLst <- outLst2 <- list()
     ####discretized
     for(j in 1:dim(rules)[1]){
       
