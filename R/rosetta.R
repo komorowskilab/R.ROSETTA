@@ -108,6 +108,15 @@ aggregate2 <- function(x, y){
   df_out4 <- aggregate(.~features+levels+decision+cuts, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
   return(df_out4)
 }
+                  
+aggregate3 <- function(x, y){ 
+  df_out3 <- df_out[which(match(y, x) == 1),]
+  #indx <- sapply(df_out3, is.factor)
+  #df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+  df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+  return(df_out4)
+}                  
+                  
 
 ##### end of the functions #####
     
@@ -613,7 +622,7 @@ df_out2$supportRHS <- round(as.numeric(df_out2$supportRHS))
 #df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
 #return(df_out4)
 #}
-  df_out5 <- apply(subMat, 1, aggregate2, y=allMat)
+  df_out5 <- apply(subMat, 1, aggregate3, y=allMat)
   df_out2 <- do.call("rbind", df_out5)
   df_out2$supportLHS <- round(as.numeric(df_out2$supportLHS))
   df_out2$supportRHS <- round(as.numeric(df_out2$supportRHS))
