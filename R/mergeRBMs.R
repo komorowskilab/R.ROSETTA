@@ -13,8 +13,8 @@ mergeRBMs <- function(rbms, defClass=autcon$decision, fun="mean", pAdjust = TRUE
   newLevels[[i]] <- newLevels[[i]][nOrder[[i]]]
   }
   
-  mergSeleFrame$features <- unlist(lapply(newFeatures, function(x) paste(x, sep=",", collapse=",")))
-  mergSeleFrame$levels <- unlist(lapply(newLevels, function(x) paste(x, sep=",", collapse=",")))
+  mergSeleFrame$features <- as.character(unlist(lapply(newFeatures, function(x) paste(x, sep=",", collapse=","))))
+  mergSeleFrame$levels <- as.character(unlist(lapply(newLevels, function(x) paste(x, sep=",", collapse=","))))
   
   if(fun == "mean"){
     mergSeleFrameAgg <- aggregate(. ~ features + levels + decision, data = mergSeleFrame, mean)
