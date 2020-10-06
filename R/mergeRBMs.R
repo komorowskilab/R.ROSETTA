@@ -3,14 +3,14 @@ mergeRBMs <- function(rbms, defClass=autcon$decision, fun="mean", pAdjust = TRUE
   #join into one data.frame
   seleFrame <- lapply(rbms, subset, select=c(features, levels, decision, supportLHS, supportRHS))
   mergSeleFrame <- do.call("rbind", seleFrame)
-  nOrder <- lapply(strsplit(mergSeleFrame$features, ","), order)
-  newFeatures <- strsplit(mergSeleFrame$features, ",")
-  newLevels <- strsplit(mergSeleFrame$levels, ",")
+  nOrder <- lapply(strsplit(as.character(mergSeleFrame$features), ","), order)
+  newFeatures <- strsplit(as.character(mergSeleFrame$features), ",")
+  newLevels <- strsplit(as.character(mergSeleFrame$levels), ",")
   
   #reorder features and levels
   for(i in 1:length(nOrder)){
-  newFeatures[[i]] <- newFeatures[[i]][nOrder[[i]]]
-  newLevels[[i]] <- newLevels[[i]][nOrder[[i]]]
+    newFeatures[[i]] <- newFeatures[[i]][nOrder[[i]]]
+    newLevels[[i]] <- newLevels[[i]][nOrder[[i]]]
   }
   
   mergSeleFrame$features <- as.character(unlist(lapply(newFeatures, function(x) paste(x, sep=",", collapse=","))))
@@ -23,10 +23,10 @@ mergeRBMs <- function(rbms, defClass=autcon$decision, fun="mean", pAdjust = TRUE
   if(fun == "sum"){
     mergSeleFrameAgg <- aggregate(. ~ features + levels + decision, data = mergSeleFrame, sum)
   }
-
+  
   mergSeleFrameAgg$supportLHS <- round(mergSeleFrameAgg$supportLHS)
   mergSeleFrameAgg$supportRHS <- round(mergSeleFrameAgg$supportRHS)
-
+  
   # rule statistics #
   # p-value for rules
   PVAL <- c()
@@ -40,7 +40,7 @@ mergeRBMs <- function(rbms, defClass=autcon$decision, fun="mean", pAdjust = TRUE
     R1 <- unname(table(defClass))[which(names(table(defClass))==mergSeleFrameAgg$decision[1])]
     totClass[i] <- R1
     k <- round(mergSeleFrameAgg$supportRHS[i])-1 # P(X > k-1) <-> P(X >= k) ### 
-
+    
     N <- sum(table(defClass)) # total number
     R2 <- N-R1 # num of samples for the rest samples - total black balls
     # the number of decisions/objects/patients
