@@ -1,5 +1,5 @@
 recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMethod="bonferroni"){
-
+##recalculate set of the rules
   rl2 <- strsplit(as.character(rules$features), ",", fixed = T)
   
   if(discrete){
