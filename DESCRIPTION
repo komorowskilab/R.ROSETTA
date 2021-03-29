@@ -1,14 +1,11 @@
 Package: R.ROSETTA
-Title: R.ROSETTA - an R package for rule-based classification modelling
-Version: 2.2.7
+Title: R.ROSETTA: an interpretable machine learning framework
+Version: 2.2.9
 Imports: gplots, fmsb, stringr, Matrix
-Date: 2020-02-20
+Date: 2021-03-29
 Authors@R: c(
     person("Mateusz", "Garbulowski", email = "mateusz.garbulowski@icm.uu.se", role = c("aut", "cre")),
     person("Karolina", "Smolinska", email = "karolina.smolinska@icm.uu.se", role = c("aut", "ctb")),
-    person("Klev", "Diamanti", role = c("ctb")),
-    person("Patricia", "Stoll", role = c("ctb")),
-    person("Susanne", "Bornelov", role = c("ctb")),
     person("Aleksander", "Ohrn", role = c("aut", "cph")),
     person("Jan", "Komorowski", email = "jan.komorowski@icm.uu.se", role = c("aut", "cph")))
 Maintainer: Jan Komorowski <jan.komorowski@icm.uu.se>, Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
