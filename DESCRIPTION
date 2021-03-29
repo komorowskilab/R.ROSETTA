@@ -5,13 +5,19 @@ Imports: gplots, fmsb, stringr, Matrix
 Date: 2021-03-29
 Authors@R: c(
     person("Mateusz", "Garbulowski", email = "mateusz.garbulowski@icm.uu.se", role = c("aut", "cre")),
-    person("Karolina", "Smolinska", email = "karolina.smolinska@icm.uu.se", role = c("aut", "ctb")),
+    person("Klev", "Diamanti", role = c("aut")),
+    person("Karolina", "Smolinska", role = c("aut")),
+    person("Nicholas", "Baltzer", role = c("aut")),
+    person("Patricia", "Stoll", role = c("aut")),
+    person("Susanne", "Bornelov", role = c("aut")),
+    person("Lars", "Feuk", role = c("aut")),
     person("Aleksander", "Ohrn", role = c("aut", "cph")),
     person("Jan", "Komorowski", email = "jan.komorowski@icm.uu.se", role = c("aut", "cph")))
 Maintainer: Jan Komorowski <jan.komorowski@icm.uu.se>, Mateusz Garbulowski <mateusz.garbulowski@icm.uu.se>
-Description: R.ROSETTA is a package for constructing and analyzing rule-based classification models. The package is a more accessible and extended version of the ROSETTA system.
+Description: R.ROSETTA is an R package for constructing and analyzing rule-based classification models. 
+    The package is a more accessible and extended version of the ROSETTA system.
 Depends: R (>= 3.6.0)
 License: GPL (>= 2)
 LazyData: true
-URL: https://www.r-project.org, https://github.com/komorowskilab/R.ROSETTA
+URL: https://github.com/komorowskilab/R.ROSETTA
 BugReports: https://github.com/komorowskilab/R.ROSETTA/issues

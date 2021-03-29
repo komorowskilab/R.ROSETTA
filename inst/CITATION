@@ -1,0 +1,14 @@
+citHeader("To cite the package in publications, please use:")
+
+bibentry(
+  "Article",
+  title = "R.ROSETTA: an interpretable machine learning framework",
+  author = "Mateusz Garbulowski, Klev Diamanti, Karolina Smolinska, Nicholas Baltzer, Patricia Stoll, Susanne Bornelov, Aleksander Ohrn, Lars Feuk & Jan Komorowski",
+  year = 2021,
+  journal = "BMC Bioinformatics",
+  volume = 22,
+  number = 110,
+  doi = "https://doi.org/10.1186/s12859-021-04049-z",
+  textVersion = "Garbulowski, M., Diamanti, K., Smolinska, K. et al. R.ROSETTA: an interpretable machine learning framework. BMC Bioinformatics 22, 110 (2021). https://doi.org/10.1186/s12859-021-04049-z"
+)
+

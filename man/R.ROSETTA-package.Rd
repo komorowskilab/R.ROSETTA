@@ -1,5 +1,5 @@
 \name{R.ROSETTA-package}
-\alias{R.ROSETTA-package}
+\alias{R.ROSETTA}
 \docType{package}
 \title{
 \packageTitle{R.ROSETTA}
@@ -24,8 +24,8 @@ Garbulowski M, Diamanti K, Smolińska K, Baltzer N, Stoll P, Bornelöv S, Øhrn 
 }
 \keyword{package}
 \seealso{
-\link[ROSETTA]{https://bioinf.icm.uu.se/rosetta}
 \link[R.ROSETTA article]{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04049-z}
+\link[ROSETTA]{https://bioinf.icm.uu.se/rosetta}
 }
 \examples{
 

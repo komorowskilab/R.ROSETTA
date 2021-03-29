@@ -118,6 +118,14 @@ aggregate3 <- function(x, y){
 }                  
                   
 
+aggregate3 <- function(x, y){ 
+  df_out3 <- df_out[which(match(y, x) == 1),]
+  #indx <- sapply(df_out3, is.factor)
+  #df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+  df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+  return(df_out4)
+}  
+
 ##### end of the functions #####
     
 # set paths and create temporary directory
@@ -447,7 +455,7 @@ supp_lhs3 <- unlist(lapply(lapply(strsplit(supp_lhs2, ","), as.numeric), max))
 supp_rhs3 <- unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric), max))
 supp_rhs3n <- unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric), which.max))
 # ACCURACY RHS
-acc_rhs3 <- unlist(lapply(lapply(strsplit(as.character(acc_rhs2), ","), as.double), max))
+acc_rhs3 <- unlist(lapply(lapply(strsplit(acc_rhs2, ","), as.double), max))
 acc_rhs3n <- unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric), which.max))
 # COVERAGE RHS
 cov_rhs3 <- unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
