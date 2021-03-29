@@ -29,16 +29,16 @@ A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data
 }
 \examples{
 
-## run R.ROSETTA on sample data with default parameters
-resultsRos <- rosetta(autcon)
-
-## print the model accuracy
-print(resultsRos$quality$accuracyMean)
-
-## save the rule table for rules with p-value < 0.05
-rules <- resultsRos$main[which(resultsRos$main$pValue < 0.05), ]
-
-## print rules in IF-THEN format
-viewRules(rules, setLabels = TRUE, labels=c("down", "nochange",  "up"))
+  ## an example dataset is included in autcon variable
+  resultsRos <- rosetta(autcon)
+  
+  ## print the quality of rule-based model
+  print(resultsRos$quality)
+  
+  ## save the rule table for rules with P < 0.05
+  rules <- resultsRos$main[which(resultsRos$main$pValue < 0.05),]
+  
+  ## print rules in IF-THEN form
+  viewRules(rules, setDiscLabels = FALSE, newDiscLabels=c("down", "nochange",  "up"))
 
 }
