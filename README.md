@@ -36,7 +36,6 @@ R.ROSETTA includes a sample dataset collected from GEO repository with the refer
 * [ROSETTA](http://bioinf.icm.uu.se/rosetta/) - The ROSETTA framework
 * [R Core](https://www.R-project.org/) - R Core Team
 
-More information about ROSETTA can be found at [ROSETTA technical reference manual](http://bioinf.icm.uu.se/rosetta/materials/manual.pdf)
 ## Related work
 - ROSETTA - [ROSETTA Technical Reference Manual](http://bioinf.icm.uu.se/rosetta/materials/manual.pdf)
 - VisuNet - [VisuNet: an interactive tool for rule network visualization of rule-based machine learning models](https://github.com/komorowskilab/VisuNet)
