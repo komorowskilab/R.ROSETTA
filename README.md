@@ -39,3 +39,7 @@ R.ROSETTA includes a sample dataset collected from GEO repository with the refer
 More information about ROSETTA can be found at [ROSETTA technical reference manual](http://bioinf.icm.uu.se/rosetta/materials/manual.pdf)
 ## Related work
 - VisuNet: [An interactive tool for network visualization of rule-based models in R](https://github.com/komorowskilab/VisuNet)
+
+## Citation
+Garbulowski M, Diamanti K, Smolińska K, Baltzer N, Stoll P, Bornelöv S, Øhrn A, Feuk L, Komorowski J. R.ROSETTA: an interpretable machine learning framework. BMC Bioinformatics. 2021 Mar 6;22(1):110. doi: 10.1186/s12859-021-04049-z
+[link](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04049-z)

@@ -1,6 +1,5 @@
 \name{R.ROSETTA-package}
 \alias{R.ROSETTA-package}
-\alias{R.ROSETTA}
 \docType{package}
 \title{
 \packageTitle{R.ROSETTA}
@@ -21,11 +20,12 @@ The DESCRIPTION file:
 Maintainer: \packageMaintainer{R.ROSETTA}
 }
 \references{
-A. Ohrn, J. Komorowski (1997), ROSETTA: A Rough Set Toolkit for Analysis of Data, Proc. Third International Joint Conference on Information Sciences, Fifth International Workshop on Rough Sets and Soft Computing (RSSC'97), Durham, NC, USA, March 1-5, Vol. 3, pp. 403-407.
+Garbulowski M, Diamanti K, Smolińska K, Baltzer N, Stoll P, Bornelöv S, Øhrn A, Feuk L, Komorowski J. R.ROSETTA: an interpretable machine learning framework. BMC Bioinformatics. 2021 Mar 6;22(1):110. doi: 10.1186/s12859-021-04049-z
 }
 \keyword{package}
 \seealso{
-\link[ROSETTA]{bioinf.icm.uu.se/rosetta}
+\link[ROSETTA]{https://bioinf.icm.uu.se/rosetta}
+\link[R.ROSETTA article]{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-021-04049-z}
 }
 \examples{
 

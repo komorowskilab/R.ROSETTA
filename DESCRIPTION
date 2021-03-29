@@ -2,7 +2,7 @@ Package: R.ROSETTA
 Title: R.ROSETTA: an interpretable machine learning framework
 Version: 2.2.9
 Imports: gplots, fmsb, stringr, Matrix
-Date: 2020-02-20
+Date: 2021-03-29
 Authors@R: c(
     person("Mateusz", "Garbulowski", email = "mateusz.garbulowski@icm.uu.se", role = c("aut", "cre")),
     person("Karolina", "Smolinska", email = "karolina.smolinska@icm.uu.se", role = c("aut", "ctb")),
