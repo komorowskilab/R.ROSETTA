@@ -3,14 +3,14 @@ mergeRBMs <- function(rbms, defClass=autcon$decision, fun="mean", pAdjust = TRUE
   #join into one data.frame
   seleFrame <- lapply(rbms, subset, select=c(features, levels, decision, supportLHS, supportRHS))
   mergSeleFrame <- do.call("rbind", seleFrame)
-  nOrder <- lapply(strsplit(mergSeleFrame$features, ","), order)
-  newFeatures <- strsplit(mergSeleFrame$features, ",")
-  newLevels <- strsplit(mergSeleFrame$levels, ",")
+  nOrder <- lapply(strsplit(as.character(mergSeleFrame$features), ","), order)
+  newFeatures <- strsplit(as.character(mergSeleFrame$features), ",")
+  newLevels <- strsplit(as.character(mergSeleFrame$levels), ",")
   
   #reorder features and levels
   for(i in 1:length(nOrder)){
-  newFeatures[[i]] <- newFeatures[[i]][nOrder[[i]]]
-  newLevels[[i]] <- newLevels[[i]][nOrder[[i]]]
+    newFeatures[[i]] <- newFeatures[[i]][nOrder[[i]]]
+    newLevels[[i]] <- newLevels[[i]][nOrder[[i]]]
   }
   
   mergSeleFrame$features <- unlist(lapply(newFeatures, function(x) paste(x, sep=",", collapse=",")))

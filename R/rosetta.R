@@ -87,7 +87,7 @@ round2 <- function(x, n){
 
 # check if in factor columns are characters or the numbers
 meanOrCharacter <- function(x){
-  if(class(x) == "factor"){
+  if(class(x) == "factor" | class(x) == "character"){
     if(is.na(as.numeric(as.character(unname(unique(x))), options(warn=-1)))[1]){
       return(as.character(x)[1]) 
     }else{
@@ -103,11 +103,19 @@ meanOrCharacter <- function(x){
 # second version of aggregate 
 aggregate2 <- function(x, y){ 
   df_out3 <- df_out[which(match(y, x) == 1),]
-  indx <- sapply(df_out3, is.factor)
-  df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
-  df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+  #indx <- sapply(df_out3, is.factor)
+  #df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+  df_out4 <- aggregate(.~features+levels+decision+cuts, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
   return(df_out4)
 }
+
+aggregate3 <- function(x, y){ 
+  df_out3 <- df_out[which(match(y, x) == 1),]
+  #indx <- sapply(df_out3, is.factor)
+  #df_out3[indx] <- lapply(df_out3[indx], function(x) as.character(x))
+  df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
+  return(df_out4)
+}  
 
 ##### end of the functions #####
     
@@ -299,7 +307,7 @@ try(system(command=comm, ignore.stdout = TRUE), silent=TRUE) # suppress warnings
   '\" ',
   paste0(dirList2,"\\",rosFileName),
   '\"')
-  try(system(command = comm, ignore.stdout = TRUE, intern=TRUE), silent=TRUE) # supress warnings and comunicates
+  try(system(command = comm, ignore.stdout = TRUE), silent=TRUE) # supress warnings and comunicates
   }
 }
     
@@ -408,6 +416,7 @@ rules2 <- data.frame()
 colnames(rules2) <- "rules"
     
 # filtration
+rules2 <- as.matrix(rules2)
 rl2 <- as.matrix(rules2[!grepl("%", rules2, fixed = T)]) # delete comments
 rl_r <- which(grepl("=>", rl2, fixed = T)) # select rules
 rules <- rl2[rl_r]
@@ -437,7 +446,7 @@ supp_lhs3 <- unlist(lapply(lapply(strsplit(supp_lhs2, ","), as.numeric), max))
 supp_rhs3 <- unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric), max))
 supp_rhs3n <- unlist(lapply(lapply(strsplit(supp_rhs2, ","),as.numeric), which.max))
 # ACCURACY RHS
-acc_rhs3 <- unlist(lapply(lapply(strsplit(as.character(acc_rhs2), ","), as.double), max))
+acc_rhs3 <- unlist(lapply(lapply(strsplit(acc_rhs2, ","), as.double), max))
 acc_rhs3n <- unlist(lapply(lapply(strsplit(acc_rhs2, ","),as.numeric), which.max))
 # COVERAGE RHS
 cov_rhs3 <- unlist(lapply(lapply(strsplit(as.character(cov_rhs2), ","),as.double),max))
@@ -506,6 +515,7 @@ if(.Platform$OS.type == "unix"){
 for(k in 1:length(files_rules)){
 # read rule file
 dataset_rules <- read.table(files_rules[k], header=FALSE, sep="\t")
+dataset_rules <- as.matrix(dataset_rules)
 colnames(dataset_rules) <- "rules"
 # read cut file
 dataset_cuts <- read.table(files_cuts[k], header=FALSE, sep="\t")
@@ -586,8 +596,8 @@ allMat <- do.call(paste0, df_out[c("features","levels", "decision")])
 subMat <- as.matrix(do.call(paste0, df_outU))
 df_out5 <- apply(subMat, 1, aggregate2, y=allMat)
 df_out2 <- do.call("rbind", df_out5)
-df_out2$supportLHS <- round(df_out2$supportLHS)
-df_out2$supportRHS <- round(df_out2$supportRHS)
+df_out2$supportLHS <- round(as.numeric(df_out2$supportLHS))
+df_out2$supportRHS <- round(as.numeric(df_out2$supportRHS))
   }else{ #for discrete data
   lst_cuts <- lapply(lapply(lst, function(x) x[-seq(1,length(x),2)]), unlist)
   lst_cuts2 <- lapply(lapply(lst_cuts, function(x) gsub(")","",x)), unlist)
@@ -611,10 +621,10 @@ df_out2$supportRHS <- round(df_out2$supportRHS)
 #df_out4 <- aggregate(.~features+levels+decision, FUN=meanOrCharacter, data = df_out3, na.action = na.pass)
 #return(df_out4)
 #}
-  df_out5 <- apply(subMat, 1, aggregate2, y=allMat)
+  df_out5 <- apply(subMat, 1, aggregate3, y=allMat)
   df_out2 <- do.call("rbind", df_out5)
-  df_out2$supportLHS <- round(df_out2$supportLHS)
-  df_out2$supportRHS <- round(df_out2$supportRHS)
+  df_out2$supportLHS <- round(as.numeric(df_out2$supportLHS))
+  df_out2$supportRHS <- round(as.numeric(df_out2$supportRHS))
   }
     
 # rule statistics #

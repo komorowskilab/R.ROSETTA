@@ -6,7 +6,7 @@
 <meta name='keywords' content='rosetta, rough sets, classification, transparent machine learning'>
 
 # R.ROSETTA
-R.ROSETTA is an R package for constructing and analyzing rule-based classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA system (Öhrn and Komorowski, 1997). In addition to all the existing ROSETTA functionalities, we have added new functions such as: balancing data with undersampling, estimating rule p-value, retrieving support sets from rules, predicting external classes, visualizing rule-based model and generating synthetic data. 
+R.ROSETTA is an R package for constructing and analyzing rule-based classification models. R.ROSETTA is designed to support the overall data mining and knowledge discovery process. The presented tool is a more accessible and extended version of ROSETTA system (Øhrn, A., Komorowski, J., Skowron, A., & Synak, P., 1998). In addition to all the existing ROSETTA functionalities, we have added new functions such as: balancing data with undersampling, estimating rule P values, retrieving support sets from rules, mergind rule-based models, predicting external classes, visualizing rule-based model and generating synthetic data. 
 
 For more information and tutorials, please visit the [official R.ROSETTA website](https://komorowskilab.github.io/R.ROSETTA/).
 
@@ -37,7 +37,8 @@ R.ROSETTA includes a sample dataset collected from GEO repository with the refer
 * [R Core](https://www.R-project.org/) - R Core Team
 
 ## Related work
-- VisuNet: [An interactive tool for network visualization of rule-based models in R](https://github.com/komorowskilab/VisuNet)
+- ROSETTA - [ROSETTA Technical Reference Manual](http://bioinf.icm.uu.se/rosetta/materials/manual.pdf)
+- VisuNet - [VisuNet: an interactive tool for rule network visualization of rule-based machine learning models](https://github.com/komorowskilab/VisuNet)
 
 ## Citation
 Garbulowski M, Diamanti K, Smolińska K, Baltzer N, Stoll P, Bornelöv S, Øhrn A, Feuk L, Komorowski J. R.ROSETTA: an interpretable machine learning framework. BMC Bioinformatics. 2021 Mar 6;22(1):110. doi: 10.1186/s12859-021-04049-z
