@@ -1,5 +1,22 @@
+#' @import pheatmap
+#' @import tidyverse
+#' @import grid
+#' @import gridExtra
+
 clusterRules<-function(training_df,recal,support=7,fontsize=7,show_colnames=FALSE,show_rownames=FALSE){
+  if (!require(pheatmap)) install.packages('pheatmap')
   library(pheatmap)
+  
+  if (!require(tidyverse)) install.packages('tidyverse')
+  library(tidyverse)
+  
+  if (!require(grid)) install.packages('grid')
+  library(grid)
+  
+  if (!require(gridExtra)) install.packages('gridExtra')
+  library(gridExtra)
+  
+  
   #process data for clustering, i.e. making a matrix with binary values 0 and 1
   dataM <- data.frame(matrix(ncol = length(recal$features[1:nrow(recal)]), nrow = length(row.names(training_df))))
   rownames(dataM)<-rownames(training_df)
