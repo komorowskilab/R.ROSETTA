@@ -33,39 +33,35 @@
   
 }
 \details{
-  %%  ~~ If necessary, more details than the description above ~~
+%%  ~~ If necessary, more details than the description above ~~
 }
-
-
 \value{
-  \item{output}{A heatmap showing the hierarchically clustered rules and objects. 
+  \item{output}{A data frame containing IF-THEN rules and statistics: rule length, RHS accuracy, RHS support, and rule p-value from hypergeometric distribution.
+}
 }
 \references{
-  %% ~put references to the literature/web site here ~
+%% ~put references to the literature/web site here ~
 }
 \author{
-  Girish Pulinkala
+Girish Pulinkala
 }
 \note{
-  %%  ~~further notes~~
+%%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
-  
-  \seealso{
-    %% ~~objects to See Also as \code{\link{help}}, ~~~
-  }
+
+\seealso{
+%% ~~objects to See Also as \code{\link{help}}, ~~~
+}
 \examples{
-  library(R.ROSETTA)
-  set.seed(1)
-  
-  out <- rosetta(autcon)
-  rules <- out$main
-  
-  
-  #change 1,2,3 gene levels into down,nochange,up
-  IfThenRulesDNU <- viewRules(rules, setLabels=TRUE, labels=c("down","nochange", "up"))
-  
+library(R.ROSETTA)
+set.seed(1)
+
+ros<-rosetta(autcon)
+recal<-recalculateRules(autcon,ros$main)
+cluster_rules(autcon,recal,support=20)
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
