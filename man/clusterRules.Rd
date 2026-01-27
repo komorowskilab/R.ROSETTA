@@ -7,7 +7,7 @@
   Prints a heatmap of clustered rules and objects. 
 }
 \usage{
-  cluster_rules(training_df,recal,support=7,show_colnames=FALSE,show_rownames=FALSE)
+  clusterRules(training_df,recal,support=7,show_colnames=FALSE,show_rownames=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -60,7 +60,7 @@ set.seed(1)
 
 ros<-rosetta(autcon)
 recal<-recalculateRules(autcon,ros$main)
-cluster_rules(autcon,recal,support=20)
+clusterRules(autcon,recal,support=20)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
