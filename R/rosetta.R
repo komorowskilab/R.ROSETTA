@@ -2,6 +2,7 @@
 
 rosetta <- function(dt,
                     classifier="StandardVoter",
+                    reverse=FALSE,
                     cvNum=10,
                     discrete=FALSE,
                     discreteMethod="EqualFrequency",
@@ -38,8 +39,15 @@ rosetta <- function(dt,
 {
 # set seed
 set.seed(seed)
+
   
-if(dim(autcon)[2]-1 == 1){
+if(reverse==TRUE){
+  dt<-dt[, c(rev(seq_len(ncol(dt) - 1)), ncol(dt))]
+  
+} 
+  
+  
+if(dim(dt)[2]-1 == 1){
   stop("Decision table is too small")
 }else{
     
