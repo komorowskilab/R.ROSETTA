@@ -50,12 +50,25 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
           
           ##cuts
           n_cuts <- str_count(cuts_cond[i], "cut")
-          str <- paste0(str_replace_all(unlist(strsplit(as.character(cuts_cond[i]), "(?<=cut)", perl = TRUE)), rep("cut", n_cuts), paste0("(",as.character(unname(cuts[i,]))[1:n_cuts],")")), collapse="")
+          cut_parts <- unlist(strsplit(as.character(cuts_cond[i]), "(?<=cut)", perl = TRUE))
+          cut_replacements <- paste0("(", as.character(unname(cuts[i,]))[1:n_cuts], ")")
+          for (k in seq_along(cut_parts)) {
+            if (k <= length(cut_replacements)) {
+              cut_parts[k] <- str_replace(cut_parts[k], "cut", cut_replacements[k])
+            }
+          }
+          str <- paste0(cut_parts, collapse = "")
           
           ##values
           n_vals <- str_count(cuts_cond[i], "value")
-          str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=value)", perl = TRUE)), rep("value", n_vals), paste0("(",as.character(unname(object[which(colnames(object) %in% unlist(strsplit(as.character(rules[i,]$features),",")))]))[1:n_vals],")")), collapse="") 
-          
+          val_parts <- unlist(strsplit(str, "(?<=value)", perl = TRUE))
+          val_replacements <- paste0("(", as.character(unname(object[which(colnames(object) %in% unlist(strsplit(as.character(rules[i,]$features), ",")))]))[1:n_vals], ")")
+          for (k in seq_along(val_parts)) {
+            if (k <= length(val_replacements)) {
+              val_parts[k] <- str_replace(val_parts[k], "value", val_replacements[k])
+            }
+          }
+          str <- paste0(val_parts, collapse = "")
           ##discrete
           key_words <- c("discrete", "cut")
           matches <- str_c(key_words, collapse ="|")
@@ -70,7 +83,14 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
             n_disc <- str_count(cuts_cond[i], "discrete")
             disc_val <- as.character(unname(object[1,which(colnames(object[1,]) %in% unlist(strsplit(as.character(rules[i,]$features),",")))]))[which(unlist(str_split(cuts_cond[i], ","))=="discrete")]
             
-            str <- paste0(str_replace_all(unlist(strsplit(str, "(?<=discrete)", perl = TRUE)), rep("discrete", n_disc), paste0(disc_val,"==",as.character(unname(cuts[i,]))[strs_n])),collapse="")
+            disc_parts <- unlist(strsplit(str, "(?<=discrete)", perl = TRUE))
+            disc_replacements <- paste0(disc_val, "==", as.character(unname(cuts[i,]))[strs_n])
+            for (k in seq_along(disc_parts)) {
+              if (k <= length(disc_replacements)) {
+                disc_parts[k] <- str_replace(disc_parts[k], "discrete", disc_replacements[k])
+              }
+            }
+            str <- paste0(disc_parts, collapse = "")
             expr <- unlist(str_split(unlist(str),","))
             
             str_l[[i]] <- eval(parse(text = unlist(lapply(expr, change_expr))))
@@ -80,7 +100,14 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
           n_cuts <- str_count(cuts_cond[i], "discrete")
           disc_val <- as.character(unname(dn111[1,which(colnames(dn111[1,]) %in% unlist(strsplit(as.character(rules[i,]$features),",")))]))[which(unlist(str_split(cuts_cond[i], ",")) == "discrete")]
           
-          str <- paste0(str_replace_all(unlist(strsplit(cuts_cond[i], "(?<=discrete)", perl = TRUE)), rep("discrete", n_cuts), paste0(disc_val,"==",as.character(unname(cuts[i,]))[1:n_cuts])), collapse="")
+          disc_parts2 <- unlist(strsplit(cuts_cond[i], "(?<=discrete)", perl = TRUE))
+          disc_replacements2 <- paste0(disc_val, "==", as.character(unname(cuts[i,]))[1:n_cuts])
+          for (k in seq_along(disc_parts2)) {
+            if (k <= length(disc_replacements2)) {
+              disc_parts2[k] <- str_replace(disc_parts2[k], "discrete", disc_replacements2[k])
+            }
+          }
+          str <- paste0(disc_parts2, collapse = "")
           
           expr <- unlist(str_split(unlist(str),","))
           str_l[[i]] <- eval(parse(text = unlist(lapply(expr, change_expr))))

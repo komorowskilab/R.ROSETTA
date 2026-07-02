@@ -1,6 +1,6 @@
 Package: R.ROSETTA
 Title: R.ROSETTA: an interpretable machine learning framework
-Version: 2.3.0
+Version: 2.3.1
 Imports: gplots, fmsb, stringr, Matrix
 Date: 2021-03-29
 Authors@R: c(
