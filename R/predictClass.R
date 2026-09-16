@@ -143,7 +143,7 @@ predictClass <- function(dt, rules, discrete=FALSE, normalize=TRUE, normalizeMet
     }
     
     if(normalizeMethod=="rss"){ #root sum square
-      fun <- function(x){sqrt(sum(x)^2)}
+      fun <- function(x){sqrt(sum(x^2))}
       ruleVotesDf <- sweep(ruleVotesDf, 2, apply(ruleVotesDf, 2, fun), "/")
     }
     
