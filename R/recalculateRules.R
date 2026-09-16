@@ -33,7 +33,7 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
         #ifelse(length(vec4) == 0, vec4 <- vec3, vec4 <- vec3 & vec4)
       }
       outLst[[j]] <- rownames(dt)[which(rowSums(do.call(cbind, vec3)) == cndsLen)] ##LHS
-      dt2 <- dt[which(grepl(dec2[j], dt[,length(dt)])),]
+      dt2 <- dt[which(grepl(paste0("^", dec2[j], "$"), dt[,length(dt)])),]
       outLst2[[j]] <- intersect(rownames(dt2), outLst[[j]]) ##RHS
     } 
   }else{
@@ -70,7 +70,7 @@ recalculateRules <- function(dt, rules, discrete=FALSE, pAdjust=TRUE, pAdjustMet
       }
       
       outLst[[j]] <- rownames(dt)[which(vec4)] ##LHS
-      dt2 <- dt[which(grepl(dec2[j], dt[,length(dt)])),]
+      dt2 <- dt[which(grepl(paste0("^", dec2[j], "$"), dt[,length(dt)])),]
       outLst2[[j]] <- intersect(rownames(dt2),outLst[[j]])
     }
   }
