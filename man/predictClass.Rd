@@ -7,7 +7,7 @@ Class prediction
 Use rosetta model to validate external dataset or reclassify the current dataset.
 }
 \usage{
-predictClass(dt, rules, discrete=FALSE, normalize = TRUE, normalizeMethod="rss", validate = FALSE, defClass)
+predictClass(dt, rules, discrete=FALSE, normalize = TRUE, normalizeMethod="rss", validate = FALSE, defClass,weighted=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,11 @@ A data frame of rule table in a form of main rosetta output.
   \item{discrete}{
 Logical. If TRUE the dataset is discrete. Default is FALSE. 
 }
+
+ \item{weighted}{
+Logical. If you wanted a weighted vote predictions. Default is TRUE. 
+}
+
   \item{normalize}{
 Logical. If FALSE normalization of votes is not performed. Default is TRUE.
 }

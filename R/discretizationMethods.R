@@ -436,7 +436,7 @@ equal_width_bin <- function(df, n_bins = 3) {
 
   # Perform equal-width discretization on all columns except the decision column
   feature_cols <- setdiff(names(df), decision_col)
-  discretized_features <- infotheo::discretize(df[feature_cols], method = "equalwidth", nbins = n_bins)
+  discretized_features <- infotheo::discretize(df[feature_cols], disc = "equalwidth", nbins = n_bins)
 
   # Convert to data frame (in case discretize returns a matrix)
   discretized_data <- as.data.frame(discretized_features)
@@ -532,7 +532,7 @@ TDT_discretize <- function(df) {
 ebd_discretize_df <- function(df, desired_intervals = 3) {
 
 
-  decision_col<-names(df)[ncol(df)]
+  decision<-names(df)[ncol(df)]
 
   # Compute Prior(k) using Eq 10 - place a cut after each unique X value
   compute_prior_vec <- function(X, lambda) {
