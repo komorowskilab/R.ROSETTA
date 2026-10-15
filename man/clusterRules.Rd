@@ -7,7 +7,7 @@
   Prints a heatmap of clustered rules and objects. 
 }
 \usage{
-  clusterRules(training_df,recal,support=7,show_colnames=FALSE,show_rownames=FALSE)
+  clusterRules(training_df,recal,support=7,show_colnames=FALSE,show_rownames=FALSE,fontsize=15)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

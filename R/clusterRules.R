@@ -3,7 +3,7 @@
 #' @import grid
 #' @import gridExtra
 
-clusterRules<-function(training_df,recal,support=7,fontsize=7,show_colnames=FALSE,show_rownames=FALSE,y_lab='Samples'){
+clusterRules<-function(training_df,recal,support=7,fontsize=15,show_colnames=FALSE,show_rownames=FALSE,y_lab='Samples'){
   if (!require(pheatmap)) install.packages('pheatmap')
   library(pheatmap)
   
@@ -45,6 +45,6 @@ clusterRules<-function(training_df,recal,support=7,fontsize=7,show_colnames=FALS
   setHook("grid.newpage", function() pushViewport(viewport(x=1,y=1,width=0.9, height=0.9, name="vp", just=c("right","top"))), action="prepend")
   print(pheatmap(as.matrix(newdf), annotation_row=a ,main='Clustering of Model Rules',fontsize = fontsize, border_color = 'white',annotation_colors = annoCol,cluster_cols = TRUE,show_rownames = show_rownames, show_colnames = show_colnames, cluster_rows = TRUE,color = c('grey88','gray39'),legend_breaks = c(0,1)))
   setHook("grid.newpage", NULL, "replace")
-  grid.text("Rules", y=-0.07, gp=gpar(fontsize=15))
-  grid.text(y_lab, x=-0.07, rot=90, gp=gpar(fontsize=15))
+  grid.text("Rules", y=-0.07, gp=gpar(fontsize=fontsize))
+  grid.text(y_lab, x=-0.07, rot=90, gp=gpar(fontsize=fontsize))
 }
