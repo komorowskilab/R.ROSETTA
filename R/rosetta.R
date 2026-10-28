@@ -2,7 +2,7 @@
 
 rosetta <- function(dt,
                     classifier="StandardVoter",
-                    reverse=FALSE,
+                    reverse=TRUE,
                     cvNum=10,
                     discrete=FALSE,
                     discreteMethod="EqualFrequency",
